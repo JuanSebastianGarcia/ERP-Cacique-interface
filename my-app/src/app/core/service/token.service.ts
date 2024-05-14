@@ -1,16 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
-/*
-  Service - maneja el token con el cual se puede acceder a los distintos servicios 
-**/
-const TOKEN_KEY = 'AuthToken';
+const TOKEN_KEY = 'auth-key';
 
 @Injectable({
   providedIn: 'root'
 })
-export class TokenServiceService {
-
+export class TokenService {
   constructor(private router: Router) { }
 
   /*
@@ -58,10 +54,23 @@ export class TokenServiceService {
     const payloadDecoded = atob(payload);
     const values = JSON.parse(payloadDecoded);
     return values;
-    }
+  }
 
 
+  /*
+  ingresar un nuevo token que inicio sesion
+  */
+ public login(token: string){
+  this.setToken(token);
+  this.router.navigate(['/my-app/src/app/page/producto/producto.routes.ts']);
+ }
 
 
-
+ /*
+ eliminar un token que cierra sesion
+ */
+ public logout(){
+  localStorage.removeItem(TOKEN_KEY);
+  this.router.navigate(['/my-app7src/app/page/login/login.routes.ts']);
+ }
 }
