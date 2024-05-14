@@ -11,8 +11,7 @@ import { LoginDto } from '../../../core/models/login-dto';
 })
 export class IngresarComponent {
 
-
-
+  //formulario que almacena los datos del login
   loginData: LoginDto  = {
     email: '',
     password:''  
