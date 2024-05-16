@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 
 const TOKEN_KEY = 'auth-key';
 
@@ -7,7 +6,8 @@ const TOKEN_KEY = 'auth-key';
   providedIn: 'root'
 })
 export class TokenService {
-  constructor(private router: Router) { }
+
+  constructor() { }
 
   /*
     asignar un nuevo token
@@ -62,7 +62,7 @@ export class TokenService {
   */
  public login(token: string){
   this.setToken(token);
-  this.router.navigate(['/my-app/src/app/page/producto/producto.routes.ts']);
+  
  }
 
 
@@ -71,6 +71,5 @@ export class TokenService {
  */
  public logout(){
   localStorage.removeItem(TOKEN_KEY);
-  this.router.navigate(['/my-app7src/app/page/login/login.routes.ts']);
  }
 }
