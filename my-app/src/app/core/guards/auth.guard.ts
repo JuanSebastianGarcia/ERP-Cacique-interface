@@ -13,9 +13,11 @@ export const authGuard: CanActivateChildFn = (childRoute, state) => {
   const router = inject(Router);
 
   if(tokenService.isLogged()==true){
+    console.log("the access is allod");
     return true;
   }else{
     router.navigate([""]);
+    console.log("the access deny");
     return false;
   }
 };
