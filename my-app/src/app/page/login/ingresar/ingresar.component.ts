@@ -35,7 +35,7 @@ export class IngresarComponent {
   */
   login() {
     
-    this.loginService.login(this.loginData).subscribe({
+    /*this.loginService.login(this.loginData).subscribe({
       next: (data: { error: boolean; respuesta: { token: any; }; }) => {
         if (data.error) {
           // Manejar el caso de error 
@@ -47,7 +47,10 @@ export class IngresarComponent {
         }
 
       }
-    });
+    });*/
+
+    this.tokenService.login("1");
+    this.router.navigate(["productos"]);
   }
 
 

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 
+
 @Component({
   selector: 'app-crear-producto',
   standalone: true,
@@ -8,5 +9,8 @@ import { Component } from '@angular/core';
   styleUrl: './crear-producto.component.css'
 })
 export class CrearProductoComponent {
+
+
+
 
 }

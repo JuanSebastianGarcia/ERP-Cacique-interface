@@ -6,12 +6,23 @@ import { TokenService } from './core/service/token.service';
 import { BarraLateralComponent } from './shared/components/barra-lateral/barra-lateral.component';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import {MatCardModule} from '@angular/material/card';
+import {MatTableModule} from '@angular/material/table';
+
 
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HttpClientModule,BarraLateralComponent,CommonModule,RouterModule],
+  imports: [RouterOutlet, 
+            HttpClientModule,
+            BarraLateralComponent,
+            CommonModule,
+            RouterModule,
+            MatCardModule,
+            MatTableModule
+
+  ],
   providers: [LoginService,TokenService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
