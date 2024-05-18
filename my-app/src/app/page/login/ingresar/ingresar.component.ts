@@ -49,7 +49,6 @@ export class IngresarComponent {
       }
     });*/
 
-    this.tokenService.login("1");
     this.router.navigate(["productos"]);
   }
 

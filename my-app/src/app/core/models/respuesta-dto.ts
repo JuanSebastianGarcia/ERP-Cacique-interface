@@ -1,5 +1,5 @@
 export interface RespuestaDto {
 
-    error: boolean;
-    respuesta : any
+    Error: boolean,
+    Respuesta : any
 }
