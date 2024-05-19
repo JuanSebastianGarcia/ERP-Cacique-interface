@@ -8,14 +8,15 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import {MatCardModule} from '@angular/material/card';
 import {MatTableModule} from '@angular/material/table';
+import { ProductoService } from './core/service/producto.service';
 
 
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, 
-            HttpClientModule,
+  imports: [HttpClientModule,
+            RouterOutlet, 
             BarraLateralComponent,
             CommonModule,
             RouterModule,
@@ -23,14 +24,14 @@ import {MatTableModule} from '@angular/material/table';
             MatTableModule
 
   ],
-  providers: [LoginService,TokenService],
+  providers: [LoginService,TokenService,ProductoService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
   title = 'my-app';
 
-  constructor(public tokenService: TokenService){};
+  constructor(public tokenService:TokenService){};
 
 
 

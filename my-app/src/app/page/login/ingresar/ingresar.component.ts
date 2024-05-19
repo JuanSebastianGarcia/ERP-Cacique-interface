@@ -4,7 +4,8 @@ import { LoginDto } from '../../../core/models/login-dto';
 import { LoginService } from '../../../core/service/login.service';
 import { TokenService } from '../../../core/service/token.service';
 import { Router } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
+import { TokenDto } from '../../../core/models/token-dto';
+import { RespuestaDto } from '../../../core/models/respuesta-dto';
 
 @Component({
   selector: 'app-ingresar',
@@ -35,21 +36,20 @@ export class IngresarComponent {
   */
   login() {
     
-    /*this.loginService.login(this.loginData).subscribe({
-      next: (data: { error: boolean; respuesta: { token: any; }; }) => {
+    this.loginService.ingresarUsuario(this.loginData).subscribe({
+      next: (data: RespuestaDto<TokenDto>) => {
         if (data.error) {
-          // Manejar el caso de error 
           console.log("no se puede ingresar");
         } else {
           // Manejar el caso de éxito
+          console.log(data.respuesta.token);
           this.tokenService.login(data.respuesta.token);
           this.router.navigate(["productos"]);
         }
-
       }
-    });*/
+    });
 
-    this.router.navigate(["productos"]);
+    //this.router.navigate(["productos"]);
   }
 
 

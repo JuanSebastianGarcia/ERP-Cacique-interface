@@ -1,5 +1,6 @@
-export interface RespuestaDto {
+export interface RespuestaDto<T>{
 
-    Error: boolean,
-    Respuesta : any
+    error: boolean,
+    respuesta : T
+    
 }
