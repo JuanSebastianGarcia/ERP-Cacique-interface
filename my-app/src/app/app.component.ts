@@ -21,10 +21,13 @@ import { ProductoService } from './core/service/producto.service';
             CommonModule,
             RouterModule,
             MatCardModule,
-            MatTableModule
+            MatTableModule,
+            
 
   ],
-  providers: [LoginService,TokenService,ProductoService],
+  providers: [LoginService,
+              TokenService,
+              ProductoService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

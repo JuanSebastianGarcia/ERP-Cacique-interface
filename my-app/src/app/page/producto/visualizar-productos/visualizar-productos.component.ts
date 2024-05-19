@@ -52,7 +52,7 @@ export class VisualizarProductosComponent {
   *buscar lista de productos conectandose al servicio
   */
   buscarProductos(){
-
+    debugger;
     this.productoService.buscarProductos(this.filtros).subscribe({ 
       next: data =>{
           this.dataSource=new MatTableDataSource(data.respuesta);

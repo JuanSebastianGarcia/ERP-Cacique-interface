@@ -1,9 +1,11 @@
 import { ApplicationConfig } from '@angular/core';
 import { provideRouter } from '@angular/router';
-
 import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { autenticacionInterceptor } from './core/interceptor/autenticacion.interceptor';
+
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(routes), provideAnimationsAsync('noop')]
+  providers: [provideRouter(routes), provideAnimationsAsync('noop'),provideHttpClient(withInterceptors([autenticacionInterceptor]))]
 };
