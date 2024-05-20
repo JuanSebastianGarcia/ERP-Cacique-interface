@@ -1,13 +1,13 @@
-import { Component, ViewChild } from '@angular/core';
+import {Component, ViewChild } from '@angular/core';
 import {MatCardModule} from '@angular/material/card';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import {ProductoDto } from '../../../core/models/producto-dto';
-import { ProductoService } from '../../../core/service/producto.service';
+import {ProductoService } from '../../../core/service/producto.service';
 import {FiltroListaProductoDto } from '../../../core/models/filtro-lista-producto-dto';
 import {MatSelectModule} from '@angular/material/select';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import {CommonModule } from '@angular/common';
+import {FormsModule } from '@angular/forms';
 
 
 
@@ -19,14 +19,14 @@ import { FormsModule } from '@angular/forms';
             MatPaginatorModule,
             MatSelectModule,
             CommonModule,
-            FormsModule
+            FormsModule,
             ],
   templateUrl: './visualizar-productos.component.html',
   styleUrl: './visualizar-productos.component.css'
 })
 export class VisualizarProductosComponent {
 
-  displayedColumns: string[] = ['id', 'prenda', 'institucion', 'talla', 'horario' , 'genero', 'precio','cantidad',];
+  displayedColumns: string[] = ['id', 'prenda', 'institucion', 'talla', 'horario' , 'genero', 'precio','cantidad','boton'];
   dataSource = new MatTableDataSource<ProductoDto>([]);//arreglo en donde se almacena la informacion de la tabla
 
   //esta es la funcionalidad del paginador
@@ -124,6 +124,8 @@ export class VisualizarProductosComponent {
 
   }
 
+
+
   constructor(private productoService:ProductoService){};
 
 
@@ -158,8 +160,21 @@ export class VisualizarProductosComponent {
   }
 
 
+  /*
+  *obtener el id de un producto de la tabla y luego eliminarlo
+  *
+  */
   eliminarProducto(id : number){
-    console.log(id+1);
+    this.productoService.eliminarProducto(id).subscribe(
+      {
+        next: data=>{
+          console.log(data.respuesta);
+        },
+        error: error =>{
+          console.log(error.respuesta);
+        }
+      }
+    );
   }
 
 

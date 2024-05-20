@@ -2,11 +2,11 @@
   <mat-sidenav #drawer class="sidenav" fixedInViewport
       [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
       [mode]="(isHandset$ | async) ? 'over' : 'side'"
-      [opened]="(isHandset$ | async) === false">
+      [opened]="false"> <!-- Cambiado aquí para asegurar que siempre inicie cerrado -->
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list>
-      <a mat-list-item routerLink="/productos" (click)="drawer.toggle()">productos</a>
-      <a mat-list-item routerLink="/empleados" (click)="drawer.toggle()">empleados</a>
+      <a mat-list-item routerLink="/productos" (click)="drawer.toggle()">Productos</a>
+      <a mat-list-item routerLink="/empleados" (click)="drawer.toggle()">Empleados</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>

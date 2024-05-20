@@ -10,7 +10,8 @@ import { HttpClient } from '@angular/common/http';
 })
 export class ProductoService {
 
-  private productosURL = 'http://localhost:8443/api/manejoProducto/buscarProductos';
+
+  private productosURL = 'http://localhost:8443/api/manejoProducto';
 
   constructor(private http: HttpClient) { }
 
@@ -19,8 +20,15 @@ export class ProductoService {
   *envia una solicitud al servidor para que retorne una lista de productos
   */
   public buscarProductos(filtroProducto:FiltroListaProductoDto): Observable<RespuestaDto<ProductoDto[]>>{
-    return this.http.post<RespuestaDto<ProductoDto[]>>(`${this.productosURL}`,filtroProducto);
+    return this.http.post<RespuestaDto<ProductoDto[]>>(`${this.productosURL}/buscarProductos`,filtroProducto);
   }
 
 
+  /*
+  *eliminar un producto
+  *envia una solicitud al servidor para eliminar un producto de la lista
+  */
+  eliminarProducto(id: number) {
+    return this.http.delete<RespuestaDto<string>>(`${this.productosURL}/eliminarProducto/${id}`);
+  }
 }
