@@ -10,7 +10,7 @@
     <h4>PRENDAS</h4>
     <mat-form-field>
       <mat-label>prenda</mat-label>
-      <mat-select>
+      <mat-select [(ngModel)]="prenda">
         <mat-option *ngFor="let prenda of prendas" [value]="prenda.value">{{prenda.viewValue}}</mat-option>
       </mat-select>
     </mat-form-field>
@@ -21,7 +21,7 @@
     <h4>INSTITUCIONES</h4>
     <mat-form-field>
       <mat-label>institucion</mat-label>
-      <mat-select>
+      <mat-select [(ngModel)]="institucion">
         <mat-option *ngFor="let institucion of instituciones" [value]="institucion.value">{{institucion.viewValue}}</mat-option>
       </mat-select>
     </mat-form-field>
@@ -32,7 +32,7 @@
     <h4>TALLAS</h4>
     <mat-form-field>
       <mat-label>talla</mat-label>
-      <mat-select>
+      <mat-select [(ngModel)]="talla">
         <mat-option *ngFor="let talla of tallas" [value]="talla.value">{{talla.viewValue}}</mat-option>
       </mat-select>
     </mat-form-field>
@@ -43,7 +43,7 @@
     <h4>HORARIOS</h4>
     <mat-form-field>
       <mat-label>horario</mat-label>
-      <mat-select>
+      <mat-select [(ngModel)]="horario">
         <mat-option *ngFor="let horario of horarios" [value]="horario.value">{{horario.viewValue}}</mat-option>
       </mat-select>
     </mat-form-field>
@@ -54,13 +54,18 @@
       <h4>GENEROS--</h4>
       <mat-form-field>
         <mat-label>genero</mat-label>
-        <mat-select>
+        <mat-select [(ngModel)]="genero">
           <mat-option *ngFor="let genero of generos" [value]="genero.value">{{genero.viewValue}}</mat-option>
         </mat-select>
       </mat-form-field>
     </div>
 
-  <!-- Botón -->
+  <!-- BOTON LIMPIAR-->
+  <div class="col-md-auto">
+    <button class="btn btn-success" (click)="limpiarBusqueda()">LIMPIAR BUSQUEDA</button>
+  </div>
+
+  <!-- BOTON BUSCAR-->
   <div class="col-md-auto">
     <button class="btn btn-success" (click)="buscarProductos()">BUSCAR</button>
   </div>

@@ -7,6 +7,7 @@ import { ProductoService } from '../../../core/service/producto.service';
 import {FiltroListaProductoDto } from '../../../core/models/filtro-lista-producto-dto';
 import {MatSelectModule} from '@angular/material/select';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -17,7 +18,8 @@ import { CommonModule } from '@angular/common';
             MatTableModule,
             MatPaginatorModule,
             MatSelectModule,
-            CommonModule
+            CommonModule,
+            FormsModule
             ],
   templateUrl: './visualizar-productos.component.html',
   styleUrl: './visualizar-productos.component.css'
@@ -35,6 +37,16 @@ export class VisualizarProductosComponent {
   ngAfterViewInit(){
     this.dataSource.paginator = this.paginator;
   }
+
+
+  /*
+  *Variables que almacenan la opcion de las listas
+  */
+  prenda : string='';
+  institucion : string='';
+  talla : string='';
+  horario : string='';
+  genero : string='';
 
 
 
@@ -123,6 +135,8 @@ export class VisualizarProductosComponent {
   */
   buscarProductos(){
    
+    this.construirFiltro();//construccion del filtro
+
     this.productoService.buscarProductos(this.filtros).subscribe({ 
       next: data =>{
           this.dataSource=new MatTableDataSource(data.respuesta);
@@ -133,4 +147,45 @@ export class VisualizarProductosComponent {
     })
   }
 
+  /*
+  *limpiar el filtro de busqueda y restablecer la tabla
+  */
+  limpiarBusqueda(){
+    
+    this.limpiarListas();//limpiar vista
+    this.buscarProductos();//restablecer tabla
+    
+  }
+
+
+  /*
+  *restablecer las listas a un valor vacio
+  */
+  private limpiarListas() {
+    this.prenda='';
+    this.institucion='';
+    this.horario='';
+    this.talla='';
+    this.genero='';
+  }
+
+
+
+
+  /*
+  * procesar el friltro para añadir las opciones del usuario
+  */
+  private construirFiltro() {
+  
+  this.filtros.genero=this.genero;
+  this.filtros.institucion=this.institucion;
+  this.filtros.horario=this.horario;
+  this.filtros.prenda=this.prenda;
+  this.filtros.talla=this.talla;
 }
+
+
+
+}
+
+
