@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import {MatCardModule} from '@angular/material/card';
 import {MatTableModule} from '@angular/material/table';
-import { ProductoService } from './core/service/producto.service';
+import {ProductoService } from './core/service/producto.service';
 
 
 

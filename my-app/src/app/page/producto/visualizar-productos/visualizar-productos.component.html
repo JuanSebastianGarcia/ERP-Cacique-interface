@@ -1,14 +1,77 @@
 
 <div class="containes">
 
-  <div class="row">
-    <div class = "col-12">
-      <button class="btn btn-success" (click)="buscarProductos()"> 
-          BUSCAR
-      </button>
-    </div>
-  </div>  
 
+<!--ESTRUCTURA BARRA SUPERIOR-->
+<div class="row align-items-end"> <!-- Ajusta todos los elementos al fondo de la fila -->
+
+  <!--LISTA PRENDAS-->
+  <div class="col-md-auto">
+    <h4>PRENDAS</h4>
+    <mat-form-field>
+      <mat-label>prenda</mat-label>
+      <mat-select>
+        <mat-option *ngFor="let prenda of prendas" [value]="prenda.value">{{prenda.viewValue}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <!-- LISTA  INSTITUCIONES -->
+  <div class="col-md-auto">
+    <h4>INSTITUCIONES</h4>
+    <mat-form-field>
+      <mat-label>institucion</mat-label>
+      <mat-select>
+        <mat-option *ngFor="let institucion of instituciones" [value]="institucion.value">{{institucion.viewValue}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <!-- LISTA TALLAS -->
+  <div class="col-md-auto">
+    <h4>TALLAS</h4>
+    <mat-form-field>
+      <mat-label>talla</mat-label>
+      <mat-select>
+        <mat-option *ngFor="let talla of tallas" [value]="talla.value">{{talla.viewValue}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <!-- LISTA HORARIOS -->
+  <div class="col-md-auto">
+    <h4>HORARIOS</h4>
+    <mat-form-field>
+      <mat-label>horario</mat-label>
+      <mat-select>
+        <mat-option *ngFor="let horario of horarios" [value]="horario.value">{{horario.viewValue}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+    <!--LISTA GENEROS-->
+    <div class="col-md-auto">
+      <h4>GENEROS--</h4>
+      <mat-form-field>
+        <mat-label>genero</mat-label>
+        <mat-select>
+          <mat-option *ngFor="let genero of generos" [value]="genero.value">{{genero.viewValue}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+  <!-- Botón -->
+  <div class="col-md-auto">
+    <button class="btn btn-success" (click)="buscarProductos()">BUSCAR</button>
+  </div>
+
+</div>
+
+  
+
+  
+
+  <!--ESTRUCTURA DE LA TABLA-->
     <div class="row">
         <div class="col-12">
             <mat-card>
