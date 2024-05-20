@@ -8,6 +8,7 @@ import {FiltroListaProductoDto } from '../../../core/models/filtro-lista-product
 import {MatSelectModule} from '@angular/material/select';
 import {CommonModule } from '@angular/common';
 import {FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 
 
@@ -126,10 +127,12 @@ export class VisualizarProductosComponent {
 
 
 
-  constructor(private productoService:ProductoService){};
+  constructor(private productoService:ProductoService, private router:Router){};
 
 
   ngOnInit(): void{}
+
+
 
   /*
   *buscar lista de productos conectandose al servicio
@@ -148,6 +151,7 @@ export class VisualizarProductosComponent {
       }
     })
   }
+
 
   /*
   *limpiar el filtro de busqueda y restablecer la tabla
@@ -175,6 +179,16 @@ export class VisualizarProductosComponent {
         }
       }
     );
+  }
+
+
+  /*
+  *invocar el componente que contiene el formulario para crear un producto
+  */
+  agregarProducto(){
+    
+    //invocar componente
+    this.router.navigate(["productos/crear-producto"]);
   }
 
 
