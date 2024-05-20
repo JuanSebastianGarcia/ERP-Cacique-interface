@@ -10,7 +10,7 @@ export interface ProductoDto {
     horario:string,
     genero:string,
     precio:number,
-    cantidad:string,
+    cantidad:number,
     descripcion:string
 
 }

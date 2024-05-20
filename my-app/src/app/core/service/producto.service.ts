@@ -11,6 +11,7 @@ import { HttpClient } from '@angular/common/http';
 export class ProductoService {
 
 
+
   private productosURL = 'http://localhost:8443/api/manejoProducto';
 
   constructor(private http: HttpClient) { }
@@ -31,4 +32,13 @@ export class ProductoService {
   eliminarProducto(id: number) {
     return this.http.delete<RespuestaDto<string>>(`${this.productosURL}/eliminarProducto/${id}`);
   }
+
+  /*
+  *agregar un producto
+  *envia una solicitud al servidor para agregar un producto
+  */
+  agregarProducto(productoData: ProductoDto):Observable<RespuestaDto<string>> {
+    return this.http.post<RespuestaDto<string>>(`${this.productosURL}/crearProducto`,productoData)
+  }
+
 }

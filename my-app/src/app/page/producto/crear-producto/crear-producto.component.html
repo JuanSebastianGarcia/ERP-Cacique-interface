@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+  <div class="agregar-producto-form"></div>
+  <h1>AGREGAR UN PRODUCTO</h1>
+  <form (ngSubmit)="agregarProducto()" class="container">
+      <div class="row">
+          <!-- Columna para listas desplegables -->
+          <div class="col-md-6">
+              <!--LISTA PRENDAS-->
+              <div>
+                  <h4>PRENDAS</h4>
+                  <mat-form-field>
+                      <mat-label>prenda</mat-label>
+                      <mat-select [(ngModel)]="prenda">
+                          <mat-option *ngFor="let prenda of prendas" [value]="prenda.value">{{prenda.viewValue}}</mat-option>
+                      </mat-select>
+                  </mat-form-field>
+              </div>
+          
+              <!-- LISTA INSTITUCIONES -->
+              <div>
+                  <h4>INSTITUCIONES</h4>
+                  <mat-form-field>
+                      <mat-label>institucion</mat-label>
+                      <mat-select [(ngModel)]="institucion">
+                          <mat-option *ngFor="let institucion of instituciones" [value]="institucion.value">{{institucion.viewValue}}</mat-option>
+                      </mat-select>
+                  </mat-form-field>
+              </div>
+          
+              <!-- LISTA TALLAS -->
+              <div>
+                  <h4>TALLAS</h4>
+                  <mat-form-field>
+                      <mat-label>talla</mat-label>
+                      <mat-select [(ngModel)]="talla">
+                          <mat-option *ngFor="let talla of tallas" [value]="talla.value">{{talla.viewValue}}</mat-option>
+                      </mat-select>
+                  </mat-form-field>
+              </div>
+          
+              <!-- LISTA HORARIOS -->
+              <div>
+                  <h4>HORARIOS</h4>
+                  <mat-form-field>
+                      <mat-label>horario</mat-label>
+                      <mat-select [(ngModel)]="horario">
+                          <mat-option *ngFor="let horario of horarios" [value]="horario.value">{{horario.viewValue}}</mat-option>
+                      </mat-select>
+                  </mat-form-field>
+              </div>
+          
+              <!--LISTA GENEROS-->
+              <div>
+                  <h4>GENEROS--</h4>
+                  <mat-form-field>
+                      <mat-label>genero</mat-label>
+                      <mat-select [(ngModel)]="genero">
+                          <mat-option *ngFor="let genero of generos" [value]="genero.value">{{genero.viewValue}}</mat-option>
+                      </mat-select>
+                  </mat-form-field>
+              </div>
+          </div>
+
+            <!-- Columna para Precio, Cantidad y Botón -->
+            <div class="col-md-6 campos-derecha">
+                <div class="precio-cantidad">
+                    <!-- Campo de Precio -->
+                    <div>
+                        <label for="precio">Precio:</label>
+                        <input type="number" id="precio" name="precio" placeholder="Ingresa el precio" min="0" step="100.00" required>
+                    </div>
+                
+                    <!-- Campo de Cantidad -->
+                    <div>
+                        <label for="cantidad">Cantidad:</label>
+                        <input type="number" id="cantidad" name="cantidad" placeholder="Ingresa la cantidad" min="0" step="1" required>
+                    </div>
+                </div>
+                                    
+                <!-- Botón Crear Producto -->
+                <div class="btn-crear">
+                    <button class="btn btn-success" (click)="agregarProducto()">Crear producto</button>
+                </div>
+            </div>
+
+
+          
+      </div>
+  </form>
+</body>
+
+</html>

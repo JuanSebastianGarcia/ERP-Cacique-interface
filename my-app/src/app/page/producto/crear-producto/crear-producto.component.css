@@ -1,0 +1,76 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+    padding: 20px;
+    background: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border-radius: 8px;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+.form-producto {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;  /* Aumenta el espacio entre campos */
+}
+
+.field {
+    margin-bottom: 20px;  /* Añade espacio debajo de cada campo */
+}
+
+mat-form-field {
+    width: 100%;  /* Ajusta esto según la necesidad para controlar el ancho de los campos */
+    margin-bottom: 20px;  /* Añade espacio debajo de cada campo de lista desplegable */
+}
+
+.input-field, mat-select { 
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Estilos específicos para la alineación y disposición de los campos de precio y cantidad */
+.campos-derecha {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;  /* Alinear los elementos al centro verticalmente */
+    height: 100%;  /* Ocupar todo el espacio vertical disponible */
+}
+
+.precio-cantidad {
+    padding-top: 50px;  /* Espacio adicional en la parte superior para alinear con las listas desplegables */
+}
+
+.btn-crear {
+    margin-top: 50px;  /* Espacio antes del botón para bajarlo un poco más */
+    width: 100%;  /* Asegurarse de que el botón ocupe todo el ancho disponible */
+    display: flex;
+    justify-content: center;  /* Centrar el botón horizontalmente */
+}
+
+.btn-create {
+    background-color: #007bff;
+    color: white;
+    padding: 15px 20px;
+    font-size: 18px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+.btn-create:hover {
+    background-color: #0056b3;
+}

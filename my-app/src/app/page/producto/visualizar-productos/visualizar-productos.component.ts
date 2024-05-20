@@ -211,11 +211,11 @@ export class VisualizarProductosComponent {
   */
   private construirFiltro() {
   
-  this.filtros.genero=this.genero;
-  this.filtros.institucion=this.institucion;
-  this.filtros.horario=this.horario;
-  this.filtros.prenda=this.prenda;
-  this.filtros.talla=this.talla;
+    this.filtros.genero=this.genero;
+    this.filtros.institucion=this.institucion;
+    this.filtros.horario=this.horario;
+    this.filtros.prenda=this.prenda;
+    this.filtros.talla=this.talla;
   }
 
   
