@@ -3,14 +3,14 @@
 */
 export interface ProductoDto {
 
-    Id:number,
-    Prenda:string,
-    Institucion:string,
-    Talla:string,
-    Horario:string,
-    Genero:string,
-    Precio:number,
-    Cantidad:string,
-    Descripcion:string
+    id:number,
+    prenda:string,
+    institucion:string,
+    talla:string,
+    horario:string,
+    genero:string,
+    precio:number,
+    cantidad:string,
+    descripcion:string
 
 }

@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
 import { LoginService } from './core/service/login.service';
 import { TokenService } from './core/service/token.service';
 import { BarraLateralComponent } from './shared/components/barra-lateral/barra-lateral.component';
@@ -15,14 +14,14 @@ import { ProductoService } from './core/service/producto.service';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [HttpClientModule,
+  imports: [
             RouterOutlet, 
             BarraLateralComponent,
             CommonModule,
             RouterModule,
             MatCardModule,
             MatTableModule,
-            
+
 
   ],
   providers: [LoginService,

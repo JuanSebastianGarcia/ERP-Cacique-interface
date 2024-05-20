@@ -3,10 +3,10 @@
 */
 export interface FiltroListaProductoDto {
 
-    Prenda:string,
-    Talla:string,
-    Horario:string,
-    Genero:string,
-    Institucion:string
+    prenda:string,
+    talla:string,
+    horario:string,
+    genero:string,
+    institucion:string
     
 }

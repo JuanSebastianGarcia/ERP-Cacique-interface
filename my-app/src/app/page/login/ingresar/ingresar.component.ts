@@ -42,7 +42,6 @@ export class IngresarComponent {
           console.log("no se puede ingresar");
         } else {
           // Manejar el caso de éxito
-          console.log(data.respuesta.token);
           this.tokenService.login(data.respuesta.token);
           this.router.navigate(["productos"]);
         }

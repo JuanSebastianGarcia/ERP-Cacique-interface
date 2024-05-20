@@ -18,7 +18,7 @@ import { FiltroListaProductoDto } from '../../../core/models/filtro-lista-produc
 export class VisualizarProductosComponent {
 
 
-  displayedColumns: string[] = ['Id', 'Prenda', 'Institucion', 'Talla', 'Horario' , 'Genero', 'Cantidad','Precio'];
+  displayedColumns: string[] = ['id', 'prenda', 'institucion', 'talla', 'horario' , 'genero', 'cantidad','precio'];
   dataSource = new MatTableDataSource<ProductoDto>([]);//arreglo en donde se almacena la informacion de la tabla
 
   //esta es la funcionalidad del paginador
@@ -35,11 +35,11 @@ export class VisualizarProductosComponent {
 
   //formulario que almacena el filtro para buscar
   filtros : FiltroListaProductoDto={
-    Prenda:'',
-    Talla:'',
-    Horario:'',
-    Genero:'',
-    Institucion:''
+    prenda:'',
+    talla:'',
+    horario:'',
+    genero:'',
+    institucion:''
 
   }
 
@@ -52,7 +52,7 @@ export class VisualizarProductosComponent {
   *buscar lista de productos conectandose al servicio
   */
   buscarProductos(){
-    debugger;
+   
     this.productoService.buscarProductos(this.filtros).subscribe({ 
       next: data =>{
           this.dataSource=new MatTableDataSource(data.respuesta);
