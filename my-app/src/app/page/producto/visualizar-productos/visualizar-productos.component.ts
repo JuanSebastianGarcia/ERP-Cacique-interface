@@ -26,8 +26,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class VisualizarProductosComponent {
 
-
-  displayedColumns: string[] = ['id', 'prenda', 'institucion', 'talla', 'horario' , 'genero', 'cantidad','precio'];
+  displayedColumns: string[] = ['id', 'prenda', 'institucion', 'talla', 'horario' , 'genero', 'precio','cantidad',];
   dataSource = new MatTableDataSource<ProductoDto>([]);//arreglo en donde se almacena la informacion de la tabla
 
   //esta es la funcionalidad del paginador
@@ -60,22 +59,22 @@ export class VisualizarProductosComponent {
     {value: 'instituto', viewValue: 'instituto'},
     {value: 'romaval', viewValue: 'romaval'},
     {value: 'baudilio', viewValue: 'baudilio'},
-    {value: 'general_santander', viewValue: 'general_santander'},
-    {value: 'san_jose', viewValue: 'san_jose'},
-    {value: 'niño_jesus', viewValue: 'niño_jesus'},
-    {value: 'jhon_dewey', viewValue: 'jhon_dewey'},
-    {value: 'la_virgina', viewValue: 'la_virgina'},
-    {value: 'rafael_uribe', viewValue: 'rafael_uribe'},
-    {value: 'antonio_nariño', viewValue: 'antonio_nariño'},
+    {value: 'general santander', viewValue: 'general santander'},
+    {value: 'san jose', viewValue: 'san jose'},
+    {value: 'niño jesus', viewValue: 'niño jesus'},
+    {value: 'jhon dewey', viewValue: 'jhon dewey'},
+    {value: 'la virgina', viewValue: 'la virgina'},
+    {value: 'rafael uribe', viewValue: 'rafael uribe'},
+    {value: 'antonio nariño', viewValue: 'antonio nariño'},
   ];
   prendas = [
     {value: 'camibuso', viewValue: 'camibuso'},
     {value: 'pantalon', viewValue: 'pantalon'},
     {value: 'sudadera', viewValue: 'sudadera'},
-    {value: 'camisa_cuello_sport', viewValue: 'camisa_cuello_sport'},
-    {value: 'camisa_cuello_corbata', viewValue: 'camisa_cuello_corbata'},
-    {value: 'camisa_manga_larga', viewValue: 'camisa_manga_larga'},
-    {value: 'camisa_manga_corta', viewValue: 'camisa_manga_corta'},
+    {value: 'camisa cuello sport', viewValue: 'camisa cuello sport'},
+    {value: 'camisa cuello corbata', viewValue: 'camisa cuello corbata'},
+    {value: 'camisa manga larga', viewValue: 'camisa manga larga'},
+    {value: 'camisa manga corta', viewValue: 'camisa manga corta'},
     {value: 'pantaloneta', viewValue: 'pantaloneta'},
     {value: 'chaqueta', viewValue: 'chaqueta'},
     {value: 'falda', viewValue: 'falda'},
@@ -107,7 +106,7 @@ export class VisualizarProductosComponent {
   ];
   horarios = [
     {value: 'diario', viewValue: 'diario'},
-    {value: 'educacion_fisica', viewValue: 'educacion_fisica'},
+    {value: 'fisica', viewValue: 'fisica'},
   ];
   generos = [
     {value: 'hombre', viewValue: 'hombre'},
@@ -135,6 +134,7 @@ export class VisualizarProductosComponent {
   */
   buscarProductos(){
    
+    console.log(this.prenda);
     this.construirFiltro();//construccion del filtro
 
     this.productoService.buscarProductos(this.filtros).subscribe({ 
@@ -155,6 +155,11 @@ export class VisualizarProductosComponent {
     this.limpiarListas();//limpiar vista
     this.buscarProductos();//restablecer tabla
     
+  }
+
+
+  eliminarProducto(id : number){
+    console.log(id+1);
   }
 
 
@@ -182,7 +187,10 @@ export class VisualizarProductosComponent {
   this.filtros.horario=this.horario;
   this.filtros.prenda=this.prenda;
   this.filtros.talla=this.talla;
-}
+  }
+
+  
+    
 
 
 

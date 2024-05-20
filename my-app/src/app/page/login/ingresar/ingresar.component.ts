@@ -47,13 +47,11 @@ export class IngresarComponent {
         }
       }
     });
+
+    //this.router.navigate(["productos"]);
+       
   }
-
-
-
-
-
-
+    
 
 
 }
