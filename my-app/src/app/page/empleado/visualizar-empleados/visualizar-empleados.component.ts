@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {MatCardModule} from '@angular/material/card';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import { EmpleadoDto } from '../../../core/models/empleado-dto';
 import { CommonModule } from '@angular/common';
 import { EmpleadoService } from '../../../core/service/empleado.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-visualizar-empleados',
@@ -15,7 +16,7 @@ import { EmpleadoService } from '../../../core/service/empleado.service';
   templateUrl: './visualizar-empleados.component.html',
   styleUrl: './visualizar-empleados.component.css'
 })
-export class VisualizarEmpleadosComponent {
+export class VisualizarEmpleadosComponent implements OnInit{
 
   displayedColumns: string[] = ['id', 'nombre', 'cedula', 'telefono', 'email' , 'tipoEmpleado','boton'];
   dataSource = new MatTableDataSource<EmpleadoDto>([]);//arreglo en donde se almacena la informacion de la tabla
@@ -23,20 +24,32 @@ export class VisualizarEmpleadosComponent {
 
 
 
-  constructor(private empleadoService:EmpleadoService){};
+  constructor(private empleadoService:EmpleadoService,private router:Router){};
 
+  ngOnInit(): void {
+    this.buscarEmpleados();
+  }
 
 
   /*
-  *
+  *se encarga de hacer una solicitud para eliminar un empleado usando la cedula
   */
-  eliminarEmpleado(id: number){
-    
+  eliminarEmpleado(cedula: number){
+    this.empleadoService.eliminarEmpleado(cedula).subscribe({
+      next:data =>{
+        alert(data.respuesta);
+        this.buscarEmpleados();
+      },
+      error:error=>{
+        alert(error.respuesta);
+      }
+    });
+
   }
 
 
   agregarEmpleado(){
-    alert('agregar funciona');
+    this.router.navigate(['empleados/crear-empleado']);
   }
 
 

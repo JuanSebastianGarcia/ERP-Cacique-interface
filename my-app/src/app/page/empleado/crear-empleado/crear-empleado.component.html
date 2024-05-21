@@ -1,1 +1,73 @@
-<p>crear-empleado works!</p>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div class="agregar-empleado-form">
+        <h1>Agregar Empleado</h1>
+        <mat-card>
+            <form (ngSubmit)="agregarEmpleado()">
+                <mat-card-content>DATOS</mat-card-content>
+
+                <!--campo del nombre-->
+                <div class="container">
+                    <label for="nombre">Nombre:</label>
+                    <input type="text" id="nombre" [(ngModel)]="empleadoData.nombre" name="nombre" required>
+                </div>
+
+                <!--campo de la cedula-->
+                <div class="container">
+                    <label for="cedula">cedula:</label>
+                    <input type="text" id="cedula" [(ngModel)]="empleadoData.cedula" name="cedula" required>
+                </div>
+
+                <!--campo de la telefono-->
+                <div class="container">
+                    <label for="telefono">telefono:</label>
+                    <input type="text" id="telefono" [(ngModel)]="empleadoData.telefono" name="telefono" required>
+                </div>
+
+                <!--campo de la email-->
+                <div class="container">
+                    <label for="email">email:</label>
+                    <input type="text" id="email" [(ngModel)]="empleadoData.email" name="email" required>
+                </div>
+
+                <!--campo de la cedula-->
+                <div class="container">
+                    <label for="password">password:</label>
+                    <input type="text" id="password" [(ngModel)]="empleadoData.password" name="password" required>
+                </div>
+
+                <!--LISTA GENEROS-->
+                <div>
+                    <h4>GENEROS--</h4>
+                    <mat-form-field>
+                        <mat-label>genero</mat-label>
+                        <mat-select [(ngModel)]="empleadoData.tipoEmpleado" [ngModelOptions]="{standalone: true}">
+                            <mat-option *ngFor="let tipo of tipoEmpleados"
+                                [value]="tipo.value">{{tipo.viewValue}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+
+                <button type="submit" class="btn btn-success btn-login">agregar empleado</button>
+            </form>
+
+        </mat-card>
+
+        <!-- Boton Volver-->
+        <div class="btn-volver">
+            <button class="btn btn-success" (click)="volverTabla()">Volver</button>
+        </div>
+    </div>
+</body>
+
+</html>

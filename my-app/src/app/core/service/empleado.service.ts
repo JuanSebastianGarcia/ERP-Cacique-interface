@@ -9,6 +9,7 @@ import { EmpleadoDto } from '../models/empleado-dto';
 })
 export class EmpleadoService {
 
+
   /*
   *url que lleva a la api de los empleados
   */
@@ -21,10 +22,25 @@ export class EmpleadoService {
 
 
   /*
-  *metodo que hara una solicitud que que pida la lista de empleados
+  *metodo que hace una solicitud que que pida la lista de empleados
   */
  public buscarEmpleados(): Observable<RespuestaDto<EmpleadoDto[]>> {
     return this.http.get<RespuestaDto<EmpleadoDto[]>>(`${this.empleadoURL}/buscarEmpleados`);
  }
 
+
+ /*
+ *metodo que hace una solicitud al back para eliminar un empeado
+ */
+ public eliminarEmpleado(cedula:number): Observable<RespuestaDto<string>>{
+   return this.http.delete<RespuestaDto<string>>(`${this.empleadoURL}/eliminarEmpleado/${cedula}`);
+ }
+
+ 
+ /*
+ *metodo que hace una solicitud al back para agregar un empleado
+ */
+ agregarEmpleado(empleadoData: EmpleadoDto):Observable<RespuestaDto<string>>{
+  return this.http.post<RespuestaDto<string>>(`${this.empleadoURL}/crearEmpleado`,empleadoData);
+  }
 }

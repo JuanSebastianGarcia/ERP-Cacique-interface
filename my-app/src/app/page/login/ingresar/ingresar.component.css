@@ -1,54 +1,54 @@
 body {
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #f5f5f5;
-    font-family: 'Roboto', sans-serif;
+    margin: 0;
 }
 .login-form {
-    width: 100%;
-    max-width: 400px;  /* Aumentado de 360px a 400px para más amplitud */
-    padding: 40px;      /* Aumentado de 30px a 40px para más espacio interno */
-    margin: auto;
     background: #ffffff;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    padding: 40px;
     border-radius: 8px;
-    min-height: 350px;  /* Establecido una altura mínima mayor si necesario */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
 }
 h1 {
-    text-align: center;
-    margin-bottom: 30px;
+    font-size: 24px;
+    margin-bottom: 20px;
     color: #333;
 }
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
+    text-align: left;
 }
 label {
-    font-weight: 500;
     display: block;
     margin-bottom: 5px;
+    font-weight: 500;
+    color: #555;
 }
-input {
+input[type="email"], input[type="password"] {
     width: 100%;
     padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
+    border: 1px solid #ddd;
     border-radius: 4px;
-    box-sizing: border-box; /* Asegura que el padding no afecte el ancho */
+    font-size: 16px;
 }
 .btn-login {
-    width: 100%;
+    background-color: #28a745;
+    color: #fff;
     padding: 10px;
-    background-color: #0056b3;
-    color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
-    font-weight: 500;
-    transition: background-color 0.3s ease;
+    width: 100%;
+    margin-top: 20px;
 }
 .btn-login:hover {
-    background-color: #004085;
+    background-color: #218838;
 }
