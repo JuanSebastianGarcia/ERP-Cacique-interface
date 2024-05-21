@@ -134,16 +134,23 @@ export class CrearProductoComponent {
 
       next:(data:RespuestaDto<string>) =>{
           alert(data.respuesta);
+          
       },
       error: error=>{
         alert('el producto no se pudo agregar');
       }
-    
     });
   }
 
 
+  volverTabla(){
+      this.router.navigate(['productos']);
+  }
 
+
+  /*
+  *se encarga de cargar los datos del producto 
+  */
   private cargarDatosProducto(){
     this.productoData.institucion=this.institucion;
     this.productoData.genero=this.genero;

@@ -1,4 +1,4 @@
-import {Component, ViewChild } from '@angular/core';
+import {Component, OnInit, ViewChild } from '@angular/core';
 import {MatCardModule} from '@angular/material/card';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
@@ -25,7 +25,7 @@ import { Router } from '@angular/router';
   templateUrl: './visualizar-productos.component.html',
   styleUrl: './visualizar-productos.component.css'
 })
-export class VisualizarProductosComponent {
+export class VisualizarProductosComponent implements OnInit{
 
   displayedColumns: string[] = ['id', 'prenda', 'institucion', 'talla', 'horario' , 'genero', 'precio','cantidad','boton'];
   dataSource = new MatTableDataSource<ProductoDto>([]);//arreglo en donde se almacena la informacion de la tabla
@@ -130,7 +130,9 @@ export class VisualizarProductosComponent {
   constructor(private productoService:ProductoService, private router:Router){};
 
 
-  ngOnInit(): void{}
+  ngOnInit(): void{
+    this.buscarProductos();
+  }
 
 
 
@@ -172,10 +174,11 @@ export class VisualizarProductosComponent {
     this.productoService.eliminarProducto(id).subscribe(
       {
         next: data=>{
-          console.log(data.respuesta);
+          alert(data.respuesta);
+          this.buscarProductos();//recargar la tabla
         },
         error: error =>{
-          console.log(error.respuesta);
+          alert(error.error);
         }
       }
     );
