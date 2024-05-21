@@ -23,7 +23,7 @@ import {MatGridListModule} from '@angular/material/grid-list';
 export class CrearProductoComponent {
 
 
-    /*
+  /*
   *Variables que almacenan la opcion de las listas
   */
   prenda : string='';
@@ -42,7 +42,7 @@ export class CrearProductoComponent {
   /*
   *LOS SIGUIENTES DATOS ESTAN PARA LAS LISTAS DESPLEGABLES
   */
-  instituciones_2 = [
+  instituciones = [
     {value: 'robledo', viewValue: 'robledo'},
     {value: 'tecnologico', viewValue: 'tecnologico'},
     {value: 'instituto', viewValue: 'instituto'},
@@ -130,9 +130,7 @@ export class CrearProductoComponent {
 
     this.cargarDatosProducto();
 
-    alert('datos'+this.productoData.institucion);  
-
-    /*this.productoService.agregarProducto(this.productoData).subscribe({
+    this.productoService.agregarProducto(this.productoData).subscribe({
 
       next:(data:RespuestaDto<string>) =>{
           alert(data.respuesta);
@@ -141,7 +139,7 @@ export class CrearProductoComponent {
         alert('el producto no se pudo agregar');
       }
     
-    });*/
+    });
   }
 
 
@@ -149,10 +147,7 @@ export class CrearProductoComponent {
   private cargarDatosProducto(){
     this.productoData.institucion=this.institucion;
     this.productoData.genero=this.genero;
-    this.productoData.cantidad=this.cantidad;
-    this.productoData.descripcion=this.descripcion;
     this.productoData.horario=this.horario;
-    this.productoData.precio=this.precio;
     this.productoData.prenda=this.prenda;
     this.productoData.talla=this.talla;
   }
