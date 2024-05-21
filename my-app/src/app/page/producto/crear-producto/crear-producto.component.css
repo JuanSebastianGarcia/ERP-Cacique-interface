@@ -34,24 +34,6 @@ mat-form-field {
     margin-bottom: 20px;  /* Añade espacio debajo de cada campo de lista desplegable */
 }
 
-.input-field, mat-select { 
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-/* Estilos específicos para la alineación y disposición de los campos de precio y cantidad */
-.campos-derecha {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;  /* Alinear los elementos al centro verticalmente */
-    height: 100%;  /* Ocupar todo el espacio vertical disponible */
-}
-
-.precio-cantidad {
-    padding-top: 60px;  /* Espacio adicional en la parte superior para alinear con las listas desplegables */
-}
 
 .btn-crear {
     margin-top: 50px;  /* Espacio antes del botón para bajarlo un poco más */

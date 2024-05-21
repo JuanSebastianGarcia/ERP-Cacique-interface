@@ -1,6 +1,6 @@
 body {
     font-family: 'Roboto', sans-serif;
-    background-color: #e0e0e0; /* Ajuste a un gris claro */
+    background-color: #f4f4f9;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -17,21 +17,22 @@ body {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-h1, h4, p {
+h1, h4 {
     color: #333;
-    margin: 0 0 10px 0;
 }
 
 h1 {
     font-size: 28px;
     margin-bottom: 20px;
-    text-align: center;
 }
 
-h4, mat-card-content {
+h4 {
     font-size: 18px;
     margin-bottom: 10px;
-    text-align: left;
+}
+
+.mat-card {
+    margin-bottom: 20px;
 }
 
 button {
@@ -40,12 +41,12 @@ button {
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    margin-bottom: 10px;
 }
 
 .btn-success {
     background-color: #28a745;
     color: #fff;
+    margin: 5px 0;
 }
 
 .btn-success:hover {
@@ -54,7 +55,6 @@ button {
 
 .table-container {
     overflow-x: auto;
-    margin-top: 20px;
 }
 
 table {
@@ -79,5 +79,4 @@ th {
 
 .mat-paginator {
     margin-top: 20px;
-    text-align: center;
 }

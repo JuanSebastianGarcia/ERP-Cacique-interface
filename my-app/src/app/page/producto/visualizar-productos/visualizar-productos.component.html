@@ -1,178 +1,193 @@
-<div class="containes">
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
 
+<body>
 
-  <mat-card>
-    <mat-card-content>AGREGAR</mat-card-content>
-    <!-- Boton agregar Producto-->
-    <div class="col-md-auto">
-      <button class="btn btn-success" (click)="agregarProducto()">Agregar producto</button>
-    </div>
-  </mat-card>
+  <div class="containes">
 
-  <mat-card>
-    <mat-card-content>BUSQUEDA</mat-card-content>
-
-
-    <!--ESTRUCTURA BARRA SUPERIOR-->
-    <div class="row align-items-end"> <!-- Ajusta todos los elementos al fondo de la fila -->
-
-      <!--LISTA PRENDAS-->
-      <div class="col-md-auto">
-        <h4>PRENDAS</h4>
-        <mat-form-field>
-          <mat-label>Prenda</mat-label>
-          <mat-select [(ngModel)]="prenda">
-            <mat-option *ngFor="let prenda of prendas" [value]="prenda.value">{{prenda.viewValue}}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-
-      <!-- LISTA  INSTITUCIONES -->
-      <div class="col-md-auto">
-        <h4>INSTITUCIONES</h4>
-        <mat-form-field>
-          <mat-label>institucion</mat-label>
-          <mat-select [(ngModel)]="institucion">
-            <mat-option *ngFor="let institucion of instituciones"
-              [value]="institucion.value">{{institucion.viewValue}}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-
-      <!-- LISTA TALLAS -->
-      <div class="col-md-auto">
-        <h4>TALLAS</h4>
-        <mat-form-field>
-          <mat-label>talla</mat-label>
-          <mat-select [(ngModel)]="talla">
-            <mat-option *ngFor="let talla of tallas" [value]="talla.value">{{talla.viewValue}}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-
-      <!-- LISTA HORARIOS -->
-      <div class="col-md-auto">
-        <h4>HORARIOS</h4>
-        <mat-form-field>
-          <mat-label>horario</mat-label>
-          <mat-select [(ngModel)]="horario">
-            <mat-option *ngFor="let horario of horarios" [value]="horario.value">{{horario.viewValue}}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-
-      <!--LISTA GENEROS-->
-      <div class="col-md-auto">
-        <h4>GENEROS--</h4>
-        <mat-form-field>
-          <mat-label>genero</mat-label>
-          <mat-select [(ngModel)]="genero">
-            <mat-option *ngFor="let genero of generos" [value]="genero.value">{{genero.viewValue}}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-
-      <!-- BOTON LIMPIAR-->
-      <div class="col-md-auto">
-        <button class="btn btn-success" (click)="limpiarBusqueda()">LIMPIAR BUSQUEDA</button>
-      </div>
-
-      <!-- BOTON BUSCAR-->
-      <div class="col-md-auto">
-        <button class="btn btn-success" (click)="buscarProductos()">BUSCAR</button>
-      </div>
-
-    </div>
-  </mat-card>
-
-
-
-
-
-
-
-
-  <!--ESTRUCTURA DE LA TABLA-->
-  <div class="row">
-    <div class="col-12">
+    <mat-card>
       <mat-card>
-        <mat-card-content>
-          <p>INVENTARIO</p>
-        </mat-card-content>
-        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-
-          <!--- Note that these columns can be defined in any order.
-                          The actual rendered columns are set as a property on the row definition" -->
-
-          <!-- Id Column -->
-          <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef> No. </th>
-            <td mat-cell *matCellDef="let element"> {{element.id}} </td>
-          </ng-container>
-
-          <!-- Prenda Column -->
-          <ng-container matColumnDef="prenda">
-            <th mat-header-cell *matHeaderCellDef> prenda </th>
-            <td mat-cell *matCellDef="let element"> {{element.prenda}} </td>
-          </ng-container>
-
-          <!-- Institucion Column -->
-          <ng-container matColumnDef="institucion">
-            <th mat-header-cell *matHeaderCellDef> institucion </th>
-            <td mat-cell *matCellDef="let element"> {{element.institucion}} </td>
-          </ng-container>
-
-          <!-- Talla Column -->
-          <ng-container matColumnDef="talla">
-            <th mat-header-cell *matHeaderCellDef> talla </th>
-            <td mat-cell *matCellDef="let element"> {{element.talla}} </td>
-          </ng-container>
-
-          <!-- Horario Column -->
-          <ng-container matColumnDef="horario">
-            <th mat-header-cell *matHeaderCellDef> horario </th>
-            <td mat-cell *matCellDef="let element"> {{element.horario}} </td>
-          </ng-container>
-
-          <!-- Genero Column -->
-          <ng-container matColumnDef="genero">
-            <th mat-header-cell *matHeaderCellDef> genero </th>
-            <td mat-cell *matCellDef="let element"> {{element.genero}} </td>
-          </ng-container>
-
-          <!-- Precio Column -->
-          <ng-container matColumnDef="precio">
-            <th mat-header-cell *matHeaderCellDef> precio </th>
-            <td mat-cell *matCellDef="let element"> {{element.precio}} </td>
-          </ng-container>
-
-          <!-- Cantidad Column -->
-          <ng-container matColumnDef="cantidad">
-            <th mat-header-cell *matHeaderCellDef> cantidad </th>
-            <td mat-cell *matCellDef="let element"> {{element.cantidad}} </td>
-          </ng-container>
-
-          <!-- Botón Column -->
-          <ng-container matColumnDef="boton">
-            <th mat-header-cell *matHeaderCellDef> Acción </th>
-            <td mat-cell *matCellDef="let element">
-              <button mat-button class="btn btn-success" (click)="eliminarProducto(element.id)">Eliminar</button>
-            </td>
-          </ng-container>
-
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table>
-
-
-        <!-- paginador -->
-        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
-          aria-label="Select page of periodic elements">
-        </mat-paginator>
-
+        <mat-card-content>AGREGAR</mat-card-content>
+        <!-- Boton agregar Producto-->
+        <div class="col-md-auto">
+          <button class="btn btn-success" (click)="agregarProducto()">Agregar producto</button>
+        </div>
       </mat-card>
-    </div>
-  </div>
 
-</div>
+      <mat-card>
+        <mat-card-content>BUSQUEDA</mat-card-content>
+
+
+        <!--ESTRUCTURA BARRA SUPERIOR-->
+        <div class="row align-items-end"> <!-- Ajusta todos los elementos al fondo de la fila -->
+
+          <!--LISTA PRENDAS-->
+          <div class="col-md-auto">
+            <h4>PRENDAS</h4>
+            <mat-form-field>
+              <mat-label>Prenda</mat-label>
+              <mat-select [(ngModel)]="prenda">
+                <mat-option *ngFor="let prenda of prendas" [value]="prenda.value">{{prenda.viewValue}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <!-- LISTA  INSTITUCIONES -->
+          <div class="col-md-auto">
+            <h4>INSTITUCIONES</h4>
+            <mat-form-field>
+              <mat-label>institucion</mat-label>
+              <mat-select [(ngModel)]="institucion">
+                <mat-option *ngFor="let institucion of instituciones"
+                  [value]="institucion.value">{{institucion.viewValue}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <!-- LISTA TALLAS -->
+          <div class="col-md-auto">
+            <h4>TALLAS</h4>
+            <mat-form-field>
+              <mat-label>talla</mat-label>
+              <mat-select [(ngModel)]="talla">
+                <mat-option *ngFor="let talla of tallas" [value]="talla.value">{{talla.viewValue}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <!-- LISTA HORARIOS -->
+          <div class="col-md-auto">
+            <h4>HORARIOS</h4>
+            <mat-form-field>
+              <mat-label>horario</mat-label>
+              <mat-select [(ngModel)]="horario">
+                <mat-option *ngFor="let horario of horarios" [value]="horario.value">{{horario.viewValue}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <!--LISTA GENEROS-->
+          <div class="col-md-auto">
+            <h4>GENEROS--</h4>
+            <mat-form-field>
+              <mat-label>genero</mat-label>
+              <mat-select [(ngModel)]="genero">
+                <mat-option *ngFor="let genero of generos" [value]="genero.value">{{genero.viewValue}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <!-- BOTON LIMPIAR-->
+          <div class="col-md-auto">
+            <button class="btn btn-success" (click)="limpiarBusqueda()">LIMPIAR BUSQUEDA</button>
+          </div>
+
+          <!-- BOTON BUSCAR-->
+          <div class="col-md-auto">
+            <button class="btn btn-success" (click)="buscarProductos()">BUSCAR</button>
+          </div>
+
+        </div>
+      </mat-card>
+
+
+
+
+
+
+
+
+      <!--ESTRUCTURA DE LA TABLA-->
+      <div class="row">
+        <div class="col-12">
+          <mat-card>
+            <mat-card-content>
+              <p>INVENTARIO</p>
+            </mat-card-content>
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+              <!--- Note that these columns can be defined in any order.
+                            The actual rendered columns are set as a property on the row definition" -->
+
+              <!-- Id Column -->
+              <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef> No. </th>
+                <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+              </ng-container>
+
+              <!-- Prenda Column -->
+              <ng-container matColumnDef="prenda">
+                <th mat-header-cell *matHeaderCellDef> prenda </th>
+                <td mat-cell *matCellDef="let element"> {{element.prenda}} </td>
+              </ng-container>
+
+              <!-- Institucion Column -->
+              <ng-container matColumnDef="institucion">
+                <th mat-header-cell *matHeaderCellDef> institucion </th>
+                <td mat-cell *matCellDef="let element"> {{element.institucion}} </td>
+              </ng-container>
+
+              <!-- Talla Column -->
+              <ng-container matColumnDef="talla">
+                <th mat-header-cell *matHeaderCellDef> talla </th>
+                <td mat-cell *matCellDef="let element"> {{element.talla}} </td>
+              </ng-container>
+
+              <!-- Horario Column -->
+              <ng-container matColumnDef="horario">
+                <th mat-header-cell *matHeaderCellDef> horario </th>
+                <td mat-cell *matCellDef="let element"> {{element.horario}} </td>
+              </ng-container>
+
+              <!-- Genero Column -->
+              <ng-container matColumnDef="genero">
+                <th mat-header-cell *matHeaderCellDef> genero </th>
+                <td mat-cell *matCellDef="let element"> {{element.genero}} </td>
+              </ng-container>
+
+              <!-- Precio Column -->
+              <ng-container matColumnDef="precio">
+                <th mat-header-cell *matHeaderCellDef> precio </th>
+                <td mat-cell *matCellDef="let element"> {{element.precio}} </td>
+              </ng-container>
+
+              <!-- Cantidad Column -->
+              <ng-container matColumnDef="cantidad">
+                <th mat-header-cell *matHeaderCellDef> cantidad </th>
+                <td mat-cell *matCellDef="let element"> {{element.cantidad}} </td>
+              </ng-container>
+
+              <!-- Botón Column -->
+              <ng-container matColumnDef="boton">
+                <th mat-header-cell *matHeaderCellDef> Acción </th>
+                <td mat-cell *matCellDef="let element">
+                  <button mat-button class="btn btn-success" (click)="eliminarProducto(element.id)">Eliminar</button>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+
+
+            <!-- paginador -->
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+              aria-label="Select page of periodic elements">
+            </mat-paginator>
+
+          </mat-card>
+        </div>
+      </div>
+
+    </mat-card>
+
+  </div>
+</body>
+
+</html>

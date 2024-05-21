@@ -46,6 +46,7 @@ button {
 .btn-success {
   background-color: #28a745;
   color: #fff;
+  margin: 5px 0;
 }
 
 .btn-success:hover {
