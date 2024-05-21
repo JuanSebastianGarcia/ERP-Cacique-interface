@@ -50,7 +50,7 @@ mat-form-field {
 }
 
 .precio-cantidad {
-    padding-top: 50px;  /* Espacio adicional en la parte superior para alinear con las listas desplegables */
+    padding-top: 60px;  /* Espacio adicional en la parte superior para alinear con las listas desplegables */
 }
 
 .btn-crear {
@@ -69,8 +69,29 @@ mat-form-field {
     border: none;
     cursor: pointer;
     width: 100%;
+    margin-top: 20px; /* Espacio antes del botón */
 }
 
 .btn-create:hover {
     background-color: #0056b3;
+}
+
+/* Estilos específicos para la alineación y disposición de los campos de precio y cantidad */
+.precio-cantidad {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;  /* Alinear los elementos al centro verticalmente */
+    margin-bottom: 20px; /* Espacio debajo de cada grupo de campos */
+}
+
+.precio-cantidad div {
+    margin-bottom: 15px; /* Espacio entre los campos */
+}
+
+input[type="number"] {
+    width: 100%; /* Asegura que el input ocupe todo el ancho del contenedor */
+    padding: 12px 20px; /* Aumenta el padding para hacer el campo más grande */
+    font-size: 16px; /* Aumenta la fuente para mejorar la legibilidad */
+    border: 1px solid #ccc; /* Borde sutil */
+    border-radius: 4px; /* Bordes redondeados para los inputs */
 }

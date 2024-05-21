@@ -31,6 +31,9 @@ export class CrearProductoComponent {
   talla : string='';
   horario : string='';
   genero : string='';
+  cantidad:number=0;
+  precio:number=0.0;
+  descripcion:string='';
 
 
   /*
@@ -39,7 +42,7 @@ export class CrearProductoComponent {
   /*
   *LOS SIGUIENTES DATOS ESTAN PARA LAS LISTAS DESPLEGABLES
   */
-  instituciones = [
+  instituciones_2 = [
     {value: 'robledo', viewValue: 'robledo'},
     {value: 'tecnologico', viewValue: 'tecnologico'},
     {value: 'instituto', viewValue: 'instituto'},
@@ -125,7 +128,11 @@ export class CrearProductoComponent {
   */  
   agregarProducto(){
 
-    this.productoService.agregarProducto(this.productoData).subscribe({
+    this.cargarDatosProducto();
+
+    alert('datos'+this.productoData.institucion);  
+
+    /*this.productoService.agregarProducto(this.productoData).subscribe({
 
       next:(data:RespuestaDto<string>) =>{
           alert(data.respuesta);
@@ -134,8 +141,23 @@ export class CrearProductoComponent {
         alert('el producto no se pudo agregar');
       }
     
-    });
+    });*/
   }
+
+
+
+  private cargarDatosProducto(){
+    this.productoData.institucion=this.institucion;
+    this.productoData.genero=this.genero;
+    this.productoData.cantidad=this.cantidad;
+    this.productoData.descripcion=this.descripcion;
+    this.productoData.horario=this.horario;
+    this.productoData.precio=this.precio;
+    this.productoData.prenda=this.prenda;
+    this.productoData.talla=this.talla;
+  }
+
+
 
 
 }
