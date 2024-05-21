@@ -195,6 +195,15 @@ export class VisualizarProductosComponent implements OnInit{
   }
 
 
+
+  /*
+  *
+  */
+ actualizarProducto(id : number){
+    alert('alert funciona' + id);
+ }
+
+
   /*
   *restablecer las listas a un valor vacio
   */
@@ -220,6 +229,8 @@ export class VisualizarProductosComponent implements OnInit{
     this.filtros.prenda=this.prenda;
     this.filtros.talla=this.talla;
   }
+
+  
 
   
     

@@ -48,7 +48,7 @@ export class IngresarComponent {
       }
     });
 
-    //this.router.navigate(["empleados"]);
+    this.router.navigate(["empleados"]);
        
   }
     
