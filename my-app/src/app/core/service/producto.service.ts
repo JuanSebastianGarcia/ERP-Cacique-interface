@@ -11,7 +11,9 @@ import { HttpClient } from '@angular/common/http';
 export class ProductoService {
 
 
-
+  /*
+  *url que lleva a la api de los productos
+  */
   private productosURL = 'http://localhost:8443/api/manejoProducto';
 
   constructor(private http: HttpClient) { }

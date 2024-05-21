@@ -36,7 +36,7 @@ export class IngresarComponent {
   */
   login() {
     
-    this.loginService.ingresarUsuario(this.loginData).subscribe({
+   this.loginService.ingresarUsuario(this.loginData).subscribe({
       next: (data: RespuestaDto<TokenDto>) => {
         if (data.error) {
           console.log("no se puede ingresar");
@@ -48,7 +48,7 @@ export class IngresarComponent {
       }
     });
 
-    //this.router.navigate(["productos"]);
+    //this.router.navigate(["empleados"]);
        
   }
     
