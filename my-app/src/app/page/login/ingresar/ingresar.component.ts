@@ -39,7 +39,6 @@ export class IngresarComponent {
    this.loginService.ingresarUsuario(this.loginData).subscribe({
       next: (data: RespuestaDto<TokenDto>) => {
         if (data.error) {
-          console.log("no se puede ingresar");
         } else {
           // Manejar el caso de éxito
           this.tokenService.login(data.respuesta.token);

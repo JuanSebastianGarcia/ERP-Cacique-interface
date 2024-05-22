@@ -47,9 +47,9 @@
 
                 <!--LISTA GENEROS-->
                 <div>
-                    <h4>GENEROS--</h4>
+                    <h4>CARGO</h4>
                     <mat-form-field>
-                        <mat-label>genero</mat-label>
+                        <mat-label>Cargo</mat-label>
                         <mat-select [(ngModel)]="empleadoData.tipoEmpleado" [ngModelOptions]="{standalone: true}">
                             <mat-option *ngFor="let tipo of tipoEmpleados"
                                 [value]="tipo.value">{{tipo.viewValue}}</mat-option>

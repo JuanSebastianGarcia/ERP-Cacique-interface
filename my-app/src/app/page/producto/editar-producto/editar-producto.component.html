@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="main-container">
+        <mat-card class="product-card">
+            <h1>Editar Producto</h1>
+            <div class="container">
+                <h2>Informacion del producto</h2>
+                <div class="data-section">
+                    <mat-card class="data-card"><label>id: {{ id }}</label></mat-card>
+                    <mat-card class="data-card"><label>prenda: {{ prenda }}</label></mat-card>
+                    <mat-card class="data-card"><label>institucion: {{ institucion }}</label></mat-card>
+                    <mat-card class="data-card"><label>talla: {{ talla }}</label></mat-card>
+                    <mat-card class="data-card"><label>horario: {{ horario }}</label></mat-card>
+                    <mat-card class="data-card"><label>genero: {{ genero }}</label></mat-card>
+                    <mat-card class="data-card"><label>precio: {{ precio }}</label></mat-card>
+                    <mat-card class="data-card"><label>cantidad: {{ cantidad }}</label></mat-card>
+                </div>
+
+                <div class="container">
+
+                    <h2>Informacion a actualizar</h2>
+                    
+                    <div class="input-group">
+                        <label for="precio">Precio:</label>
+                        <input type="number" id="precio" [(ngModel)]="productoData.precio" name="precio"
+                            placeholder="Ingresa el precio" min="0" step="100.00" required>
+                    </div>
+                
+                    <div class="input-group">
+                        <label for="cantidad-agregar">Agregar:</label>
+                        <input type="number" id="cantidad-agregar" [(ngModel)]="cantidadAgregar" name="cantidad-agregar"
+                            placeholder="Ingresa la cantidad">
+                    </div>
+                
+                    <div class="input-group">
+                        <label for="cantidad-descontar">Descontar:</label>
+                        <input type="number" id="cantidad-descontar" [(ngModel)]="cantidadDescontar" name="cantidad-descontar"
+                            placeholder="Ingresa la cantidad">
+                    </div>
+                
+                    <div class="">
+                        <label for="descripcion">Descripción:</label>
+                        <textarea id="descripcion" [(ngModel)]="productoData.descripcion" class="form-control"
+                            name="descripcion" rows="4" required placeholder="Escribe una descripción del producto aquí..."></textarea>
+                    </div>
+                
+                    <div class="btn-crear">
+                        <button class="btn btn-success" (click)="actualizarProducto()">Guardar</button>
+                    </div>
+                </div>
+                <div class="btn-volver">
+                    <button class="btn btn-success" (click)="volver()">Volver</button>
+                </div>
+            </div>
+            
+        </mat-card>
+        
+    </div>
+
+</body>
+
+
+
+</html>

@@ -1,6 +1,6 @@
 body {
   font-family: 'Roboto', sans-serif;
-  background-color: #f4f4f9;
+  background: linear-gradient(135deg, #1e3c72, #4a8fc8);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -11,10 +11,10 @@ body {
 .container {
   width: 100%;
   max-width: 1200px;
-  background: #ffffff;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: white;
 }
 
 h1, h4 {
@@ -88,9 +88,6 @@ th {
 
 .mat-paginator {
   margin-top: 20px;
-}
-.custom-button {
-
 }
 
 .custom-button:hover {
