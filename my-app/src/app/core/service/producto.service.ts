@@ -11,12 +11,31 @@ import { HttpClient } from '@angular/common/http';
 export class ProductoService {
 
 
+
+  //variable que almacena la informacion del producto actualizando
+  productoDto: ProductoDto={
+    id:0,
+    prenda:'',
+    institucion:'',
+    talla:'',
+    horario:'',
+    genero:'',
+    precio:0,
+    cantidad:0,
+    descripcion:''
+
+  };
+
+
   /*
   *url que lleva a la api de los productos
   */
   private productosURL = 'http://localhost:8443/api/manejoProducto';
 
-  constructor(private http: HttpClient) { }
+
+  constructor(private http: HttpClient) { 
+
+  }
 
   /*
   *buscar productos
@@ -43,4 +62,37 @@ export class ProductoService {
     return this.http.post<RespuestaDto<string>>(`${this.productosURL}/crearProducto`,productoData)
   }
 
+  /*
+  *actualizar un producto
+  *envia una solicitud al servidor para actualizar los datos del producto
+  */
+  actualizarProducto(productoData: ProductoDto):Observable<RespuestaDto<string>>{
+    return this.http.post<RespuestaDto<string>>(`${this.productosURL}/actualizarProducto`,productoData);
+  }
+
+
+
+
+
+  /*
+  *Este metodo recibe la informaciond de un producto y la mantiene almacenada durante el tiempo de edicion
+  */
+  agregarProductoActualizando(producto: any) {
+    this.productoDto.cantidad=producto.cantidad;
+    this.productoDto.id=producto.id;
+    this.productoDto.prenda=producto.prenda;
+    this.productoDto.institucion=producto.institucion;
+    this.productoDto.talla=producto.talla;
+    this.productoDto.horario=producto.horario;
+    this.productoDto.precio=producto.precio;
+    this.productoDto.genero=producto.genero;
+
+  }
+
+  /*
+  *metodo que retorna la propiedad productoDto
+  */
+  getProductoDto(): ProductoDto {
+    return this.productoDto;
+  }
 }

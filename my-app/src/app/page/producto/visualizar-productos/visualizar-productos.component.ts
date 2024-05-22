@@ -197,10 +197,12 @@ export class VisualizarProductosComponent implements OnInit{
 
 
   /*
-  *
+  *registra la informacion del producto seleccionado para editar y la almacena para posteriormente enviarla 
+  *con la informacion actualizada al back
   */
- actualizarProducto(id : number){
-    alert('alert funciona' + id);
+ actualizarProducto(producto : any){
+  this.productoService.agregarProductoActualizando(producto);
+  this.router.navigate(["productos/editar-producto"]);
  }
 
 
