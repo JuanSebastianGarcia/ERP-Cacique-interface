@@ -1,4 +1,4 @@
-{
+{ 
   "name": "my-app",
   "version": "0.0.0",
   "scripts": {
@@ -8,6 +8,10 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
+  "engines": {
+    "node": ">=20.13.1"
+  },
+  
   "private": true,
   "dependencies": {
     "@angular/animations": "^17.3.0",
