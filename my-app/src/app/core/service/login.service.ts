@@ -10,7 +10,7 @@ import { TokenDto } from '../models/token-dto';
 })
 export class LoginService {
 
-  private loginURL = 'http://localhost:8443/api/login/ingresar';
+  private loginURL = 'https://cacique-erp.azurewebsites.net/api/login/ingresar';
 
 
   constructor(private http : HttpClient) { }
