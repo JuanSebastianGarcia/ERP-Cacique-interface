@@ -22,11 +22,11 @@ jobs:
           
       - name: Install dependencies
         run: npm install
-        working-directory: INVENTARIO-FRONT/my-app
+        working-directory: ./INVENTARIO-FRONT/my-app
 
       - name: Build Angular app
         run: npm run build --if-present
-        working-directory: INVENTARIO-FRONT/my-app
+        working-directory: ./INVENTARIO-FRONT/my-app
     
       - name: Build And Deploy
         id: builddeploy
@@ -37,7 +37,7 @@ jobs:
           action: "upload"
           ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
           # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
-          app_location: "INVENTARIO-FRONT/my-app" # App source code path
+          app_location: "./INVENTARIO-FRONT/my-app" # App source code path
           api_location: "" # Api source code path - optional
           output_location: "dist/my-app" # Built app content directory - optional
           ###### End of Repository/Build Configurations ######
