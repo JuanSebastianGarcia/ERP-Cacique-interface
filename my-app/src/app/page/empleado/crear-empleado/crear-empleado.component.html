@@ -15,39 +15,39 @@
             <form (ngSubmit)="agregarEmpleado()">
                 <mat-card-content>DATOS</mat-card-content>
 
-                <!--campo del nombre-->
+                <!-- Campo del nombre -->
                 <div class="container">
                     <label for="nombre">Nombre:</label>
                     <input type="text" id="nombre" [(ngModel)]="empleadoData.nombre" name="nombre" required>
                 </div>
 
-                <!--campo de la cedula-->
+                <!-- Campo de la cédula -->
                 <div class="container">
-                    <label for="cedula">cedula:</label>
-                    <input type="text" id="cedula" [(ngModel)]="empleadoData.cedula" name="cedula" required>
+                    <label for="cedula">Cédula:</label>
+                    <input type="number" id="cedula" [(ngModel)]="cedulaNoValidada" name="cedula" required>
                 </div>
 
-                <!--campo de la telefono-->
+                <!-- Campo del teléfono -->
                 <div class="container">
-                    <label for="telefono">telefono:</label>
-                    <input type="text" id="telefono" [(ngModel)]="empleadoData.telefono" name="telefono" required>
+                    <label for="telefono">Teléfono:</label>
+                    <input type="number" id="telefono" [(ngModel)]="telefonoNoValidado" name="telefono" required>
                 </div>
 
-                <!--campo de la email-->
+                <!-- Campo del email -->
                 <div class="container">
-                    <label for="email">email:</label>
+                    <label for="email">Correo electrónico:</label>
                     <input type="text" id="email" [(ngModel)]="empleadoData.email" name="email" required>
                 </div>
 
-                <!--campo de la cedula-->
+                <!-- Campo del password -->
                 <div class="container">
-                    <label for="password">password:</label>
+                    <label for="password">Contraseña:</label>
                     <input type="password" id="password" [(ngModel)]="empleadoData.password" name="password" required>
                 </div>
 
-                <!--LISTA GENEROS-->
+                <!-- Lista de cargos -->
                 <div>
-                    <h4>CARGO</h4>
+                    <h4>CARGA</h4>
                     <mat-form-field>
                         <mat-label>Cargo</mat-label>
                         <mat-select [(ngModel)]="empleadoData.tipoEmpleado" [ngModelOptions]="{standalone: true}">
@@ -58,9 +58,10 @@
                 </div>
 
 
-                
+
+
             </form>
-            <button type="submit" class="btn btn-success btn-login">agregar empleado</button>
+            <button type="submit" (click)="agregarEmpleado()" class="btn btn-success btn-login" >agregar empleado</button>
         </mat-card>
 
         <!-- Boton Volver-->

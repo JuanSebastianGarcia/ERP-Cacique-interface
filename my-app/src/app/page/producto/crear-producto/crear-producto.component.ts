@@ -129,7 +129,7 @@ export class CrearProductoComponent {
   agregarProducto(){
 
     //validacion de los datos
-    if(this.validarDatos()==true){
+    if(this.validarDatosProducto()==true){
 
 
       this.productoService.agregarProducto(this.productoData).subscribe({
@@ -152,14 +152,17 @@ export class CrearProductoComponent {
   *@return true - el objeto cumple las validaciones 
   *@return false - el objeto no cumple con las validaciones
   */
-  private validarDatos(): boolean {
+  private validarDatosProducto(): boolean {
     
     let respuesta : boolean =true;
 
+    //validar que sean enteros
     if(!(Number.isInteger(this.productoData.cantidad) && Number.isInteger(this.productoData.precio))){
       respuesta=false;
       alert('los datos de precio y cantidad deben ser valores numericos enteros');
     }
+
+    //validar que sean mayores que cero
     if(!(this.productoData.cantidad>=0 && this.productoData.precio>=0)){
       respuesta=false;
       alert('los datos de precio y cantidad deben ser valores coherentes de cero en adelante');

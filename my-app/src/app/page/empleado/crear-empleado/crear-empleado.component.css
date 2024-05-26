@@ -1,12 +1,13 @@
 body {
     font-family: 'Roboto', sans-serif;
-    background-color: #e0e0e0; /* Ajuste a un gris claro */
+    background-color: #e0e0e0;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     margin: 0;
 }
+
 .agregar-empleado-form {
     background: #ffffff;
     padding: 20px;
@@ -15,30 +16,39 @@ body {
     width: 100%;
     max-width: 500px;
 }
+
 h1 {
     font-size: 24px;
     margin-bottom: 20px;
     color: #333;
 }
+
 .container {
     margin-bottom: 15px;
 }
+
 label {
     display: block;
     margin-bottom: 5px;
     font-weight: 500;
     color: #555;
 }
-input[type="text"], mat-form-field {
+
+input[type="text"], input[type="number"], input[type="password"], mat-form-field {
     width: 100%;
     padding: 8px;
     border: 1px solid #ddd;
     border-radius: 4px;
     font-size: 16px;
+    box-sizing: border-box;
 }
+
 mat-form-field {
     display: block;
+    width: 100%;
+    padding: 8px 0; /* Ajuste para alinear con los inputs */
 }
+
 button {
     background-color: #28a745;
     color: #fff;
@@ -48,12 +58,15 @@ button {
     cursor: pointer;
     font-size: 16px;
 }
+
 button:hover {
     background-color: #218838;
 }
+
 mat-card {
     padding: 20px;
 }
+
 mat-card-content {
     font-size: 18px;
     font-weight: 500;
@@ -61,6 +74,7 @@ mat-card-content {
     margin-bottom: 20px;
     display: block;
 }
+
 h4 {
     font-size: 18px;
     margin-bottom: 10px;
