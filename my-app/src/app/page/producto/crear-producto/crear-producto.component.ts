@@ -128,37 +128,55 @@ export class CrearProductoComponent {
   */  
   agregarProducto(){
 
-    this.cargarDatosProducto();
-
-    this.productoService.agregarProducto(this.productoData).subscribe({
-
-      next:(data:RespuestaDto<string>) =>{
-          alert(data.respuesta);
-          
-      },
-      error: error=>{
-        alert('el producto no se pudo agregar');
-      }
-    });
-  }
+    //validacion de los datos
+    if(this.validarDatos()==true){
 
 
-  volverTabla(){
-      this.router.navigate(['productos']);
+      this.productoService.agregarProducto(this.productoData).subscribe({
+
+        next:(data:RespuestaDto<string>) =>{
+            alert(data.respuesta);//notificar exito         
+        },
+        error: error=>{
+          alert('el producto no se pudo agregar');//notificar respuesta
+        }
+      });
+
+    }
+
   }
 
 
   /*
-  *se encarga de cargar los datos del producto 
+  *verificar la coherencia de los datos ingrsados en precio y cantidad
+  *@return true - el objeto cumple las validaciones 
+  *@return false - el objeto no cumple con las validaciones
   */
-  private cargarDatosProducto(){
-    this.productoData.institucion=this.institucion;
-    this.productoData.genero=this.genero;
-    this.productoData.horario=this.horario;
-    this.productoData.prenda=this.prenda;
-    this.productoData.talla=this.talla;
+  private validarDatos(): boolean {
+    
+    let respuesta : boolean =true;
+
+    if(!(Number.isInteger(this.productoData.cantidad) && Number.isInteger(this.productoData.precio))){
+      respuesta=false;
+      alert('los datos de precio y cantidad deben ser valores numericos enteros');
+    }
+    if(!(this.productoData.cantidad>=0 && this.productoData.precio>=0)){
+      respuesta=false;
+      alert('los datos de precio y cantidad deben ser valores coherentes de cero en adelante');
+    }
+
+    return respuesta;
   }
 
+
+
+
+  /*
+  *volver a la pagina anterior
+  */
+  volverTabla(){
+      this.router.navigate(['productos']);
+  }
 
 
 

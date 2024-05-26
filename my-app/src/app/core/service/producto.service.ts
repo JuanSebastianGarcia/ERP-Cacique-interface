@@ -11,6 +11,14 @@ import { HttpClient } from '@angular/common/http';
 export class ProductoService {
 
 
+  
+
+  /*
+  *url que lleva a la api de los productos
+  */
+  private productosURL = 'https://cacique-erp.azurewebsites.net/api/manejoProducto';
+
+
 
   //variable que almacena la informacion del producto actualizando
   productoDto: ProductoDto={
@@ -25,13 +33,6 @@ export class ProductoService {
     descripcion:''
 
   };
-
-
-  /*
-  *url que lleva a la api de los productos
-  */
-  private productosURL = 'https://cacique-erp.azurewebsites.net/api/manejoProducto';
-
 
   constructor(private http: HttpClient) { 
 

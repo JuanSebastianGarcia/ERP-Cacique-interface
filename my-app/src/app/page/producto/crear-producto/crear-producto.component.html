@@ -22,7 +22,7 @@
                         <h4>PRENDAS</h4>
                         <mat-form-field>
                             <mat-label>prenda</mat-label>
-                            <mat-select [(ngModel)]="prenda" >
+                            <mat-select [(ngModel)]="productoData.prenda" >
                                 <mat-option *ngFor="let prenda2 of prendas"
                                     [value]="prenda2.value">{{prenda2.viewValue}}</mat-option>
                                 </mat-select>
@@ -34,7 +34,7 @@
                         <h4>INSTITUCIONES</h4>
                         <mat-form-field>
                             <mat-label>institucion</mat-label>
-                            <mat-select [(ngModel)]="institucion">
+                            <mat-select [(ngModel)]="productoData.institucion">
                                 <mat-option *ngFor="let institucion of instituciones"
                                     [value]="institucion.value">{{institucion.viewValue}}</mat-option>
                             </mat-select>
@@ -46,7 +46,7 @@
                         <h4>TALLAS</h4>
                         <mat-form-field>
                             <mat-label>talla</mat-label>
-                            <mat-select [(ngModel)]="talla">
+                            <mat-select [(ngModel)]="productoData.talla">
                                 <mat-option *ngFor="let talla of tallas"
                                     [value]="talla.value">{{talla.viewValue}}</mat-option>
                             </mat-select>
@@ -58,7 +58,7 @@
                         <h4>HORARIOS</h4>
                         <mat-form-field>
                             <mat-label>horario</mat-label>
-                            <mat-select [(ngModel)]="horario">
+                            <mat-select [(ngModel)]="productoData.horario">
                                 <mat-option *ngFor="let horario of horarios"
                                     [value]="horario.value">{{horario.viewValue}}</mat-option>
                             </mat-select>
@@ -70,7 +70,7 @@
                         <h4>GENEROS</h4>
                         <mat-form-field>
                             <mat-label>genero</mat-label>
-                            <mat-select [(ngModel)]="genero">
+                            <mat-select [(ngModel)]="productoData.genero">
                                 <mat-option *ngFor="let genero of generos"
                                     [value]="genero.value">{{genero.viewValue}}</mat-option>
                             </mat-select>
