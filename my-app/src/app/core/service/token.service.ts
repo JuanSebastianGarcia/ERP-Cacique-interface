@@ -72,4 +72,30 @@ export class TokenService {
  public logout(){
   localStorage.removeItem(TOKEN_KEY);
  }
+
+
+ /*
+ *obtener el tipo de empleado con los datos del token
+ */
+ public getTipoEmpleado():string{
+
+  let tipoEmpleado:string="";//variable la respuesta
+  const token=this.getToken();
+
+  if(token){
+    const payloads=this.decodePayload(token);
+
+    if(payloads.tipoEmpleado === 'JEFE'){
+      tipoEmpleado='JEFE';
+    }
+    if(payloads.tipoEmpleado === 'EMPLEADO'){
+      tipoEmpleado='EMPLEADO';
+    }
+
+  }else{
+    alert('token no disponible')
+  }
+
+  return tipoEmpleado;
+ }
 }

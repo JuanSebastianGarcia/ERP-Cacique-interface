@@ -6,16 +6,19 @@ import { inject } from '@angular/core';
 */
 export const authGuard: CanActivateChildFn = (childRoute, state) => {
 
-  //servicio que almacena el token
+  //inyeccion de servicios
   const tokenService = inject(TokenService);
 
   //servicio de rutas
   const router = inject(Router);
 
+
   if(tokenService.isLogged()==true){
     return true;
-  }else{
+  }else{//redireccion al login
     router.navigate([""]);
     return false;
   }
 };
+
+
