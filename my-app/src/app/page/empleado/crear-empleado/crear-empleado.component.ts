@@ -57,6 +57,8 @@ export class CrearEmpleadoComponent {
 
   //validacion de datos
   if(this.validarDatosEmpleado()==true){
+    this.empleadoData.cedula=this.cedulaNoValidada.toString();
+    this.empleadoData.telefono=this.telefonoNoValidado.toString();
 
     this.empleadoService.agregarEmpleado(this.empleadoData).subscribe({
       next:data=>{

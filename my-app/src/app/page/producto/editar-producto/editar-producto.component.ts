@@ -36,7 +36,7 @@ export class EditarProductoComponent implements OnInit{
     genero:'',
     precio:0,
     cantidad:0,
-    descripcion:''
+    descripcion:' '
   }
 
   //variables que almacenan los cambios en la cantidad
@@ -99,7 +99,6 @@ export class EditarProductoComponent implements OnInit{
         },
         error: error =>{
           alert('ocurrio un error');
-          alert('productoActualizado');
           this.router.navigate(['productos']);
         }
         
