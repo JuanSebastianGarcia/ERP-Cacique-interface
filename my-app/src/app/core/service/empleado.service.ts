@@ -13,8 +13,8 @@ export class EmpleadoService {
   /*
   *url que lleva a la api de los empleados
   */
-  private empleadoURL='https://cacique-erp.azurewebsites.net/api/manejoEmpleado'; 
-
+  //private empleadoURL='https://cacique-erp.azurewebsites.net/api/manejoEmpleado'; 
+  private empleadoURL='http://localhost:9090/api/manejoEmpleado'; 
 
 
   constructor(private http:HttpClient) { }

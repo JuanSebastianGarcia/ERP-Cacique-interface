@@ -64,16 +64,17 @@ export class EditarProductoComponent implements OnInit{
   *y asignando los nuevos datos
   */
   actualizarProducto(){
-      //se agregan las sumas
-      this.productoData.cantidad=this.productoData.cantidad+this.cantidadAgregar;
+
+      let datosValidados:boolean=this.validarDatos();
+
 
       //se validan las restas
-      if (this.productoData.cantidad>=this.cantidadDescontar) {
+      if (datosValidados) {
         this.productoData.cantidad=this.productoData.cantidad-this.cantidadDescontar;
 
         this.enviarSolicitudActualizar();
       }else{
-        alert('la cantidad no se puede actualizar');
+        alert('la cantidad no se puede actualizar o el precio esta por debajo de cero');
       }
 
   }
@@ -122,10 +123,27 @@ export class EditarProductoComponent implements OnInit{
   }
 
 
+  /*
+  *valida la coherencia del precio y las nuevas cantidades
+  */
+  validarDatos():boolean{
+
+    let respuesta:boolean = false;
+
+    //se agregan las sumas
+    this.productoData.cantidad=this.productoData.cantidad+this.cantidadAgregar;
+
+    if(this.productoData.cantidad>=this.cantidadDescontar && this.productoData.precio>0){
+      respuesta=true;
+    }
+
+    return respuesta;
+}
+
+
 
 
 }
-
 
 
 

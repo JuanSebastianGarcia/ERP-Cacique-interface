@@ -131,11 +131,12 @@ export class CrearProductoComponent {
     //validacion de los datos
     if(this.validarDatosProducto()==true){
 
-
+      
       this.productoService.agregarProducto(this.productoData).subscribe({
 
         next:(data:RespuestaDto<string>) =>{
-            alert(data.respuesta);//notificar exito         
+            alert(data.respuesta);//notificar exito    
+            this.limpiarTabla();     
         },
         error: error=>{
           alert('el producto no se pudo agregar');//notificar respuesta
@@ -181,6 +182,20 @@ export class CrearProductoComponent {
       this.router.navigate(['productos']);
   }
 
-
+   limpiarTabla() {
+    this.productoData = {
+      id:0,
+      prenda: '',
+      institucion: '',
+      talla: '',
+      horario: '',
+      genero: '',
+      precio: 0,
+      cantidad: 0,
+      descripcion: ''
+    };
+  }
 
 }
+
+

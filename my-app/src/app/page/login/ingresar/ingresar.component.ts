@@ -39,6 +39,8 @@ export class IngresarComponent {
    this.loginService.ingresarUsuario(this.loginData).subscribe({
       next: (data: RespuestaDto<TokenDto>) => {
         if (data.error) {
+          alert(data.respuesta);
+          
         } else {
           // Manejar el caso de éxito
           this.tokenService.login(data.respuesta.token);
@@ -47,7 +49,6 @@ export class IngresarComponent {
       }
     });
 
-    this.router.navigate(["empleados"]);
        
   }
     

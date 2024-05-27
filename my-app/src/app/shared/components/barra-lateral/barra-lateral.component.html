@@ -2,11 +2,17 @@
   <mat-sidenav #drawer class="sidenav" fixedInViewport
       [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
       [mode]="(isHandset$ | async) ? 'over' : 'side'"
-      [opened]="false"> <!-- Cambiado aquí para asegurar que siempre inicie cerrado -->
-    <mat-toolbar>Menu</mat-toolbar>
+      [(opened)]="opened">
+    <mat-toolbar color="primary" class="sidenav-toolbar">Menu</mat-toolbar>
     <mat-nav-list>
-      <a mat-list-item routerLink="/productos" (click)="drawer.toggle()">Productos</a>
-      <a mat-list-item routerLink="/empleados" (click)="drawer.toggle()">Empleados</a>
+      <a mat-list-item routerLink="/productos" (click)="closeDrawer(drawer)">
+        <mat-icon>shopping_cart</mat-icon>
+        <span>Productos</span>
+      </a>
+      <a mat-list-item routerLink="/empleados" (click)="closeDrawer(drawer)">
+        <mat-icon>people</mat-icon>
+        <span>Empleados</span>
+      </a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -19,6 +25,8 @@
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
       <span>CACIQUE SPORT ERP</span>
+      <span class="spacer"></span>
+      <button type="button" class="btn btn-success logout-button" (click)="logout()">Cerrar sesion</button>
     </mat-toolbar>
     <!-- Add Content Here -->
   </mat-sidenav-content>

@@ -94,13 +94,7 @@ export class CrearEmpleadoComponent {
       respuesta=false;
       alert('los datos de precio y cantidad deben ser valores coherentes de cero en adelante');
     }
-
-    //validar que tengan un minimo de digitos
-    if(!(this.cedulaNoValidada.toLocaleString.length>10 && this.telefonoNoValidado.toLocaleString.length>10)){{
-      respuesta=false;
-      alert('la cedula  y/o el telefono debe de tener un minimo de 10 digitos');
-    }}
-
+    
     return respuesta;
   }
 
