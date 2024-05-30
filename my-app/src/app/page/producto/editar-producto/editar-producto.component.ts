@@ -66,15 +66,12 @@ export class EditarProductoComponent implements OnInit{
   actualizarProducto(){
 
       let datosValidados:boolean=this.validarDatos();
-
-
+      
       //se validan las restas
       if (datosValidados) {
-        this.productoData.cantidad=this.productoData.cantidad-this.cantidadDescontar;
+        this.productoData.cantidad += this.cantidadAgregar-this.cantidadDescontar;  
 
         this.enviarSolicitudActualizar();
-      }else{
-        alert('la cantidad no se puede actualizar o el precio esta por debajo de cero');
       }
 
   }
@@ -88,9 +85,10 @@ export class EditarProductoComponent implements OnInit{
 
 
   /*
-  * envia la solicitud de actualizacion 
+  * hace una solicitud de actualizacion del producto
   */
   private enviarSolicitudActualizar(){
+
     this.productoService.actualizarProducto(this.productoData).subscribe(
       {
         next: data=>{
@@ -98,7 +96,7 @@ export class EditarProductoComponent implements OnInit{
           this.router.navigate(['productos']);
         },
         error: error =>{
-          alert('ocurrio un error');
+          alert('ocurrio un error en la actualizacion del producto');
           this.router.navigate(['productos']);
         }
         
@@ -123,17 +121,23 @@ export class EditarProductoComponent implements OnInit{
 
 
   /*
-  *valida la coherencia del precio y las nuevas cantidades
+  *valida la coherencia del precio y las nuevas cantidades, se verifica que las operaciones con cantidades no queden 
+  *por debajo de cero al igual que el precio
   */
   validarDatos():boolean{
 
     let respuesta:boolean = false;
 
-    //se agregan las sumas
-    this.productoData.cantidad=this.productoData.cantidad+this.cantidadAgregar;
-
-    if(this.productoData.cantidad>=this.cantidadDescontar && this.productoData.precio>0){
-      respuesta=true;
+    //validar cantidades
+    if(this.productoData.cantidad+this.cantidadAgregar>=this.cantidadDescontar){
+      if(this.productoData.precio>=0){
+        respuesta=true;
+        console.log(respuesta);
+      }else{
+        console.log('erro, precio incoherente');
+      }
+    }else{
+      console.log('los datos de operacion no concuerdan');
     }
 
     return respuesta;
