@@ -8,10 +8,10 @@
 </head>
 
 <body>
-    <div class="agregar-producto-form"></div>
-    
+
     <div class="container">
         <h1>AGREGAR UN PRODUCTO</h1>
+
         <div class="row">
             <!-- Columna para listas desplegables -->
             <div class="col-md-6">
@@ -22,10 +22,10 @@
                         <h4>PRENDAS</h4>
                         <mat-form-field>
                             <mat-label>prenda</mat-label>
-                            <mat-select [(ngModel)]="productoData.prenda" >
+                            <mat-select [(ngModel)]="productoData.prenda">
                                 <mat-option *ngFor="let prenda2 of prendas"
                                     [value]="prenda2.value">{{prenda2.viewValue}}</mat-option>
-                                </mat-select>
+                            </mat-select>
                         </mat-form-field>
                     </div>
 
@@ -89,21 +89,23 @@
                         <!-- Campo de Precio -->
                         <div class="campos-derecha">
                             <label for="precio">Precio:</label>
-                            <input type="number" id="precio" [(ngModel)]="productoData.precio" name="precio" placeholder="Ingresa el precio" min="0"
-                                step="100.00" required>
+                            <input type="number" id="precio" [(ngModel)]="productoData.precio" name="precio"
+                                placeholder="Ingresa el precio" min="0" step="100.00" required>
                         </div>
 
                         <!-- Campo de Cantidad -->
                         <div classs="campos-derecha">
                             <label for="cantidad">Cantidad:</label>
-                            <input type="number" id="cantidad" [(ngModel)]="productoData.cantidad" name="cantidad" placeholder="Ingresa la cantidad" min="0"
-                                step="1" required>
+                            <input type="number" id="cantidad" [(ngModel)]="productoData.cantidad" name="cantidad"
+                                placeholder="Ingresa la cantidad" min="0" step="1" required>
                         </div>
 
                         <!--campo de Descripcion-->
                         <div class="campos-derecha">
                             <label for="descripcion">Descripción:</label>
-                            <textarea id="descripcion" [(ngModel)]="productoData.descripcion" class="form-control" name="descripcion" rows="4" required placeholder="Escribe una descripción del producto aquí..."></textarea>
+                            <textarea id="descripcion" [(ngModel)]="productoData.descripcion" class="form-control"
+                                name="descripcion" rows="4" required
+                                placeholder="Escribe una descripción del producto aquí..."></textarea>
                         </div>
                     </div>
 
@@ -112,6 +114,11 @@
                 <!-- BOTON CREAR-->
                 <div class="btn-crear">
                     <button class="btn btn-success" (click)="agregarProducto()">Agregar</button>
+                </div>
+
+                <!-- Boton Volver-->
+                <div class="btn-volver">
+                    <button class="btn btn-success" (click)="volverTabla()">Volver</button>
                 </div>
             </div>
 
@@ -122,10 +129,7 @@
 
 
 
-    <!-- Boton Volver-->
-    <div class="btn-volver">
-        <button class="btn btn-success" (click)="volverTabla()">Volver</button>
-    </div>
+
 </body>
 
 </html>

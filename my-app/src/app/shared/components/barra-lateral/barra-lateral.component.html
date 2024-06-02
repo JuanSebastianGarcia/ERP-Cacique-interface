@@ -19,17 +19,17 @@
     <mat-nav-list>
       <div class="Container">
         <span class="etiqueta-slidebar">INVENTARIO</span>
-        <a mat-list-item routerLink="/inventario/visualizar">
+        <a mat-list-item routerLink="/productos">
           <mat-icon>visibility</mat-icon>
           <span>Visualizar Inventario</span>
         </a>
-        <a mat-list-item routerLink="/inventario/crear">
+        <a mat-list-item routerLink="/productos/crear-producto">
           <mat-icon>add_circle</mat-icon>
-          <span>Crear Inventario</span>
+          <span>Agregar Producto</span>
         </a>
-        <a mat-list-item routerLink="/inventario/configurar">
+        <a mat-list-item routerLink="/productos/editar-tipo-Configuracion">
           <mat-icon>settings</mat-icon>
-          <span>Configurar Inventario</span>
+          <span>Configurar tipos</span>
         </a>
       </div>
 
@@ -58,12 +58,6 @@
     <!-- Main Toolbar -->
     <mat-toolbar class ="toolbar-content" >
       <!-- Toggle Sidenav Button -->
-      <button
-        type="button"
-        mat-icon-button
-        (click)="drawer.toggle()">
-        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-      </button>
 
       
       <span >CACIQUE ERP</span>

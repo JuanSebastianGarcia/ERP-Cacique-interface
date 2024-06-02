@@ -1,6 +1,6 @@
 body {
     font-family: 'Roboto', sans-serif;
-    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    background: #6dac7b ;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -8,10 +8,8 @@ body {
     margin: 0;
 }
 .login-form {
-    background: #ffffff;
+    background: #bddec4;
     padding: 40px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     width: 100%;
     max-width: 400px;
     text-align: center;

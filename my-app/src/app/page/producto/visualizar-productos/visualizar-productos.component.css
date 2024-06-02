@@ -11,14 +11,14 @@ body {
 .container {
   width: 100%;
   max-width: 1200px;
-  padding: 20px;
+  padding: 20px;  
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   background-color: white;
 }
 
 h1, h4 {
-  color: #333;
+  color: black;
 }
 
 h1 {
@@ -58,9 +58,7 @@ button {
   border-radius: 12px;
 }
 
-.btn-success:hover {
-  background-color: #218838;
-}
+
 
 .table-container {
   overflow-x: auto;
@@ -73,8 +71,9 @@ table {
 
 th, td {
   padding: 12px;
-  border: 1px solid #ddd;
-  text-align: left;
+  border: 1px solid #616A6B;
+  font-size: 16px;
+  text-align: center;
 }
 
 th {
@@ -95,3 +94,5 @@ th {
   color: black;
   border: 2px solid #4CAF50;
 }
+
+
