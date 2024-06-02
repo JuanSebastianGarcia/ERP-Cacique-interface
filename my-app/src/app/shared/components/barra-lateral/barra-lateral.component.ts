@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { Router, RouterModule } from '@angular/router';
 import { TokenService } from '../../../core/service/token.service';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 @Component({
   selector: 'app-barra-lateral',
@@ -23,14 +24,15 @@ import { TokenService } from '../../../core/service/token.service';
     MatListModule,
     MatIconModule,
     AsyncPipe,
-    RouterModule
+    RouterModule,
+    MatExpansionModule
   ]
 })
 export class BarraLateralComponent {
 
 
   private breakpointObserver = inject(BreakpointObserver);
-  opened = false;
+  opened = true;
 
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)

@@ -1,33 +1,77 @@
+<!-- Sidenav Container -->
 <mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #drawer class="sidenav" fixedInViewport
-      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-      [mode]="(isHandset$ | async) ? 'over' : 'side'"
-      [(opened)]="opened">
-    <mat-toolbar color="primary" class="sidenav-toolbar">Menu</mat-toolbar>
+
+  <!-- Sidenav -->
+  <mat-sidenav 
+    #drawer 
+    class="sidenav" 
+    fixedInViewport
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [(opened)]="opened">
+
+    <!-- Sidenav Toolbar -->
+    <mat-toolbar  class="sidenav-toolbar">
+      Menu
+    </mat-toolbar>
+
+    <!-- Navigation List -->
     <mat-nav-list>
-      <a mat-list-item routerLink="/productos" (click)="closeDrawer(drawer)">
-        <mat-icon>shopping_cart</mat-icon>
-        <span>Productos</span>
-      </a>
-      <a mat-list-item routerLink="/empleados" (click)="closeDrawer(drawer)">
-        <mat-icon>people</mat-icon>
-        <span>Empleados</span>
-      </a>
+      <div class="Container">
+        <span class="etiqueta-slidebar">INVENTARIO</span>
+        <a mat-list-item routerLink="/inventario/visualizar">
+          <mat-icon>visibility</mat-icon>
+          <span>Visualizar Inventario</span>
+        </a>
+        <a mat-list-item routerLink="/inventario/crear">
+          <mat-icon>add_circle</mat-icon>
+          <span>Crear Inventario</span>
+        </a>
+        <a mat-list-item routerLink="/inventario/configurar">
+          <mat-icon>settings</mat-icon>
+          <span>Configurar Inventario</span>
+        </a>
+      </div>
+
+    
+      <!-- Empleados Section -->
+      <div class="contain">
+        <span class="etiqueta-slidebar">EMPLEADOS</span>
+        <a mat-list-item routerLink="/empleados/visualizar">
+          <mat-icon>visibility</mat-icon>
+          <span>Visualizar Empleados</span>
+        </a>
+        <a mat-list-item routerLink="/empleados/crear">
+          <mat-icon>person_add</mat-icon>
+          <span>Crear Empleados</span>
+        </a>
+      </div>
+
+
     </mat-nav-list>
+    
   </mat-sidenav>
-  <mat-sidenav-content>
-    <mat-toolbar color="primary">
+
+
+  <!-- Main Content -->
+  <mat-sidenav-content >
+    <!-- Main Toolbar -->
+    <mat-toolbar class ="toolbar-content" >
+      <!-- Toggle Sidenav Button -->
       <button
         type="button"
-        aria-label="Toggle sidenav"
         mat-icon-button
         (click)="drawer.toggle()">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span>CACIQUE SPORT ERP</span>
+
+      
+      <span >CACIQUE ERP</span>
       <span class="spacer"></span>
-      <button type="button" class="btn btn-success logout-button" (click)="logout()">Cerrar sesion</button>
+      <!-- Logout Button -->
+      <button type="button" class="btn btn-success logout-button" (click)="logout()">Cerrar sesión</button>
     </mat-toolbar>
     <!-- Add Content Here -->
   </mat-sidenav-content>
+
 </mat-sidenav-container>
