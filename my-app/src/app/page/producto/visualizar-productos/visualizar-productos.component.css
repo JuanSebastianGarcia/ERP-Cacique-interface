@@ -1,25 +1,25 @@
 body {
-  font-family: 'Roboto', sans-serif;
-  background: #E9F7EF;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   margin: 0;
-  padding: 20px;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 }
 
 .container {
-  width: 100%;
-  max-width: 1200px;
-  padding: 20px;  
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  background-color: white;
+  flex: 1;
+  padding: 20px;
+  margin-right: 200px; 
+  max-width: 1400px; 
 }
 
 h1, h4 {
   color: black;
 }
+
+
 
 h1 {
   font-size: 28px;
@@ -31,32 +31,15 @@ h4 {
   margin-bottom: 10px;
 }
 
-.mat-card {
-  margin-bottom: 20px;
-}
-
 button {
   font-size: 16px;
   padding: 10px 20px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  margin: 10px;
 }
 
-.btn-success {
-  background-color: #4CAF50; /* Green */
-  border: none;
-  color: white;
-  padding: 10px 24px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  transition-duration: 0.4s;
-  cursor: pointer;
-  border-radius: 12px;
-}
 
 
 
@@ -64,10 +47,12 @@ button {
   overflow-x: auto;
 }
 
+
 table {
   width: 100%;
   border-collapse: collapse;
 }
+
 
 th, td {
   padding: 12px;
@@ -76,23 +61,31 @@ th, td {
   text-align: center;
 }
 
+
 th {
   background-color: #ddd;
   font-weight: bold;
 }
 
+
 .mat-elevation-z8 {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
+
 
 .mat-paginator {
   margin-top: 20px;
 }
 
-.custom-button:hover {
-  background-color: white;
-  color: black;
-  border: 2px solid #4CAF50;
+
+.btn-small {
+  padding: 0.25rem 0.5rem; 
+  font-size: 0.875rem; 
+  line-height: 1.2; 
 }
+
+
+
+
 
 

@@ -9,6 +9,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {CommonModule } from '@angular/common';
 import {FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import {MatButtonModule} from '@angular/material/button';
 
 
 @Component({
@@ -20,6 +21,7 @@ import { Router } from '@angular/router';
             MatSelectModule,
             CommonModule,
             FormsModule,
+            MatButtonModule
             ],
   templateUrl: './visualizar-productos.component.html',
   styleUrl: './visualizar-productos.component.css'
