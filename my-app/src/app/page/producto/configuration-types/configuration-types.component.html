@@ -16,11 +16,11 @@
         <div class="container-1">
             <label for="search">Buscar por</label>
             <div class="button-group">
-              <button type="button" class="btn btn-options btn-secondary">Instituciones</button>
-              <button type="button" class="btn btn-options btn-secondary">Horarios</button>
-              <button type="button" class="btn btn-options btn-secondary">Tallas</button>
-              <button type="button" class="btn btn-options btn-secondary">Prendas</button>
-              <button type="button" class="btn btn-options btn-secondary">Generos</button>
+              <button type="button" class="btn btn-options btn-secondary" (click)="buscar('institucion')">Instituciones</button>
+              <button type="button" class="btn btn-options btn-secondary" (click)="buscar('horario')">Horarios</button>
+              <button type="button" class="btn btn-options btn-secondary" (click)="buscar('talla')">Tallas</button>
+              <button type="button" class="btn btn-options btn-secondary" (click)="buscar('prenda')">Prendas</button>
+              <button type="button" class="btn btn-options btn-secondary" (click)="buscar('genero')">Generos</button>
             </div>
           </div>    
 
