@@ -5,6 +5,8 @@ import { ConfigurationTypesService } from '../../../core/service/configuration-t
 import { Observable } from 'rxjs';
 import { ConfigTypesDto } from '../../../core/models/config-types-dto';
 import { RespuestaDto } from '../../../core/models/respuesta-dto';
+import { MatDialog } from '@angular/material/dialog';
+import { CreateDataConfigComponent } from '../create-data-config/create-data-config.component';
 
 
 export interface Elements {
@@ -31,39 +33,41 @@ export class ConfigurationTypesComponent {
   private tipoActual: string = '';//variable que almacena la opcion buscada 
 
 
-  constructor(private configurationTypesSerice: ConfigurationTypesService) { }
+  constructor(private configurationTypesSerice: ConfigurationTypesService, public dialog: MatDialog) { }
 
 
   /*
-  *eliminar un dato de configuracion
+  *eliminar un dato de configuracion.se usa la variable tipoActual para saber de que tabla se desea hacer 
+  *el delete  
+  *param dato - nombre del dato que se eliminara
   */
-  eliminarProducto(dato: string) {
+  eliminarDato(dato: string) {
    
     let respuesta: string = '';
 
     switch (this.tipoActual) {
       case 'institucion':
         this.imprimirMensaje(this.configurationTypesSerice.eliminarInstituciones(dato));
-        this.elegirOpcion();//refrescar la tabla
+        this.elegirOpcionBusqueda();//refrescar la tabla
         break;
       case 'horario':
         this.imprimirMensaje(this.configurationTypesSerice.eliminarHorarios(dato));
-        this.elegirOpcion();//refrescar la tabla
+        this.elegirOpcionBusqueda();//refrescar la tabla
         break;
 
       case 'talla':
         this.imprimirMensaje(this.configurationTypesSerice.eliminarTallas(dato));
-        this.elegirOpcion();//refrescar la tabla
+        this.elegirOpcionBusqueda();//refrescar la tabla
         break;
 
       case 'prenda':
         this.imprimirMensaje(this.configurationTypesSerice.eliminarPrendas(dato));
-        this.elegirOpcion();//refrescar la tabla
+        this.elegirOpcionBusqueda();//refrescar la tabla
         break;
 
       case 'genero':
         this.imprimirMensaje(this.configurationTypesSerice.eliminarGeneros(dato));
-        this.elegirOpcion();//refrescar la tabla
+        this.elegirOpcionBusqueda();//refrescar la tabla
         break;
     }
   }
@@ -77,15 +81,76 @@ export class ConfigurationTypesComponent {
 
     this.tipoActual = tipo;
 
-    this.elegirOpcion();
+    this.elegirOpcionBusqueda();
 
   }
 
 
   /*
+  * se encarga de abrir el modal que solitica el nombre del nuevo dato y luego pasarselo al proceso de crear
+  */
+  agregarDato(){
+    const dialogRef = this.dialog.open(CreateDataConfigComponent,{data:'Que dato desea agregar'});
+
+    dialogRef.afterClosed().subscribe(respuesta => 
+      {
+
+        if(respuesta==undefined){
+        }else{
+          if(respuesta==''){
+            alert("tiene que agregar un dato o cancelar");
+            this.agregarDato();
+          }
+          else{
+            this.agregarDatoSolicitud(respuesta);
+          }
+        }
+      }
+    );
+  }
+
+
+  /*
+  *hace la solicitud al servicio para crear un dato usando la respuesta del modal de agregar dato.
+  *se usa la variable de tipo actual para saber en cual tabla se va a hacer el insert
+  *@ param respuesta - nombre del dato a agregarse
+  */
+  private agregarDatoSolicitud(respuesta: string) {
+    switch (this.tipoActual) {
+
+      case 'institucion':
+        this.imprimirMensaje(this.configurationTypesSerice.agregarInstitucion(respuesta));
+        this.elegirOpcionBusqueda();//refrescar la tabla
+        break;
+      case 'horario':
+        this.imprimirMensaje(this.configurationTypesSerice.agregarhorario(respuesta));
+        this.elegirOpcionBusqueda();//refrescar la tabla
+        break;
+
+      case 'talla':
+        this.imprimirMensaje(this.configurationTypesSerice.agregartalla(respuesta));
+        this.elegirOpcionBusqueda();//refrescar la tabla
+        break;
+
+      case 'prenda':
+        this.imprimirMensaje(this.configurationTypesSerice.agregarprenda(respuesta));
+        this.elegirOpcionBusqueda();//refrescar la tabla
+        break;
+
+      case 'genero':
+        this.imprimirMensaje(this.configurationTypesSerice.agregarGenero(respuesta));
+        this.elegirOpcionBusqueda();//refrescar la tabla
+        break;
+    }
+  }
+  
+
+
+
+  /*
   *continuando con la busqueda, se especifica cual tipo de dato es el que se requiere
   */
-  private elegirOpcion() {
+  private elegirOpcionBusqueda() {
     switch (this.tipoActual) {
 
       case 'institucion':

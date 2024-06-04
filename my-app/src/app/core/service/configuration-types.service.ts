@@ -16,13 +16,16 @@ export class ConfigurationTypesService {
   private configTypesUrl = 'http://localhost:9090/api/configuracionTipos';
 
 
-  constructor(private http:HttpClient) { }
+
+  constructor(private http: HttpClient) { }
 
 
 
 
   /*
   *envia una solicitud para obtener la lista de horarios
+  *
+  * @return lista de datos encontrada
   */
   public buscarHorarios(): Observable<RespuestaDto<ConfigTypesDto[]>> {
     return this.http.get<RespuestaDto<ConfigTypesDto[]>>(`${this.configTypesUrl}/buscarHorarios`);
@@ -31,6 +34,8 @@ export class ConfigurationTypesService {
 
   /*
   *envia una solicitud para obtener la lista de tallas
+  *
+  * @return lista de datos encontrada
   */
   public buscarTallas(): Observable<RespuestaDto<ConfigTypesDto[]>> {
     return this.http.get<RespuestaDto<ConfigTypesDto[]>>(`${this.configTypesUrl}/buscarTallas`);
@@ -39,6 +44,8 @@ export class ConfigurationTypesService {
 
   /*
   *envia una solicitud para obtener la lista de prendas
+  *
+  * @return lista de datos encontrada
   */
   public buscarPrendas(): Observable<RespuestaDto<ConfigTypesDto[]>> {
     return this.http.get<RespuestaDto<ConfigTypesDto[]>>(`${this.configTypesUrl}/buscarPrendas`);
@@ -47,6 +54,8 @@ export class ConfigurationTypesService {
 
   /*
   *envia una solicitud para obtener la lista de generos
+  *
+  *@return lista de datos encontrada
   */
   public buscarGeneros(): Observable<RespuestaDto<ConfigTypesDto[]>> {
     return this.http.get<RespuestaDto<ConfigTypesDto[]>>(`${this.configTypesUrl}/buscarGeneros`);
@@ -55,6 +64,8 @@ export class ConfigurationTypesService {
 
   /*
   *envia una solicitud para obtener la lista de instituciones
+  *
+  * @return lista de datos encontrada
   */
   public buscarInstituciones(): Observable<RespuestaDto<ConfigTypesDto[]>> {
     return this.http.get<RespuestaDto<ConfigTypesDto[]>>(`${this.configTypesUrl}/buscarInstituciones`);
@@ -62,40 +73,122 @@ export class ConfigurationTypesService {
 
 
   /*
+   *envia una solicitud para eliminar un genero de la base de datos
    *
+   * @param dato - nombre del dato a eliminar
+   * 
+   * @return respuesta del servidor
    */
-  eliminarGeneros(dato: string): Observable<RespuestaDto<string>> {
+  public eliminarGeneros(dato: string): Observable<RespuestaDto<string>> {
     return this.http.delete<RespuestaDto<string>>(`${this.configTypesUrl}/eliminarGenero/${dato}`);
   }
 
   /*
+   *envia una solicitud para eliminar una prenda de la base de datos
    *
+   *  @param dato - nombre del dato a eliminar
+   * 
+   * @return respuesta del servidor
    */
-  eliminarPrendas(dato: string): Observable<RespuestaDto<string>> {
+  public eliminarPrendas(dato: string): Observable<RespuestaDto<string>> {
     return this.http.delete<RespuestaDto<string>>(`${this.configTypesUrl}/eliminarPrenda/${dato}`);
   }
 
+
   /*
-   *
+   *envia una solicitud para eliminar un talla de la base de datos
+   *  
+   * @param dato - nombre del dato a eliminar
+   * 
+   * @return respuesta del servidor
    */
-  eliminarTallas(dato: string): Observable<RespuestaDto<string>> {
+  public eliminarTallas(dato: string): Observable<RespuestaDto<string>> {
     return this.http.delete<RespuestaDto<string>>(`${this.configTypesUrl}/eliminarTalla/${dato}`);
   }
 
+
   /*
+   *envia una solicitud para eliminar un horario de la base de datos
    *
+   * @param dato - nombre del dato a eliminar
+   * 
+   * @return respuesta del servidor
    */
-  eliminarHorarios(dato: string): Observable<RespuestaDto<string>> {
+  public eliminarHorarios(dato: string): Observable<RespuestaDto<string>> {
     return this.http.delete<RespuestaDto<string>>(`${this.configTypesUrl}/eliminarHorario/${dato}`);
   }
 
+
   /*
+   *envia una solicitud para eliminar una institucion de la base de datos
    *
+   * @param dato - nombre del dato a eliminar
+   * 
+   * @return respuesta del servidor
    */
-  eliminarInstituciones(dato: string): Observable<RespuestaDto<string>> {
+  public eliminarInstituciones(dato: string): Observable<RespuestaDto<string>> {
     return this.http.delete<RespuestaDto<string>>(`${this.configTypesUrl}/eliminarInstitucion/${dato}`);
   }
 
+
+
+
+  /*
+  *envia una solicitud para agregar una institucion
+  *
+  * @param dato - nombre del dato que se quiere agregar
+  * 
+  * @return respuesta del servidor 
+  */
+  public agregarInstitucion(dato: string): Observable<RespuestaDto<string>> {
+    return this.http.delete<RespuestaDto<string>>(`${this.configTypesUrl}/crearInstitucion/${dato}`);
+  }
+
+
+    /*
+  *envia una solicitud para agregar un horario
+  *
+  * @param dato - nombre del dato que se quiere agregar
+  * 
+  * @return respuesta del servidor 
+  */
+  public agregarhorario(dato: string): Observable<RespuestaDto<string>> {
+    return this.http.delete<RespuestaDto<string>>(`${this.configTypesUrl}/crearHorario/${dato}`);
+  }
+
+    /*
+  *envia una solicitud para agregar una talla
+  *
+  * @param dato - nombre del dato que se quiere agregar
+  * 
+  * @return respuesta del servidor 
+  */
+  public agregartalla(dato: string): Observable<RespuestaDto<string>> {
+    return this.http.delete<RespuestaDto<string>>(`${this.configTypesUrl}/crearTalla/${dato}`);
+  }
+
+    /*
+  *envia una solicitud para agregar una prenda
+  *
+  * @param dato - nombre del dato que se quiere agregar
+  * 
+  * @return respuesta del servidor 
+  */
+  public agregarprenda(dato: string): Observable<RespuestaDto<string>> {
+    return this.http.delete<RespuestaDto<string>>(`${this.configTypesUrl}/crearPrenda/${dato}`);
+  }
+
+
+    /*
+  *envia una solicitud para agregar un genero
+  *
+  * @param dato - nombre del dato que se quiere agregar
+  * 
+  * @return respuesta del servidor 
+  */
+  public agregarGenero(dato: string): Observable<RespuestaDto<string>> {
+    return this.http.delete<RespuestaDto<string>>(`${this.configTypesUrl}/crearGenero/${dato}`);
+  }
 
 
 

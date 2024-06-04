@@ -1,0 +1,14 @@
+<h2 mat-dialog-title>{{message}}</h2>
+<mat-dialog-content>
+    <p>Tenga en cuenta que el dato se agregara <br>
+        la lista que actualmente tiene en la busqueda
+    </p>
+    <mat-form-field>
+        <mat-label>Nuevo dato</mat-label>
+        <input matInput [(ngModel)]="respuesta">
+    </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Cancelar</button>
+    <button mat-button [mat-dialog-close]="respuesta" cdkFocusInitial>Agregar</button>
+</mat-dialog-actions>
