@@ -1,39 +1,40 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MatSelectModule} from '@angular/material/select';
+import { MatSelectModule } from '@angular/material/select';
 import { ProductoDto } from '../../../core/models/producto-dto';
 import { ProductoService } from '../../../core/service/producto.service';
 import { RespuestaDto } from '../../../core/models/respuesta-dto';
 import { CommonModule } from '@angular/common';
-import {MatGridListModule} from '@angular/material/grid-list';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { ConfigurationTypesService } from '../../../core/service/configuration-types.service';
 
 
 @Component({
   selector: 'app-crear-producto',
   standalone: true,
   imports: [FormsModule,
-            MatSelectModule,
-            CommonModule,
-            MatGridListModule
-            ],
+    MatSelectModule,
+    CommonModule,
+    MatGridListModule
+  ],
   templateUrl: './crear-producto.component.html',
   styleUrl: './crear-producto.component.css'
 })
-export class CrearProductoComponent {
+export class CrearProductoComponent implements OnInit {
 
 
   /*
   *Variables que almacenan la opcion de las listas
   */
-  prenda : string='';
-  institucion : string='';
-  talla : string='';
-  horario : string='';
-  genero : string='';
-  cantidad:number=0;
-  precio:number=0.0;
-  descripcion:string='';
+  prenda: string = '';
+  institucion: string = '';
+  talla: string = '';
+  horario: string = '';
+  genero: string = '';
+  cantidad: number = 0;
+  precio: number = 0.0;
+  descripcion: string = '';
 
 
   /*
@@ -42,103 +43,58 @@ export class CrearProductoComponent {
   /*
   *LOS SIGUIENTES DATOS ESTAN PARA LAS LISTAS DESPLEGABLES
   */
-  instituciones = [
-    {value: 'robledo', viewValue: 'robledo'},
-    {value: 'tecnologico', viewValue: 'tecnologico'},
-    {value: 'instituto', viewValue: 'instituto'},
-    {value: 'romaval', viewValue: 'romaval'},
-    {value: 'baudilio', viewValue: 'baudilio'},
-    {value: 'general santander', viewValue: 'general santander'},
-    {value: 'san jose', viewValue: 'san jose'},
-    {value: 'niño jesus', viewValue: 'niño jesus'},
-    {value: 'jhon dewey', viewValue: 'jhon dewey'},
-    {value: 'la virgina', viewValue: 'la virgina'},
-    {value: 'rafael uribe', viewValue: 'rafael uribe'},
-    {value: 'antonio nariño', viewValue: 'antonio nariño'},
-  ];
-  prendas = [
-    {value: 'camibuso', viewValue: 'camibuso'},
-    {value: 'pantalon', viewValue: 'pantalon'},
-    {value: 'sudadera', viewValue: 'sudadera'},
-    {value: 'camisa cuello sport', viewValue: 'camisa cuello sport'},
-    {value: 'camisa cuello corbata', viewValue: 'camisa cuello corbata'},
-    {value: 'camisa manga larga', viewValue: 'camisa manga larga'},
-    {value: 'camisa manga corta', viewValue: 'camisa manga corta'},
-    {value: 'pantaloneta', viewValue: 'pantaloneta'},
-    {value: 'chaqueta', viewValue: 'chaqueta'},
-    {value: 'falda', viewValue: 'falda'},
-    {value: 'chaleco', viewValue: 'chaleco'},
-    {value: 'medias', viewValue: 'medias'},
-    {value: 'corbata', viewValue: 'corbata'},
-  ];
-  tallas = [
-    {value: '0', viewValue: '0'},
-    {value: '1', viewValue: '1'},
-    {value: '2', viewValue: '2'},
-    {value: '3', viewValue: '3'},
-    {value: '4', viewValue: '4'},
-    {value: '5', viewValue: '5'},
-    {value: '6', viewValue: '6'},
-    {value: '8', viewValue: '8'},
-    {value: '10', viewValue: '10'},
-    {value: '12', viewValue: '12'},
-    {value: '14', viewValue: '14'},
-    {value: '16', viewValue: '16'},
-    {value: 'xs', viewValue: 'xs'},
-    {value: 's', viewValue: 'S'},
-    {value: 'm', viewValue: 'M'},
-    {value: 'l', viewValue: 'L'},
-    {value: 'xl', viewValue: 'XL'},
-    {value: 'xxl', viewValue: 'XXL'},
-    {value: 'xxxl', viewValue: 'XXXL'},
-    {value: 'xxxxl', viewValue: 'XXXXL'},
-  ];
-  horarios = [
-    {value: 'diario', viewValue: 'diario'},
-    {value: 'fisica', viewValue: 'fisica'},
-  ];
-  generos = [
-    {value: 'hombre', viewValue: 'hombre'},
-    {value: 'mujer', viewValue: 'mujer'},
-  ];
+  instituciones = [{ value: '', viewValue: '' },];
+  prendas = [{ value: '', viewValue: '' },];
+  tallas = [{ value: '', viewValue: '' },];
+  horarios = [{ value: '', viewValue: '' },];
+  generos = [{ value: '', viewValue: '' },];
 
-  //formulario dto que sera enviado al back
-  productoData : ProductoDto ={
-    id:0,
-    prenda:'string',
-    institucion:'string',
-    talla:'string',
-    horario:'string',
-    genero:'string',
-    precio:0.0,
-    cantidad:0,
-    descripcion:'string'
+
+  //formulario dto que sera enviado al servidor para crear el producto
+  public productoData: ProductoDto = {
+    id: 0,
+    prenda: 'string',
+    institucion: 'string',
+    talla: 'string',
+    horario: 'string',
+    genero: 'string',
+    precio: 0.0,
+    cantidad: 0,
+    descripcion: 'string'
   }
 
 
 
-  
-  constructor(private router:Router,private productoService:ProductoService){ }
+
+  constructor(private router: Router, private productoService: ProductoService,
+    private configureTypesService: ConfigurationTypesService
+  ) { }
+
+
+
+  ngOnInit(): void {
+    this.cargarListas();
+  }
 
 
 
 
   /*
   *caputar los datos y hacer el registro de un nuevo producto
-  */  
-  agregarProducto(){
+  */
+  agregarProducto() {
 
     //validacion de los datos
-    if(this.validarDatosProducto()==true){
+    if (this.validarDatosProducto() == true) {
 
-      
+
       this.productoService.agregarProducto(this.productoData).subscribe({
 
-        next:(data:RespuestaDto<string>) =>{
-            alert(data.respuesta);//notificar exito    
-            this.limpiarTabla();     
+        next: (data: RespuestaDto<string>) => {
+          alert(data.respuesta);//notificar exito    
+          this.limpiarTabla();
         },
-        error: error=>{
+        error: error => {
           alert('el producto no se pudo agregar');//notificar respuesta
         }
       });
@@ -154,18 +110,18 @@ export class CrearProductoComponent {
   *@return false - el objeto no cumple con las validaciones
   */
   private validarDatosProducto(): boolean {
-    
-    let respuesta : boolean =true;
+
+    let respuesta: boolean = true;
 
     //validar que sean enteros
-    if(!(Number.isInteger(this.productoData.cantidad) && Number.isInteger(this.productoData.precio))){
-      respuesta=false;
+    if (!(Number.isInteger(this.productoData.cantidad) && Number.isInteger(this.productoData.precio))) {
+      respuesta = false;
       alert('los datos de precio y cantidad deben ser valores numericos enteros');
     }
 
     //validar que sean mayores que cero
-    if(!(this.productoData.cantidad>=0 && this.productoData.precio>=0)){
-      respuesta=false;
+    if (!(this.productoData.cantidad >= 0 && this.productoData.precio >= 0)) {
+      respuesta = false;
       alert('los datos de precio y cantidad deben ser valores coherentes de cero en adelante');
     }
 
@@ -178,13 +134,17 @@ export class CrearProductoComponent {
   /*
   *volver a la pagina anterior
   */
-  volverTabla(){
-      this.router.navigate(['productos']);
+  volverTabla() {
+    this.router.navigate(['productos']);
   }
 
-   limpiarTabla() {
+
+  /*
+  *despues de crear un producto se limpia el formulario
+  */
+  limpiarTabla() {
     this.productoData = {
-      id:0,
+      id: 0,
       prenda: '',
       institucion: '',
       talla: '',
@@ -196,6 +156,122 @@ export class CrearProductoComponent {
     };
   }
 
+
+  /*
+  * se encarga de cargar los datos de configuracion para las listas desplegbales en la busqueda, se hace un
+  * mapeo del dto al array que se imprime
+  */
+  private cargarListas() {
+
+    this.cargarInstituciones();
+    this.cargarTallas();
+    this.cargarGeneros();
+    this.cargarPrendas();
+    this.cargarHorarios();
+  }
+
+
+  /*
+  *cargar las horarios en la lista desplegable para la busqueda
+  */
+  private cargarHorarios() {
+    this.configureTypesService.buscarHorarios().subscribe(
+      {
+        next: data => {
+          this.horarios = data.respuesta.map(configType => ({
+            value: configType.nombreTipo,
+            viewValue: configType.nombreTipo
+          }));
+        },
+        error: error => {
+          alert('no se cargaron las instituciones');
+        }
+      }
+    )
+  }
+
+
+
+  /*
+  *cargar las prendas en la lista desplegable para la busqueda
+  */
+  private cargarPrendas() {
+    this.configureTypesService.buscarPrendas().subscribe(
+      {
+        next: data => {
+          this.prendas = data.respuesta.map(configType => ({
+            value: configType.nombreTipo,
+            viewValue: configType.nombreTipo
+          }));
+        },
+        error: error => {
+          alert('no se cargaron las instituciones');
+        }
+      }
+    )
+  }
+
+
+
+
+  /*
+  *cargar las generos en la lista desplegable para la busqueda
+  */
+  private cargarGeneros() {
+    this.configureTypesService.buscarGeneros().subscribe(
+      {
+        next: data => {
+          this.generos = data.respuesta.map(configType => ({
+            value: configType.nombreTipo,
+            viewValue: configType.nombreTipo
+          }));
+        },
+        error: error => {
+          alert('no se cargaron las instituciones');
+        }
+      }
+    )
+  }
+
+
+  /*
+  *cargar las tallas en la lista desplegable para la busqueda
+  */
+  private cargarTallas() {
+    this.configureTypesService.buscarTallas().subscribe(
+      {
+        next: data => {
+          this.tallas = data.respuesta.map(configType => ({
+            value: configType.nombreTipo,
+            viewValue: configType.nombreTipo
+          }));
+        },
+        error: error => {
+          alert('no se cargaron las instituciones');
+        }
+      }
+    )
+  }
+
+
+  /*
+  *cargar las instituciones en la lista desplegable para la busqueda
+  */
+  private cargarInstituciones() {
+    this.configureTypesService.buscarInstituciones().subscribe(
+      {
+        next: data => {
+          this.instituciones = data.respuesta.map(configType => ({
+            value: configType.nombreTipo,
+            viewValue: configType.nombreTipo
+          }));
+        },
+        error: error => {
+          alert('no se cargaron las instituciones');
+        }
+      }
+    )
+  }
 }
 
 
