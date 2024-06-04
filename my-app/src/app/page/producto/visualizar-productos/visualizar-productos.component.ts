@@ -231,6 +231,7 @@ export class VisualizarProductosComponent implements OnInit{
     this.filtros.horario=this.horario;
     this.filtros.prenda=this.prenda;
     this.filtros.talla=this.talla;
+    
   }
 
   

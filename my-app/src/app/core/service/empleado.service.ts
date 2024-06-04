@@ -39,7 +39,7 @@ export class EmpleadoService {
  /*
  *metodo que hace una solicitud al back para agregar un empleado
  */
- agregarEmpleado(empleadoData: EmpleadoDto):Observable<RespuestaDto<string>>{
+ public agregarEmpleado(empleadoData: EmpleadoDto):Observable<RespuestaDto<string>>{
   return this.http.post<RespuestaDto<string>>(`${this.empleadoURL}/crearEmpleado`,empleadoData);
   }
 }

@@ -15,6 +15,13 @@ export class ConfigurationTypesService {
   */
   private configTypesUrl = 'http://localhost:9090/api/configuracionTipos';
 
+  /*
+  *datos del dto para enviar al servidor para agregar un dato
+  */
+  datoDto:ConfigTypesDto={
+    idTipo:0,
+    nombreTipo:""
+  }
 
 
   constructor(private http: HttpClient) { }
@@ -141,11 +148,13 @@ export class ConfigurationTypesService {
   * @return respuesta del servidor 
   */
   public agregarInstitucion(dato: string): Observable<RespuestaDto<string>> {
-    return this.http.delete<RespuestaDto<string>>(`${this.configTypesUrl}/crearInstitucion/${dato}`);
+
+    this.datoDto.nombreTipo=dato;
+    return this.http.post<RespuestaDto<string>>(`${this.configTypesUrl}/crearInstitucion`,this.datoDto);
   }
 
 
-    /*
+  /*
   *envia una solicitud para agregar un horario
   *
   * @param dato - nombre del dato que se quiere agregar
@@ -153,10 +162,12 @@ export class ConfigurationTypesService {
   * @return respuesta del servidor 
   */
   public agregarhorario(dato: string): Observable<RespuestaDto<string>> {
-    return this.http.delete<RespuestaDto<string>>(`${this.configTypesUrl}/crearHorario/${dato}`);
+    this.datoDto.nombreTipo=dato;
+    return this.http.post<RespuestaDto<string>>(`${this.configTypesUrl}/crearHorario`,this.datoDto);
   }
 
-    /*
+
+  /*
   *envia una solicitud para agregar una talla
   *
   * @param dato - nombre del dato que se quiere agregar
@@ -164,7 +175,8 @@ export class ConfigurationTypesService {
   * @return respuesta del servidor 
   */
   public agregartalla(dato: string): Observable<RespuestaDto<string>> {
-    return this.http.delete<RespuestaDto<string>>(`${this.configTypesUrl}/crearTalla/${dato}`);
+    this.datoDto.nombreTipo=dato;
+    return this.http.post<RespuestaDto<string>>(`${this.configTypesUrl}/crearTalla`,this.datoDto);
   }
 
     /*
@@ -175,7 +187,8 @@ export class ConfigurationTypesService {
   * @return respuesta del servidor 
   */
   public agregarprenda(dato: string): Observable<RespuestaDto<string>> {
-    return this.http.delete<RespuestaDto<string>>(`${this.configTypesUrl}/crearPrenda/${dato}`);
+    this.datoDto.nombreTipo=dato;
+    return this.http.post<RespuestaDto<string>>(`${this.configTypesUrl}/crearPrenda`,this.datoDto);
   }
 
 
@@ -187,7 +200,8 @@ export class ConfigurationTypesService {
   * @return respuesta del servidor 
   */
   public agregarGenero(dato: string): Observable<RespuestaDto<string>> {
-    return this.http.delete<RespuestaDto<string>>(`${this.configTypesUrl}/crearGenero/${dato}`);
+    this.datoDto.nombreTipo=dato;
+    return this.http.post<RespuestaDto<string>>(`${this.configTypesUrl}/crearGenero`,this.datoDto);
   }
 
 
