@@ -18,8 +18,8 @@ export class LoginService {
   *ingresar usuario
   *envia una solicitud al servidor para verificar que el usuario existe
   */
-  public ingresarUsuario(loginDto : LoginDto): Observable<RespuestaDto<TokenDto>>{
-    return this.http.post<RespuestaDto<TokenDto>>(`${this.loginURL}`, loginDto);
+  public ingresarUsuario(loginDto : LoginDto): Observable<RespuestaDto<string>>{
+    return this.http.post<RespuestaDto<string>>(`${this.loginURL}`, loginDto);
   }
 
 }

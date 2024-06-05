@@ -44,13 +44,14 @@ export class IngresarComponent {
     if(this.validarCampos()){
 
       this.loginService.ingresarUsuario(this.loginData).subscribe({
-        next: (data: RespuestaDto<TokenDto>) => {
+        next: (data: RespuestaDto<string>) => {
             // Manejar el caso de éxito
-            this.tokenService.login(data.respuesta.token);
+            this.tokenService.login(data.respuesta);
             this.router.navigate(["productos"]);      
         },
-        error:error => {
-          const dialogRef=this.dialog.open(MensajeAlertaComponent,{data:error.respuesta});
+        error:(error: RespuestaDto<string>) => {
+          console.log(error.respuesta);
+          const dialogRef=this.dialog.open(MensajeAlertaComponent,{data:'El correo o la contraeña son incorrectos'});
         }
       });
     }else{

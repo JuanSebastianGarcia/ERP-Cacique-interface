@@ -5,12 +5,13 @@
   }
   
   .alert-box h1 {
-    margin: 0; /* Elimina el margen por defecto del h1 */
+    margin: 10px; 
   }
   
   .alert-message {
     color: black; /* Color del texto negro */
     font-size: 25px; /* Tamaño de fuente más grande */
+    margin: 15px;
   }
   
   .alert-title {
@@ -27,7 +28,7 @@
     display: flex;
     justify-content: center; /* Centra horizontalmente */
     align-items: center; /* Centra verticalmente */
-    width: 50vh; /* Altura del contenedor para centrar verticalmente */
+    background-color: rgb(99, 7, 7);;
   }
 
   .button{
