@@ -62,7 +62,6 @@ export class CrearEmpleadoComponent {
 
     this.empleadoService.agregarEmpleado(this.empleadoData).subscribe({
       next:data=>{
-        alert(data.respuesta);
         this.router.navigate(['empleados']);
       },
       error:error=>{
@@ -77,36 +76,30 @@ export class CrearEmpleadoComponent {
 
 
  /*
+ *se encarga de volver a la pagina anterior
+ */
+ volverTabla() {
+  this.router.navigate(['empleados']);
+}
+
+
+ /*
  *validar los datos telefono y cedula 
   *@return true - el objeto cumple las validaciones 
   *@return false - el objeto no cumple con las validaciones
  */
-  validarDatosEmpleado(): boolean {
+  private validarDatosEmpleado(): boolean {
     
     let respuesta:boolean =true;
 
     //validar que sean enteros
     if(!(Number.isInteger(this.cedulaNoValidada) && Number.isInteger(this.telefonoNoValidado))){
       respuesta=false;
-      alert('los datos de precio y cantidad deben ser valores numericos enteros');
+      alert('el telefono y la cedula deben de ser valores sin puntos ni comas');
     }
 
-    //validar que sean mayores que cero
-    if(!(this.cedulaNoValidada>=0 && this.telefonoNoValidado>=0)){
-      respuesta=false;
-      alert('los datos de precio y cantidad deben ser valores coherentes de cero en adelante');
-    }
-    
     return respuesta;
   }
 
-
-
- /*
- *se encarga de volver a la pagina anterior
- */
-  volverTabla() {
-    this.router.navigate(['empleados']);
-  }
 
 }

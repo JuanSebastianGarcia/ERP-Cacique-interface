@@ -94,7 +94,6 @@ export class ConfigurationTypesComponent {
 
     dialogRef.afterClosed().subscribe(respuesta => 
       {
-
         if(respuesta==undefined){
         }else{
           if(respuesta==''){

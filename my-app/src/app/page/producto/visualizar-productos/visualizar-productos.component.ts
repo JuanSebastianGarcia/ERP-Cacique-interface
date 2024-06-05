@@ -27,6 +27,10 @@ import { ConfigurationTypesService } from '../../../core/service/configuration-t
   templateUrl: './visualizar-productos.component.html',
   styleUrl: './visualizar-productos.component.css'
 })
+/*
+*Este componente esta hecho para mostrar la tabla de pructos ademas de poder realziar busquedas en la tabla
+*usando los datos de condifiguracion de las listas
+*/
 export class VisualizarProductosComponent implements OnInit {
 
   displayedColumns: string[] = ['id', 'prenda', 'institucion', 'talla', 'horario', 'genero', 'precio', 'cantidad', 'boton'];
@@ -34,6 +38,7 @@ export class VisualizarProductosComponent implements OnInit {
 
   //esta es la funcionalidad del paginador
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+
 
   //cargar el paginador
   ngAfterViewInit() {
@@ -57,51 +62,10 @@ export class VisualizarProductosComponent implements OnInit {
   *Arrays que almacenan los datos de las listas desplegables
   */
   public instituciones = [{ value: '', viewValue: '' }];
-  public prendas = [
-    { value: 'camibuso', viewValue: 'camibuso' },
-    { value: 'pantalon', viewValue: 'pantalon' },
-    { value: 'sudadera', viewValue: 'sudadera' },
-    { value: 'camisa cuello sport', viewValue: 'camisa cuello sport' },
-    { value: 'camisa cuello corbata', viewValue: 'camisa cuello corbata' },
-    { value: 'camisa manga larga', viewValue: 'camisa manga larga' },
-    { value: 'camisa manga corta', viewValue: 'camisa manga corta' },
-    { value: 'pantaloneta', viewValue: 'pantaloneta' },
-    { value: 'chaqueta', viewValue: 'chaqueta' },
-    { value: 'falda', viewValue: 'falda' },
-    { value: 'chaleco', viewValue: 'chaleco' },
-    { value: 'medias', viewValue: 'medias' },
-    { value: 'corbata', viewValue: 'corbata' },
-  ];
-  public tallas = [
-    { value: '0', viewValue: '0' },
-    { value: '1', viewValue: '1' },
-    { value: '2', viewValue: '2' },
-    { value: '3', viewValue: '3' },
-    { value: '4', viewValue: '4' },
-    { value: '5', viewValue: '5' },
-    { value: '6', viewValue: '6' },
-    { value: '8', viewValue: '8' },
-    { value: '10', viewValue: '10' },
-    { value: '12', viewValue: '12' },
-    { value: '14', viewValue: '14' },
-    { value: '16', viewValue: '16' },
-    { value: 'xs', viewValue: 'xs' },
-    { value: 's', viewValue: 'S' },
-    { value: 'm', viewValue: 'M' },
-    { value: 'l', viewValue: 'L' },
-    { value: 'xl', viewValue: 'XL' },
-    { value: 'xxl', viewValue: 'XXL' },
-    { value: 'xxxl', viewValue: 'XXXL' },
-    { value: 'xxxxl', viewValue: 'XXXXL' },
-  ];
-  public horarios = [
-    { value: 'diario', viewValue: 'diario' },
-    { value: 'fisica', viewValue: 'fisica' },
-  ];
-  public generos = [
-    { value: 'hombre', viewValue: 'hombre' },
-    { value: 'mujer', viewValue: 'mujer' },
-  ];
+  public prendas = [{ value: '', viewValue: '' }];
+  public tallas = [{ value: '', viewValue: '' }];
+  public horarios = [{ value: '', viewValue: '' }];
+  public generos = [ { value: '', viewValue: '' }];
 
 
   //formulario que almacena el filtro para buscar
@@ -117,15 +81,16 @@ export class VisualizarProductosComponent implements OnInit {
 
   constructor(private productoService: ProductoService,
     private router: Router,
-    private configureTypesService: ConfigurationTypesService
-  ) { };
+    private configureTypesService: ConfigurationTypesService) { };
+
+
 
 
   ngOnInit(): void {
 
-    this.cargarListas();
+    this.cargarListas();//cargar los datos para las listas desplegables
 
-    this.buscarProductos();
+    this.buscarProductos();//cargar todos los productos por primera vez
   }
 
 
@@ -135,7 +100,6 @@ export class VisualizarProductosComponent implements OnInit {
   */
   buscarProductos() {
 
-    console.log(this.prenda);
     this.construirFiltro();//construccion del filtro
 
     this.productoService.buscarProductos(this.filtros).subscribe({
@@ -143,7 +107,7 @@ export class VisualizarProductosComponent implements OnInit {
         this.dataSource = new MatTableDataSource(data.respuesta);
       },
       error: error => {
-        console.log("ocurrido un error");
+        console.log("ocurrido un error"); 
       }
     })
   }
@@ -172,7 +136,7 @@ export class VisualizarProductosComponent implements OnInit {
           this.buscarProductos();//recargar la tabla
         },
         error: error => {
-          alert(error.error);
+          alert(error.error);//cambiar
         }
       }
     );
@@ -186,6 +150,7 @@ export class VisualizarProductosComponent implements OnInit {
 
     //invocar componente
     this.router.navigate(["productos/crear-producto"]);
+    
   }
 
 

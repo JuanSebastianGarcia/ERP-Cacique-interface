@@ -66,8 +66,9 @@ export class CrearProductoComponent implements OnInit {
 
 
 
-  constructor(private router: Router, private productoService: ProductoService,
-    private configureTypesService: ConfigurationTypesService
+  constructor(private router: Router, 
+              private productoService: ProductoService,
+              private configureTypesService: ConfigurationTypesService
   ) { }
 
 
@@ -105,7 +106,7 @@ export class CrearProductoComponent implements OnInit {
 
 
   /*
-  *verificar la coherencia de los datos ingrsados en precio y cantidad
+  *verificar la coherencia de los datos ingresados en precio y cantidad
   *@return true - el objeto cumple las validaciones 
   *@return false - el objeto no cumple con las validaciones
   */

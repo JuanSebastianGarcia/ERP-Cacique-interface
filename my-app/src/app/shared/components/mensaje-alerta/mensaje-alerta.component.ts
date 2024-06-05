@@ -11,11 +11,10 @@ import {MatButtonModule} from '@angular/material/button';
 import {FormsModule} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
-
-
+import { CreateDataConfigComponent } from '../../../page/producto/create-data-config/create-data-config.component';
 
 @Component({
-  selector: 'app-create-data-config',
+  selector: 'app-mensaje-alerta',
   standalone: true,
   imports: [MatFormFieldModule,
     MatInputModule,
@@ -24,34 +23,31 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     MatDialogTitle,
     MatDialogContent,
     MatDialogActions,
-    MatDialogClose],
-  templateUrl: './create-data-config.component.html',
-  styleUrl: './create-data-config.component.css'
+    MatDialogClose ],
+  templateUrl: './mensaje-alerta.component.html',
+  styleUrl: './mensaje-alerta.component.css'
 })
-/*
-*Este componente facilita la creacion de los datos al abrir un modal para ingresar el nuevo nombre y registrarlo
-*/
-export class CreateDataConfigComponent implements OnInit {
-
-
-  public opcion:string='';
-  public respuesta:string='';
+export class MensajeAlertaComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<CreateDataConfigComponent>,
-    @Inject(MAT_DIALOG_DATA) public message:string,) {}
+    @Inject(MAT_DIALOG_DATA) public message:string,){ 
+
+    }
 
 
 
+    
   ngOnInit(): void {
   }
 
-
-
-
-  onNoClick(): void {
+  /*
+  *aceptar el mensaje y cerrar el modal
+  */
+  confirmar(){
     this.dialogRef.close();
-  }
+  };
 
-  
+
+
 }

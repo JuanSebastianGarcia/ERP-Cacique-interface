@@ -1,0 +1,36 @@
+.alert-box {
+    padding: 15px; /* Espaciado interno */
+    border-radius: 50px; /* Bordes redondeados (opcional) */
+    margin: 0px; 
+  }
+  
+  .alert-box h1 {
+    margin: 0; /* Elimina el margen por defecto del h1 */
+  }
+  
+  .alert-message {
+    color: black; /* Color del texto negro */
+    font-size: 25px; /* Tamaño de fuente más grande */
+  }
+  
+  .alert-title {
+    background-color: rgb(99, 7, 7); /* Fondo verde para el título */
+    color: white; /* Color del texto del título */
+    padding: 5px; /* Espaciado interno del título */
+    font-size: 25px; /* Tamaño de fuente del título */
+    text-align: center; /* Alineación centrada del texto */
+    border-radius: 3px; /* Bordes redondeados (opcional) */
+    margin-bottom: 10px; /* Espacio debajo del título */
+  }
+
+  .btn{
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    width: 50vh; /* Altura del contenedor para centrar verticalmente */
+  }
+
+  .button{
+    padding: 10px 20px;
+    font-size: 16px;
+  }
