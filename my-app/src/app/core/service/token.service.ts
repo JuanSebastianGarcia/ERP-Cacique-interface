@@ -70,7 +70,7 @@ export class TokenService {
  eliminar un token que cierra sesion
  */
  public logout(){
-  localStorage.removeItem(TOKEN_KEY);
+  sessionStorage.removeItem(TOKEN_KEY);
  }
 
 
