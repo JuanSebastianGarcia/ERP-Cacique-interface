@@ -1,0 +1,62 @@
+.alert-box {
+  padding: 15px;
+  /* Espaciado interno */
+  border-radius: 50px;
+  /* Bordes redondeados (opcional) */
+  margin: 0px;
+}
+
+.body{
+  border: 2px;
+  border-color: black;
+}
+
+.alert-box h1 {
+  margin: 10px;
+}
+
+.alert-message {
+  color: black;
+  /* Color del texto negro */
+  font-size: 25px;
+  /* Tamaño de fuente más grande */
+  margin: 10px;
+}
+
+.alert-title {
+  background-color: rgb(58, 58, 230);
+  color: white;
+  /* Color del texto del título */
+  padding: 5px;
+  /* Espaciado interno del título */
+  font-size: 25px;
+  /* Tamaño de fuente del título */
+  text-align: center;
+  /* Alineación centrada del texto */
+  border-radius: 3px;
+  /* Bordes redondeados (opcional) */
+  margin-bottom: 10px;
+  /* Espacio debajo del título */
+}
+
+.btn {
+  display: flex;
+  justify-content: center;
+  /* Centra horizontalmente */
+  align-items: center;
+  /* Centra verticalmente */
+  ;
+}
+
+mat-dialog-actions button {
+  margin-left: 8px; /* Espacio entre botones */
+  padding: 10px 20px; /* Aumenta el tamaño del botón */
+  font-size: 16px; /* Aumenta el tamaño del texto */
+  margin: 10px;
+}
+
+mat-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+

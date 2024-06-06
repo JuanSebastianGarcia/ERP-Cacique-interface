@@ -11,6 +11,9 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { ConfigurationTypesService } from '../../../core/service/configuration-types.service';
+import { MatDialog } from '@angular/material/dialog';
+import { MensajeAlertaComponent } from '../../../shared/components/mensaje-alerta/mensaje-alerta.component';
+import { MensajeConfirmacionComponent } from '../../../shared/components/mensaje-confirmacion/mensaje-confirmacion.component';
 
 
 @Component({
@@ -22,11 +25,14 @@ import { ConfigurationTypesService } from '../../../core/service/configuration-t
     MatSelectModule,
     CommonModule,
     FormsModule,
-    MatButtonModule
+    MatButtonModule,
   ],
   templateUrl: './visualizar-productos.component.html',
   styleUrl: './visualizar-productos.component.css'
 })
+
+
+
 /*
 *Este componente esta hecho para mostrar la tabla de pructos ademas de poder realziar busquedas en la tabla
 *usando los datos de condifiguracion de las listas
@@ -65,7 +71,7 @@ export class VisualizarProductosComponent implements OnInit {
   public prendas = [{ value: '', viewValue: '' }];
   public tallas = [{ value: '', viewValue: '' }];
   public horarios = [{ value: '', viewValue: '' }];
-  public generos = [ { value: '', viewValue: '' }];
+  public generos = [{ value: '', viewValue: '' }];
 
 
   //formulario que almacena el filtro para buscar
@@ -81,7 +87,8 @@ export class VisualizarProductosComponent implements OnInit {
 
   constructor(private productoService: ProductoService,
     private router: Router,
-    private configureTypesService: ConfigurationTypesService) { };
+    private configureTypesService: ConfigurationTypesService,
+    private dialog: MatDialog) { };
 
 
 
@@ -107,7 +114,9 @@ export class VisualizarProductosComponent implements OnInit {
         this.dataSource = new MatTableDataSource(data.respuesta);
       },
       error: error => {
-        console.log("ocurrido un error"); 
+        const dialogRef = this.dialog.open(MensajeAlertaComponent, { data: 'Ocurrio un error' });
+
+        console.log("ocurrido un error");
       }
     })
   }
@@ -126,10 +135,32 @@ export class VisualizarProductosComponent implements OnInit {
 
 
   /*
-  *obtener el id de un producto de la tabla y luego eliminarlo
+  *solicitar una confirmacion para la eliminacion del producto usando un modal
+  *de confirmacion
+  *
+  * @param id - id del producto que se desea eliminar
   *
   */
-  eliminarProducto(id: number) {
+  eliminarProductoConfirmar(id: number) {
+
+    const dialogRef = this.dialog.open(MensajeConfirmacionComponent, { data: "esta seguro de eliminar el producto" })
+
+    dialogRef.afterClosed().subscribe(respuesta => {
+      if(respuesta===true){
+        this.eliminarProductoSolicitud(id);
+      }
+     }
+    )
+  }
+
+
+  /*
+  *Se encarga de hacer la solicitud al servicio para eliminar el producto
+  *
+  *@param id - id del producto que se desea eliminar
+  */
+  private eliminarProductoSolicitud(id:number){
+
     this.productoService.eliminarProducto(id).subscribe(
       {
         next: data => {
@@ -137,11 +168,16 @@ export class VisualizarProductosComponent implements OnInit {
           this.buscarProductos();//recargar la tabla
         },
         error: error => {
-          alert(error.error);//cambiar
+          const dialogRef = this.dialog.open(MensajeConfirmacionComponent,{data:"ocurrio un error"})
         }
       }
     );
+
   }
+
+
+
+
 
 
 
@@ -152,7 +188,7 @@ export class VisualizarProductosComponent implements OnInit {
 
     //invocar componente
     this.router.navigate(["productos/crear-producto"]);
-    
+
   }
 
 
@@ -208,14 +244,14 @@ export class VisualizarProductosComponent implements OnInit {
     this.cargarGeneros();
     this.cargarPrendas();
     this.cargarHorarios();
-    
+
   }
 
-  
+
   /*
   *cargar las horarios en la lista desplegable para la busqueda
   */
-  private cargarHorarios(){
+  private cargarHorarios() {
     this.configureTypesService.buscarHorarios().subscribe(
       {
         next: data => {
@@ -236,7 +272,7 @@ export class VisualizarProductosComponent implements OnInit {
   /*
   *cargar las prendas en la lista desplegable para la busqueda
   */
-  private cargarPrendas(){
+  private cargarPrendas() {
     this.configureTypesService.buscarPrendas().subscribe(
       {
         next: data => {
@@ -258,7 +294,7 @@ export class VisualizarProductosComponent implements OnInit {
   /*
   *cargar las generos en la lista desplegable para la busqueda
   */
-  private cargarGeneros(){
+  private cargarGeneros() {
     this.configureTypesService.buscarGeneros().subscribe(
       {
         next: data => {
@@ -278,7 +314,7 @@ export class VisualizarProductosComponent implements OnInit {
   /*
   *cargar las tallas en la lista desplegable para la busqueda
   */
-  private cargarTallas(){
+  private cargarTallas() {
     this.configureTypesService.buscarTallas().subscribe(
       {
         next: data => {
@@ -298,7 +334,7 @@ export class VisualizarProductosComponent implements OnInit {
   /*
   *cargar las instituciones en la lista desplegable para la busqueda
   */
-  private cargarInstituciones(){
+  private cargarInstituciones() {
     this.configureTypesService.buscarInstituciones().subscribe(
       {
         next: data => {

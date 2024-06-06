@@ -28,6 +28,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
   templateUrl: './create-data-config.component.html',
   styleUrl: './create-data-config.component.css'
 })
+
 /*
 *Este componente facilita la creacion de los datos al abrir un modal para ingresar el nuevo nombre y registrarlo
 */

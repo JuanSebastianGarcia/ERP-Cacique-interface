@@ -1,0 +1,13 @@
+<h1 mat-dialog-title class="alert-title">Confirmar accion</h1>
+
+<div class="alert-box">
+    <mat-dialog-content class="mat-dialog">
+        <p class="alert-message">{{message}}</p>
+    </mat-dialog-content>
+
+    <mat-dialog-actions>
+        <button type="button" class="btn btn-secondary" (click)="cancelar()">cancelar</button>
+        <button type="button" class="btn btn-success" (click)="confirmar()">continuar</button>
+    </mat-dialog-actions>
+
+</div>

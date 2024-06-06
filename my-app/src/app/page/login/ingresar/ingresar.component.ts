@@ -4,7 +4,6 @@ import { LoginDto } from '../../../core/models/login-dto';
 import { LoginService } from '../../../core/service/login.service';
 import { TokenService } from '../../../core/service/token.service';
 import { Router } from '@angular/router';
-import { TokenDto } from '../../../core/models/token-dto';
 import { RespuestaDto } from '../../../core/models/respuesta-dto';
 import { MatDialog } from '@angular/material/dialog';
 import { MensajeAlertaComponent } from '../../../shared/components/mensaje-alerta/mensaje-alerta.component';
