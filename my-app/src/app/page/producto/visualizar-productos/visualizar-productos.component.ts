@@ -124,6 +124,7 @@ export class VisualizarProductosComponent implements OnInit {
   }
 
 
+
   /*
   *obtener el id de un producto de la tabla y luego eliminarlo
   *
@@ -141,6 +142,7 @@ export class VisualizarProductosComponent implements OnInit {
       }
     );
   }
+
 
 
   /*
@@ -165,6 +167,7 @@ export class VisualizarProductosComponent implements OnInit {
   }
 
 
+
   /*
   *restablecer las listas a un valor vacio
   */
@@ -175,6 +178,7 @@ export class VisualizarProductosComponent implements OnInit {
     this.talla = '';
     this.genero = '';
   }
+
 
 
 
@@ -204,6 +208,7 @@ export class VisualizarProductosComponent implements OnInit {
     this.cargarGeneros();
     this.cargarPrendas();
     this.cargarHorarios();
+    
   }
 
   

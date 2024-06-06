@@ -20,9 +20,9 @@ export class IngresarComponent {
 
 
   //formulario que almacena los datos del login
-  loginData: LoginDto  = {
+  loginData: LoginDto = {
     email: '',
-    password:''  
+    password: ''
   }
 
   /*
@@ -31,31 +31,37 @@ export class IngresarComponent {
     tokenService
   */
   constructor(private loginService: LoginService,
-              private tokenService: TokenService,
-              private router:Router,
-              public dialog: MatDialog){};
+    private tokenService: TokenService,
+    private router: Router,
+    public dialog: MatDialog) { };
 
-  
+
   /*
   ingresar al servicio. validar si el empleado existe o no
   */
   login() {
-    
-    if(this.validarCampos()){
+
+    if (this.validarCampos()) {
 
       this.loginService.ingresarUsuario(this.loginData).subscribe({
         next: (data: RespuestaDto<string>) => {
-            // Manejar el caso de éxito
-            this.tokenService.login(data.respuesta);
-            this.router.navigate(["productos"]);      
+          // Manejar el caso de éxito
+          this.tokenService.login(data.respuesta);
+          this.router.navigate(["productos"]);
         },
-        error:(error: RespuestaDto<string>) => {
-          console.log(error.respuesta);
-          const dialogRef=this.dialog.open(MensajeAlertaComponent,{data:'El correo o la contraeña son incorrectos'});
+        error: (error) => {
+          
+          if (error.error.error) {//error en los datos
+            const dialogRef = this.dialog.open(MensajeAlertaComponent, { data: error.error.respuesta });
+            
+          } else {//error en la conexion con el servidor
+            const dialogRef = this.dialog.open(MensajeAlertaComponent, { data: 'No se tiene conexion con el servidor' });
+          }
         }
       });
-    }else{
-      const dialogRef=this.dialog.open(MensajeAlertaComponent,{data:'Debe de llenar los campos'});
+
+    } else {
+      const dialogRef = this.dialog.open(MensajeAlertaComponent, { data: 'Debe de llenar los campos' });
     }
 
   }
@@ -67,14 +73,14 @@ export class IngresarComponent {
   *return (true) si los campos estan completados, (false) si algun campo esta vacio
   */
   private validarCampos() {
-    let respuesta:boolean = true;
+    let respuesta: boolean = true;
 
-    if(this.loginData.email=='' || this.loginData.password==''){
-      respuesta=false;
+    if (this.loginData.email == '' || this.loginData.password == '') {
+      respuesta = false;
     }
     return respuesta;
   }
-    
+
 
 
 }
