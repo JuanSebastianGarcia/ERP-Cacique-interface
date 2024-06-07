@@ -39,7 +39,6 @@ export class MensajeConfirmacionComponent implements OnInit{
   constructor(
     public dialogRef: MatDialogRef<MensajeConfirmacionComponent>,
     @Inject(MAT_DIALOG_DATA) public message:string,){ 
-
     }
 
   ngOnInit(): void {

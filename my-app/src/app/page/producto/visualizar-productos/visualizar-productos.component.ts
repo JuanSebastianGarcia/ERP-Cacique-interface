@@ -14,6 +14,7 @@ import { ConfigurationTypesService } from '../../../core/service/configuration-t
 import { MatDialog } from '@angular/material/dialog';
 import { MensajeAlertaComponent } from '../../../shared/components/mensaje-alerta/mensaje-alerta.component';
 import { MensajeConfirmacionComponent } from '../../../shared/components/mensaje-confirmacion/mensaje-confirmacion.component';
+import { MensajeInformacionComponent } from '../../../shared/components/mensaje-informacion/mensaje-informacion.component';
 
 
 @Component({
@@ -108,15 +109,13 @@ export class VisualizarProductosComponent implements OnInit {
   buscarProductos() {
 
     this.construirFiltro();//construccion del filtro
-
+    
     this.productoService.buscarProductos(this.filtros).subscribe({
       next: data => {
         this.dataSource = new MatTableDataSource(data.respuesta);
       },
       error: error => {
         const dialogRef = this.dialog.open(MensajeAlertaComponent, { data: 'Ocurrio un error' });
-
-        console.log("ocurrido un error");
       }
     })
   }
@@ -154,6 +153,7 @@ export class VisualizarProductosComponent implements OnInit {
   }
 
 
+  
   /*
   *Se encarga de hacer la solicitud al servicio para eliminar el producto
   *
@@ -164,7 +164,7 @@ export class VisualizarProductosComponent implements OnInit {
     this.productoService.eliminarProducto(id).subscribe(
       {
         next: data => {
-          alert(data.respuesta);
+          const dialogRef = this.dialog.open(MensajeInformacionComponent,{data:"producto eliminado"});//informar del producto eliminado
           this.buscarProductos();//recargar la tabla
         },
         error: error => {
@@ -261,7 +261,7 @@ export class VisualizarProductosComponent implements OnInit {
           }));
         },
         error: error => {
-          alert('no se cargaron las instituciones');
+          const dialogRef = this.dialog.open(MensajeAlertaComponent,{data:'no se cargaron las instituciones'});
         }
       }
     )
@@ -282,7 +282,7 @@ export class VisualizarProductosComponent implements OnInit {
           }));
         },
         error: error => {
-          alert('no se cargaron las instituciones');
+          const dialogRef=this.dialog.open(MensajeAlertaComponent,{data:'no se cargaron las instituciones'});
         }
       }
     )
@@ -304,7 +304,7 @@ export class VisualizarProductosComponent implements OnInit {
           }));
         },
         error: error => {
-          alert('no se cargaron las instituciones');
+          const dialogRef=this.dialog.open(MensajeAlertaComponent,{data:'no se cargaron las instituciones'});
         }
       }
     )
@@ -324,7 +324,7 @@ export class VisualizarProductosComponent implements OnInit {
           }));
         },
         error: error => {
-          alert('no se cargaron las instituciones');
+          const dialogRef = this.dialog.open(MensajeAlertaComponent,{data:'no se cargaron las instituciones'});
         }
       }
     )
@@ -344,7 +344,7 @@ export class VisualizarProductosComponent implements OnInit {
           }));
         },
         error: error => {
-          alert('no se cargaron las instituciones');
+          const dialogRef = this.dialog.open(MensajeAlertaComponent,{data:'no se cargaron las instituciones'});
         }
       }
     )

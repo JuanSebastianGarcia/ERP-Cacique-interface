@@ -4,6 +4,9 @@ import { ProductoDto } from '../../../core/models/producto-dto';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ProductoService } from '../../../core/service/producto.service';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MensajeAlertaComponent } from '../../../shared/components/mensaje-alerta/mensaje-alerta.component';
+import { MensajeInformacionComponent } from '../../../shared/components/mensaje-informacion/mensaje-informacion.component';
 
 @Component({
   selector: 'app-editar-producto',
@@ -49,7 +52,10 @@ export class EditarProductoComponent implements OnInit {
 
 
   constructor(private router: Router,
-              private productoService: ProductoService) { }
+              private productoService: ProductoService,
+              private dialog:MatDialog ) { 
+              
+  }
 
 
 
@@ -80,6 +86,9 @@ export class EditarProductoComponent implements OnInit {
 
   }
 
+
+
+
   /*
   *volver a la pagina anterior
   */
@@ -96,11 +105,11 @@ export class EditarProductoComponent implements OnInit {
     this.productoService.actualizarProducto(this.productoData).subscribe(
       {
         next: data => {
-          alert('productoActualizado');
+          const dialogRef=this.dialog.open(MensajeInformacionComponent,{data:'Producto actualizado'});
           this.router.navigate(['productos']);
         },
         error: error => {
-          alert('ocurrio un error en la actualizacion del producto');
+          const dialogRef = this.dialog.open(MensajeAlertaComponent,{data:'Ocurrio un error en la actualizacion del producto'})
           this.router.navigate(['productos']);
         }
 
@@ -124,6 +133,7 @@ export class EditarProductoComponent implements OnInit {
   }
 
 
+
   /*
   *validar la integridad y coherencia de los datos ingresados
   *validaciones:
@@ -131,7 +141,7 @@ export class EditarProductoComponent implements OnInit {
   *   -las nuevas cantidades deben de ser numeros enteros y mayores a cero
   *   -verificacion de la suma, la  cantidad actual + cantidad a agregar >= cantidad a descontar 
   */
-  validarDatos(): boolean {
+  private validarDatos(): boolean {
 
     let respuesta: boolean = false;
 
@@ -143,10 +153,10 @@ export class EditarProductoComponent implements OnInit {
       if (this.productoData.precio > 0) {
         respuesta = true;
       } else {
-        console.log('el precio debe de ser mayor a cero');
+        const dialogRef = this.dialog.open(MensajeAlertaComponent,{data:'el precio debe de ser mayor a cero'});
       }
     } else {
-      console.log('los datos de operacion no concuerdan, recuerda que la operacion debe de ser cero o mayor ademas de que deben de ser numeros enteros y mayores a cero');
+        const dialoRef = this.dialog.open(MensajeAlertaComponent,{data:'verifique las cantidades que entran o salen'})
     }
 
     return respuesta;
