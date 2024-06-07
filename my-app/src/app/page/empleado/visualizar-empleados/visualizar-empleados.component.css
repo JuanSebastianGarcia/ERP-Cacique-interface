@@ -1,6 +1,6 @@
 body {
     font-family: 'Roboto', sans-serif;
-    background: linear-gradient(135deg, #1e3c72, #4a8fc8);;
+    background: white;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -17,7 +17,8 @@ body {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-h1, h4 {
+h1,
+h4 {
     color: #333;
 }
 
@@ -62,7 +63,8 @@ table {
     border-collapse: collapse;
 }
 
-th, td {
+th,
+td {
     padding: 12px;
     border: 1px solid #ddd;
     text-align: left;
@@ -79,4 +81,9 @@ th {
 
 .mat-paginator {
     margin-top: 20px;
+    }
+
+.btn-agregar {
+    display: flex;
+    justify-content: flex-end;
 }

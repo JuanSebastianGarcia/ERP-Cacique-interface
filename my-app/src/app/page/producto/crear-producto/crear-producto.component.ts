@@ -8,6 +8,9 @@ import { RespuestaDto } from '../../../core/models/respuesta-dto';
 import { CommonModule } from '@angular/common';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { ConfigurationTypesService } from '../../../core/service/configuration-types.service';
+import { MatDialog } from '@angular/material/dialog';
+import { MensajeAlertaComponent } from '../../../shared/components/mensaje-alerta/mensaje-alerta.component';
+import { MensajeInformacionComponent } from '../../../shared/components/mensaje-informacion/mensaje-informacion.component';
 
 
 @Component({
@@ -68,8 +71,9 @@ export class CrearProductoComponent implements OnInit {
 
   constructor(private router: Router, 
               private productoService: ProductoService,
-              private configureTypesService: ConfigurationTypesService
-  ) { }
+              private configureTypesService: ConfigurationTypesService,
+              private dialog:MatDialog
+            ) { }
 
 
 
@@ -92,11 +96,11 @@ export class CrearProductoComponent implements OnInit {
       this.productoService.agregarProducto(this.productoData).subscribe({
 
         next: (data: RespuestaDto<string>) => {
-          alert(data.respuesta);//notificar exito    
+          const dialogRef = this.dialog.open(MensajeInformacionComponent,{data:data.respuesta});//confirmar la creacion   
           this.limpiarTabla();
         },
         error: error => {
-          alert('el producto no se pudo agregar');//notificar respuesta
+          const dialogRef = this.dialog.open(MensajeAlertaComponent,{data:'el producto no se pudo agregar'});//informar un error
         }
       });
 
@@ -117,13 +121,13 @@ export class CrearProductoComponent implements OnInit {
     //validar que sean enteros
     if (!(Number.isInteger(this.productoData.cantidad) && Number.isInteger(this.productoData.precio))) {
       respuesta = false;
-      alert('los datos de precio y cantidad deben ser valores numericos enteros');
+      const dialogRef = this.dialog.open(MensajeAlertaComponent,{data:'el precio y las cantidades tienen que ser enteros'});
     }
 
     //validar que sean mayores que cero
     if (!(this.productoData.cantidad >= 0 && this.productoData.precio >= 0)) {
       respuesta = false;
-      alert('los datos de precio y cantidad deben ser valores coherentes de cero en adelante');
+      const dialogRef = this.dialog.open(MensajeAlertaComponent,{data:'no pueden haber datos menores a cero'});
     }
 
     return respuesta;
@@ -158,6 +162,7 @@ export class CrearProductoComponent implements OnInit {
   }
 
 
+
   /*
   * se encarga de cargar los datos de configuracion para las listas desplegbales en la busqueda, se hace un
   * mapeo del dto al array que se imprime
@@ -172,6 +177,8 @@ export class CrearProductoComponent implements OnInit {
   }
 
 
+ 
+
   /*
   *cargar las horarios en la lista desplegable para la busqueda
   */
@@ -185,7 +192,7 @@ export class CrearProductoComponent implements OnInit {
           }));
         },
         error: error => {
-          alert('no se cargaron las instituciones');
+          const dialogRef = this.dialog.open(MensajeAlertaComponent,{data:'no se cargaron las instituciones'});
         }
       }
     )
@@ -206,7 +213,7 @@ export class CrearProductoComponent implements OnInit {
           }));
         },
         error: error => {
-          alert('no se cargaron las instituciones');
+          const dialogRef=this.dialog.open(MensajeAlertaComponent,{data:'no se cargaron las instituciones'});
         }
       }
     )
@@ -228,7 +235,7 @@ export class CrearProductoComponent implements OnInit {
           }));
         },
         error: error => {
-          alert('no se cargaron las instituciones');
+          const dialogRef=this.dialog.open(MensajeAlertaComponent,{data:'no se cargaron las instituciones'});
         }
       }
     )
@@ -248,7 +255,7 @@ export class CrearProductoComponent implements OnInit {
           }));
         },
         error: error => {
-          alert('no se cargaron las instituciones');
+          const dialogRef = this.dialog.open(MensajeAlertaComponent,{data:'no se cargaron las instituciones'});
         }
       }
     )
@@ -268,7 +275,7 @@ export class CrearProductoComponent implements OnInit {
           }));
         },
         error: error => {
-          alert('no se cargaron las instituciones');
+          const dialogRef = this.dialog.open(MensajeAlertaComponent,{data:'no se cargaron las instituciones'});
         }
       }
     )

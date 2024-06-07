@@ -7,6 +7,7 @@ import { ConfigTypesDto } from '../../../core/models/config-types-dto';
 import { RespuestaDto } from '../../../core/models/respuesta-dto';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateDataConfigComponent } from '../create-data-config/create-data-config.component';
+import { MensajeInformacionComponent } from '../../../shared/components/mensaje-informacion/mensaje-informacion.component';
 
 
 export interface Elements {
@@ -24,7 +25,7 @@ export interface Elements {
   templateUrl: './configuration-types.component.html',
   styleUrl: './configuration-types.component.css'
 })
-export class ConfigurationTypesComponent {
+export class ConfigurationTypesComponent implements OnInit{
 
 
   displayedColumns: string[] = ['idTipo', 'nombreTipo', 'boton'];
@@ -33,7 +34,19 @@ export class ConfigurationTypesComponent {
   private tipoActual: string = '';//variable que almacena la opcion buscada 
 
 
-  constructor(private configurationTypesSerice: ConfigurationTypesService, public dialog: MatDialog) { }
+  constructor(private configurationTypesSerice: ConfigurationTypesService,
+     public dialog: MatDialog) { }
+
+
+
+  /*
+  *se cargan las instituciones al incio
+  */
+  ngOnInit(): void {
+    this.tipoActual = 'institucion';
+
+    this.elegirOpcionBusqueda();
+  }
 
 
   /*
@@ -90,7 +103,9 @@ export class ConfigurationTypesComponent {
   * se encarga de abrir el modal que solitica el nombre del nuevo dato y luego pasarselo al proceso de crear
   */
   agregarDato(){
-    const dialogRef = this.dialog.open(CreateDataConfigComponent,{data:'Que dato desea agregar'});
+
+
+    const dialogRef = this.dialog.open(CreateDataConfigComponent,{data:'Que '+this.tipoActual+' desea agregar'});
 
     dialogRef.afterClosed().subscribe(respuesta => 
       {
@@ -199,10 +214,10 @@ export class ConfigurationTypesComponent {
   private imprimirMensaje(respuesta: Observable<RespuestaDto<string>>) {
     respuesta.subscribe({
       next:data =>{
-        alert(data.respuesta);
+        const dialogRef = this.dialog.open(MensajeInformacionComponent,{data:data.respuesta});
       },
       error:error => {
-        alert(error.respuesta);
+        const dialogRef = this.dialog.open(MensajeInformacionComponent,{data:'Ocurrio un error'});
       }
     });
   }

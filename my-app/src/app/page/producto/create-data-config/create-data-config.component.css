@@ -1,0 +1,14 @@
+mat-dialog-actions button {
+    margin-left: 8px;
+    /* Espacio entre botones */
+    padding: 10px 20px;
+    /* Aumenta el tamaño del botón */
+    font-size: 16px;
+    /* Aumenta el tamaño del texto */
+    margin: 10px;
+}
+
+mat-dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+}

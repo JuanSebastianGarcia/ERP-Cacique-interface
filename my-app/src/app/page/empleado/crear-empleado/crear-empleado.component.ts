@@ -6,6 +6,9 @@ import { FormsModule } from '@angular/forms';
 import {MatSelectModule} from '@angular/material/select';
 import { EmpleadoService } from '../../../core/service/empleado.service';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { MensajeAlertaComponent } from '../../../shared/components/mensaje-alerta/mensaje-alerta.component';
+import { MensajeInformacionComponent } from '../../../shared/components/mensaje-informacion/mensaje-informacion.component';
 
 @Component({
   selector: 'app-crear-empleado',
@@ -48,7 +51,9 @@ export class CrearEmpleadoComponent {
   cedulaNoValidada:number=0;
   telefonoNoValidado:number=0;
 
-  constructor(private empleadoService:EmpleadoService,private router:Router){};
+  constructor(private empleadoService:EmpleadoService,
+              private router:Router,
+              private dialog:MatDialog){};
 
   /*
   *se encarga de hacer una solicitud para el registro de un nuevo empleado
@@ -57,15 +62,17 @@ export class CrearEmpleadoComponent {
 
   //validacion de datos
   if(this.validarDatosEmpleado()==true){
+
     this.empleadoData.cedula=this.cedulaNoValidada.toString();
     this.empleadoData.telefono=this.telefonoNoValidado.toString();
 
     this.empleadoService.agregarEmpleado(this.empleadoData).subscribe({
       next:data=>{
+        const dialogRef = this.dialog.open(MensajeInformacionComponent,{data:'Empleado agregado'});
         this.router.navigate(['empleados']);
       },
       error:error=>{
-        alert(error.respuesta);
+        const dialogRef = this.dialog.open(MensajeAlertaComponent,{data:'El empleado no se puede crear'});
       }
 
     });
@@ -95,7 +102,7 @@ export class CrearEmpleadoComponent {
     //validar que sean enteros
     if(!(Number.isInteger(this.cedulaNoValidada) && Number.isInteger(this.telefonoNoValidado))){
       respuesta=false;
-      alert('el telefono y la cedula deben de ser valores sin puntos ni comas');
+      const dialogRef = this.dialog.open(MensajeAlertaComponent,{data:'el telefono y la cedula deben de ser valores sin puntos ni comas'});
     }
 
     return respuesta;
