@@ -33,7 +33,7 @@ ERP-CACIQUE Es un proyecto enfocado en la optimizacion de los procesos internos 
     - service:   clases que comunican las APIs con la lógica 
     - utils:  clases para procesos generales que son vitales pero no están relacionados con la lógica de negocio 
 - test 
-  - pruebas unitarias de los servicios
+  - pruebas unitarias de los servicios.
 
 
 
