@@ -81,15 +81,6 @@ export class CrearEmpleadoComponent {
  }
 
 
-
- /*
- *se encarga de volver a la pagina anterior
- */
- volverTabla() {
-  this.router.navigate(['empleados']);
-}
-
-
  /*
  *validar los datos telefono y cedula 
   *@return true - el objeto cumple las validaciones 

@@ -11,9 +11,8 @@
 
     <div class="agregar-empleado-form">
         <h1>Agregar Empleado</h1>
-        <mat-card>
             <form (ngSubmit)="agregarEmpleado()">
-                <mat-card-content>DATOS</mat-card-content>
+                <mat-card-content>FORMULARIO</mat-card-content>
 
                 <!-- Campo del nombre -->
                 <div class="container">
@@ -47,7 +46,7 @@
 
                 <!-- Lista de cargos -->
                 <div>
-                    <h4>CARGA</h4>
+                    <h4>Rol o Cargo</h4>
                     <mat-form-field>
                         <mat-label>Cargo</mat-label>
                         <mat-select [(ngModel)]="empleadoData.tipoEmpleado" [ngModelOptions]="{standalone: true}">
@@ -61,13 +60,9 @@
 
 
             </form>
-            <button type="submit" (click)="agregarEmpleado()" class="btn btn-success btn-login" >agregar empleado</button>
-        </mat-card>
+            <button type="button" (click)="agregarEmpleado()" class="btn btn-success" >agregar empleado</button>
+       
 
-        <!-- Boton Volver-->
-        <div class="btn-volver">
-            <button class="btn btn-success" (click)="volverTabla()">Volver</button>
-        </div>
     </div>
 </body>
 

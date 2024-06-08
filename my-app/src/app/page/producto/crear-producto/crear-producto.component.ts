@@ -100,7 +100,7 @@ export class CrearProductoComponent implements OnInit {
           this.limpiarTabla();
         },
         error: error => {
-          const dialogRef = this.dialog.open(MensajeAlertaComponent,{data:'el producto no se pudo agregar'});//informar un error
+          const dialogRef = this.dialog.open(MensajeAlertaComponent,{data:error.error.respuesta});//informar un error
         }
       });
 
@@ -134,14 +134,6 @@ export class CrearProductoComponent implements OnInit {
   }
 
 
-
-
-  /*
-  *volver a la pagina anterior
-  */
-  volverTabla() {
-    this.router.navigate(['productos']);
-  }
 
 
   /*

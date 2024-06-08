@@ -142,7 +142,7 @@ export class VisualizarProductosComponent implements OnInit {
   */
   eliminarProductoConfirmar(id: number) {
 
-    const dialogRef = this.dialog.open(MensajeConfirmacionComponent, { data: "esta seguro de eliminar el producto" })
+    const dialogRef = this.dialog.open(MensajeConfirmacionComponent, { data: "¿Esta seguro de eliminar el producto?" })
 
     dialogRef.afterClosed().subscribe(respuesta => {
       if(respuesta===true){

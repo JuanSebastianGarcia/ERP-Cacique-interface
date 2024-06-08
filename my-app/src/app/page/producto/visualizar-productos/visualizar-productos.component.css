@@ -11,7 +11,7 @@ body {
 .container {
   flex: 1;
   padding: 20px;
-  margin-right: 200px; 
+  margin-right: 100px; 
   max-width: 1400px; 
 }
 
