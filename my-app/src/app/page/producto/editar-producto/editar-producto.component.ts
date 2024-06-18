@@ -41,8 +41,7 @@ export class EditarProductoComponent implements OnInit {
     horario: '',
     genero: '',
     precio: 0,
-    cantidad: 0,
-    descripcion: ' '
+    cantidad: 0
   }
 
   //variables que almacenan los cambios en la cantidad

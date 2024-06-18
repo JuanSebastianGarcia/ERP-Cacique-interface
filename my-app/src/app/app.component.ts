@@ -31,11 +31,10 @@ import { IngresarComponent } from "./page/login/ingresar/ingresar.component";
     ]
 })
 export class AppComponent {
-  title = 'my-app';
+
+
 
   constructor(public tokenService:TokenService){};
-
-
 
 
 }

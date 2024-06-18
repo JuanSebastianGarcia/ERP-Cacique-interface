@@ -8,6 +8,8 @@ import { RespuestaDto } from '../../../core/models/respuesta-dto';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateDataConfigComponent } from '../create-data-config/create-data-config.component';
 import { MensajeInformacionComponent } from '../../../shared/components/mensaje-informacion/mensaje-informacion.component';
+import { MensajeConfirmacionComponent } from '../../../shared/components/mensaje-confirmacion/mensaje-confirmacion.component';
+import { MensajeAlertaComponent } from '../../../shared/components/mensaje-alerta/mensaje-alerta.component';
 
 
 export interface Elements {
@@ -25,17 +27,20 @@ export interface Elements {
   templateUrl: './configuration-types.component.html',
   styleUrl: './configuration-types.component.css'
 })
-export class ConfigurationTypesComponent implements OnInit{
+export class ConfigurationTypesComponent implements OnInit {
 
-
+  /*
+  *Recursos para la tabla
+  */
   displayedColumns: string[] = ['idTipo', 'nombreTipo', 'boton'];
   dataSource = new MatTableDataSource<ConfigTypesDto>([]);
+
 
   private tipoActual: string = '';//variable que almacena la opcion buscada 
 
 
   constructor(private configurationTypesSerice: ConfigurationTypesService,
-     public dialog: MatDialog) { }
+    public dialog: MatDialog) { }
 
 
 
@@ -45,45 +50,30 @@ export class ConfigurationTypesComponent implements OnInit{
   ngOnInit(): void {
     this.tipoActual = 'institucion';
 
-    this.elegirOpcionBusqueda();
+    this.buscarTipoSeleccionado();
   }
 
 
   /*
-  *eliminar un dato de configuracion.se usa la variable tipoActual para saber de que tabla se desea hacer 
-  *el delete  
-  *param dato - nombre del dato que se eliminara
+  *Mostrar mensaje de confirmacion para la eliminacion de un producto, si la confirmacion es (true) 
+  *la eliminacion esta confirmada por el usuario
+  *
+  *@param dato - nombre del dato que se eliminara
   */
-  eliminarDato(dato: string) {
-   
-    let respuesta: string = '';
+  eliminarDatoConfirmacion(dato: string) {
 
-    switch (this.tipoActual) {
-      case 'institucion':
-        this.imprimirMensaje(this.configurationTypesSerice.eliminarInstituciones(dato));
-        this.elegirOpcionBusqueda();//refrescar la tabla
-        break;
-      case 'horario':
-        this.imprimirMensaje(this.configurationTypesSerice.eliminarHorarios(dato));
-        this.elegirOpcionBusqueda();//refrescar la tabla
-        break;
+    const dialogRef = this.dialog.open(MensajeConfirmacionComponent, { data: "¿Esta seguro de eliminar el dato?" });
 
-      case 'talla':
-        this.imprimirMensaje(this.configurationTypesSerice.eliminarTallas(dato));
-        this.elegirOpcionBusqueda();//refrescar la tabla
-        break;
+    dialogRef.afterClosed().subscribe(respuesta => {
+      if (respuesta == true) {
+        this.eliminarDatoSolicitud(dato);
+      }
 
-      case 'prenda':
-        this.imprimirMensaje(this.configurationTypesSerice.eliminarPrendas(dato));
-        this.elegirOpcionBusqueda();//refrescar la tabla
-        break;
+    });
 
-      case 'genero':
-        this.imprimirMensaje(this.configurationTypesSerice.eliminarGeneros(dato));
-        this.elegirOpcionBusqueda();//refrescar la tabla
-        break;
-    }
   }
+
+
 
 
 
@@ -94,7 +84,7 @@ export class ConfigurationTypesComponent implements OnInit{
 
     this.tipoActual = tipo;
 
-    this.elegirOpcionBusqueda();
+    this.buscarTipoSeleccionado();
 
   }
 
@@ -102,24 +92,22 @@ export class ConfigurationTypesComponent implements OnInit{
   /*
   * se encarga de abrir el modal que solitica el nombre del nuevo dato y luego pasarselo al proceso de crear
   */
-  agregarDato(){
+  agregarDato() {
 
 
-    const dialogRef = this.dialog.open(CreateDataConfigComponent,{data:'Que '+this.tipoActual+' desea agregar'});
+    const dialogRef = this.dialog.open(CreateDataConfigComponent, { data: 'Que ' + this.tipoActual + ' desea agregar' });
 
-    dialogRef.afterClosed().subscribe(respuesta => 
-      {
-        if(respuesta==undefined){
-        }else{
-          if(respuesta==''){
-            alert("tiene que agregar un dato o cancelar");
-            this.agregarDato();
-          }
-          else{
-            this.agregarDatoSolicitud(respuesta);
-          }
+    dialogRef.afterClosed().subscribe(respuesta => {
+      if (respuesta == undefined) {
+      } else {
+        if (respuesta == '') {
+          this.agregarDato();
+        }
+        else {
+          this.agregarDatoSolicitud(respuesta);
         }
       }
+    }
     );
   }
 
@@ -134,37 +122,32 @@ export class ConfigurationTypesComponent implements OnInit{
 
       case 'institucion':
         this.imprimirMensaje(this.configurationTypesSerice.agregarInstitucion(respuesta));
-        this.elegirOpcionBusqueda();//refrescar la tabla
         break;
       case 'horario':
         this.imprimirMensaje(this.configurationTypesSerice.agregarhorario(respuesta));
-        this.elegirOpcionBusqueda();//refrescar la tabla
         break;
 
       case 'talla':
         this.imprimirMensaje(this.configurationTypesSerice.agregartalla(respuesta));
-        this.elegirOpcionBusqueda();//refrescar la tabla
         break;
 
       case 'prenda':
         this.imprimirMensaje(this.configurationTypesSerice.agregarprenda(respuesta));
-        this.elegirOpcionBusqueda();//refrescar la tabla
         break;
 
       case 'genero':
         this.imprimirMensaje(this.configurationTypesSerice.agregarGenero(respuesta));
-        this.elegirOpcionBusqueda();//refrescar la tabla
         break;
     }
   }
-  
+
 
 
 
   /*
-  *continuando con la busqueda, se especifica cual tipo de dato es el que se requiere
+  *continuando con la busqueda, se llama al servicio para buscar el tipo de dato elegido por el usuario
   */
-  private elegirOpcionBusqueda() {
+  private buscarTipoSeleccionado() {
     switch (this.tipoActual) {
 
       case 'institucion':
@@ -213,17 +196,46 @@ export class ConfigurationTypesComponent implements OnInit{
   */
   private imprimirMensaje(respuesta: Observable<RespuestaDto<string>>) {
     respuesta.subscribe({
-      next:data =>{
-        const dialogRef = this.dialog.open(MensajeInformacionComponent,{data:data.respuesta});
+      next: data => {
+        const dialogRef = this.dialog.open(MensajeInformacionComponent, { data: data.respuesta });
+        this.buscarTipoSeleccionado();//refrescar la tabla  
       },
-      error:error => {
-        const dialogRef = this.dialog.open(MensajeInformacionComponent,{data:'Ocurrio un error'});
+      error: error => {
+        const dialogRef = this.dialog.open(MensajeInformacionComponent, { data: 'Ocurrio un error' });
       }
     });
   }
 
 
+  /*
+  *Enviar una solicitud al servicio del servidor para eliminar un datos de configuracion
+  *
+  * @param dato - identificador unico del dato
+  */
+  private eliminarDatoSolicitud(dato: string) {
+    let respuesta: string = '';
 
+    switch (this.tipoActual) {
+      case 'institucion':
+        this.imprimirMensaje(this.configurationTypesSerice.eliminarInstituciones(dato));
+        break;
+      case 'horario':
+        this.imprimirMensaje(this.configurationTypesSerice.eliminarHorarios(dato));
+        break;
+
+      case 'talla':
+        this.imprimirMensaje(this.configurationTypesSerice.eliminarTallas(dato));
+        break;
+
+      case 'prenda':
+        this.imprimirMensaje(this.configurationTypesSerice.eliminarPrendas(dato));
+        break;
+
+      case 'genero':
+        this.imprimirMensaje(this.configurationTypesSerice.eliminarGeneros(dato));
+        break;
+    }
+  }
 
 
 

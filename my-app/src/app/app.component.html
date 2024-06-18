@@ -2,12 +2,9 @@
 <div *ngIf="tokenService.isLogged(); else loginTemplate">
     <div class="app-container">
       <app-barra-lateral></app-barra-lateral>
-      <div class="content" >
-        <router-outlet></router-outlet>
-      </div>
     </div>
   </div>
   <ng-template #loginTemplate>
-    <app-ingresar></app-ingresar>
+    <app-ingresar ></app-ingresar>
   </ng-template>
 

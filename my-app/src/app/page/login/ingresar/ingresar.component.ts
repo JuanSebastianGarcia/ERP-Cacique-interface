@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { LoginDto } from '../../../core/models/login-dto';
 import { LoginService } from '../../../core/service/login.service';

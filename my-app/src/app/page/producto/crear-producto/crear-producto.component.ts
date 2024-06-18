@@ -37,7 +37,6 @@ export class CrearProductoComponent implements OnInit {
   genero: string = '';
   cantidad: number = 0;
   precio: number = 0.0;
-  descripcion: string = '';
 
 
   /*
@@ -54,19 +53,16 @@ export class CrearProductoComponent implements OnInit {
 
 
   //formulario dto que sera enviado al servidor para crear el producto
-  public productoData: ProductoDto = {
+  public productoData: ProductoDto= {
     id: 0,
     prenda: 'string',
     institucion: 'string',
     talla: 'string',
     horario: 'string',
     genero: 'string',
-    precio: 0.0,
-    cantidad: 0,
-    descripcion: 'string'
+    precio: 0,
+    cantidad: 0
   }
-
-
 
 
   constructor(private router: Router, 
@@ -149,7 +145,6 @@ export class CrearProductoComponent implements OnInit {
       genero: '',
       precio: 0,
       cantidad: 0,
-      descripcion: ''
     };
   }
 
