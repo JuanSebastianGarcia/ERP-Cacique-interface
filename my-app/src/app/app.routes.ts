@@ -17,5 +17,10 @@ export const routes: Routes = [
         path:'empleados',
         loadChildren:() => import('./page/empleado/empleado.routes').then(m => m.EMPLEADO_ROUTES),
         canActivateChild: [authGuard,accessControlGuard]
+    },
+    {
+        path:'facturacion',
+        loadChildren:() => import('./page/facturacion/facturacion.routes').then(m => m.FACTURACION_ROUTES),
+        canActivateChild: [authGuard,accessControlGuard]
     }
 ];

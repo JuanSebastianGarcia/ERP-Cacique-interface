@@ -2,16 +2,11 @@
 <mat-sidenav-container class="sidenav-container">
 
   <!-- Sidenav -->
-  <mat-sidenav 
-    #drawer 
-    class="sidenav" 
-    fixedInViewport
-    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-    [mode]="(isHandset$ | async) ? 'over' : 'side'"
-    [(opened)]="opened">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'" [(opened)]="opened">
 
     <!-- Sidenav Toolbar -->
-    <mat-toolbar  class="sidenav-toolbar">
+    <mat-toolbar class="sidenav-toolbar">
       Menu
     </mat-toolbar>
 
@@ -19,55 +14,80 @@
     <mat-nav-list>
       <div class="Container">
 
-        <!--inventario section-->
+        <!--Stock section-->
         <span class="etiqueta-slidebar">INVENTARIO</span>
+
         <a mat-list-item routerLink="/productos">
           <mat-icon>visibility</mat-icon>
           <span>Visualizar Inventario</span>
         </a>
+
         <a mat-list-item routerLink="/productos/crear-producto">
           <mat-icon>add_circle</mat-icon>
           <span>Agregar Producto</span>
         </a>
+        
         <a mat-list-item routerLink="/productos/editar-tipo-Configuracion">
           <mat-icon>settings</mat-icon>
           <span>Editar datos</span>
         </a>
+
       </div>
 
-    
-      <!-- Empleados Section -->
+
+      <!-- Employees Section -->
       <div class="contain">
+        
         <span class="etiqueta-slidebar">EMPLEADOS</span>
+
         <a mat-list-item routerLink="/empleados">
           <mat-icon>visibility</mat-icon>
           <span>Visualizar Empleados</span>
         </a>
+
         <a mat-list-item routerLink="/empleados/crear-empleado">
           <mat-icon>person_add</mat-icon>
           <span>Crear Empleados</span>
         </a>
+
       </div>
 
 
+
+      <!--Billing section -->
+      <div class="contain">
+
+        <span class="etiqueta-slidebar"> Facturacion </span>
+
+        <a mat-list-item routerLink="/facturacion/buscar-factura">
+          <span>Buscar factura</span>
+        </a>
+        
+      </div>
+
+
+
+
+
     </mat-nav-list>
-    
+
+
   </mat-sidenav>
 
 
   <!-- Main Content -->
-  <mat-sidenav-content >
+  <mat-sidenav-content>
     <!-- Main Toolbar -->
-    <mat-toolbar class ="toolbar-content" >
+    <mat-toolbar class="toolbar-content">
       <!-- Toggle Sidenav Button -->
 
-      <span >CACIQUE ERP</span>
+      <span>CACIQUE ERP</span>
       <span class="spacer"></span>
 
       <!-- Logout Button -->
       <button type="button" class="btn btn-success logout-button" (click)="logout()">Cerrar sesión</button>
     </mat-toolbar>
-    
+
     <!-- Add Content Here -->
     <router-outlet></router-outlet>
   </mat-sidenav-content>

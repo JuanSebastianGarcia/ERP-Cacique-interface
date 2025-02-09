@@ -73,6 +73,10 @@ export class VisualizarEmpleadosComponent implements OnInit{
     });
   }
 
+
+
+  
+
   /*
   *se encarga de hacer una solicitud para imprimir la lista de empleados
   */
