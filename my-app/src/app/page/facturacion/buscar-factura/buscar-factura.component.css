@@ -1,0 +1,46 @@
+/**
+ * Estilos para el componente ConsultarFactura
+ */
+
+/* Estilo para el encabezado principal */
+h2 {
+    color: #333;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #e9ecef;
+    padding-bottom: 0.5rem;
+  }
+  
+  /* Estilos para la sección de formulario de búsqueda */
+  .form-label {
+    font-weight: 500;
+  }
+  
+  /* Estilos para la tabla de resultados */
+  .mat-elevation-z8 {
+    width: 100%;
+    margin-top: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  th.mat-header-cell {
+    background-color: #f8f9fa;
+    color: #495057;
+    font-weight: 600;
+  }
+  
+  /* Ajusta estilos para el botón de editar */
+  .mat-icon-button.mat-warn {
+    color: #dc3545;
+  }
+  
+  /* Estilos responsivos */
+  @media (max-width: 768px) {
+    .col-md-3 {
+      margin-bottom: 15px;
+    }
+    
+    .mat-table {
+      display: block;
+      overflow-x: auto;
+    }
+  }

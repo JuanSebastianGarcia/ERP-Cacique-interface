@@ -21,6 +21,6 @@ export const routes: Routes = [
     {
         path:'facturacion',
         loadChildren:() => import('./page/facturacion/facturacion.routes').then(m => m.FACTURACION_ROUTES),
-        canActivateChild: [authGuard,accessControlGuard]
+        canActivateChild: []
     }
 ];
