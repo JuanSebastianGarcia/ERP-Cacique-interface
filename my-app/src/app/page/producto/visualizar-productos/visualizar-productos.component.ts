@@ -118,6 +118,7 @@ export class VisualizarProductosComponent implements OnInit {
         const dialogRef = this.dialog.open(MensajeAlertaComponent, { data: 'Ocurrio un error' });
       }
     })
+    
   }
 
 
