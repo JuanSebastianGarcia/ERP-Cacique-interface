@@ -1,0 +1,91 @@
+<h2>Realizar cambios</h2>
+
+<!-- Datos del cliente -->
+<fieldset>
+  <legend>Datos del cliente</legend>
+  <div class="form-group">
+    <label>Cédula</label>
+    <input type="text" class="form-control" disabled>
+  </div>
+  <div class="form-group">
+    <label>Señor</label>
+    <input type="text" class="form-control" disabled>
+  </div>
+  <div class="form-group">
+    <label>Teléfono</label>
+    <input type="text" class="form-control" disabled>
+  </div>
+  <div class="form-group">
+    <label>Correo</label>
+    <input type="text" class="form-control" disabled>
+  </div>
+</fieldset>
+
+<!-- Lista de productos -->
+<fieldset>
+  <legend>Lista de productos</legend>
+  <table class="tabla-productos">
+    <thead>
+      <tr>
+        <th>Descripción del producto</th>
+        <th>Estado</th>
+        <th>Valor unitario</th>
+        <th>Valor total</th>
+        <th>Remover</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let producto of productos">
+        <td><input type="text" class="form-control" [value]="producto.descripcion" disabled></td>
+        <td>
+          <select class="form-control">
+            <option>Entregado</option>
+            <option>Pendiente</option>
+          </select>
+        </td>
+        <td><input type="text" class="form-control" [value]="producto.valorUnitario" disabled></td>
+        <td><input type="text" class="form-control" [value]="producto.valorTotal" disabled></td>
+        <td>
+          <button class="btn btn-danger" (click)="eliminarProducto(producto)">
+            <mat-icon>close</mat-icon>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <button class="btn btn-secondary" (click)="agregarProducto()">Agregar producto</button>
+</fieldset>
+
+<!-- Totales -->
+<div class="totales">
+  <div>
+    <label>Valor total factura</label>
+    <input type="text" class="form-control" [value]="valorTotal" disabled>
+  </div>
+  <div>
+    <label>Valor pagado</label>
+    <input type="text" class="form-control" [value]="valorPagado" disabled>
+  </div>
+</div>
+
+<!-- Pago -->
+<fieldset>
+  <legend>Pago</legend>
+  <div class="form-group">
+    <label>Método de pago</label>
+    <select class="form-control">
+      <option>Efectivo</option>
+      <option>Tarjeta</option>
+      <option>Transferencia</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label>Valor a pagar</label>
+    <input type="text" class="form-control">
+  </div>
+</fieldset>
+
+<!-- Botón Guardar -->
+<div class="boton-guardar">
+  <button class="btn btn-success">Guardar cambios</button>
+</div>

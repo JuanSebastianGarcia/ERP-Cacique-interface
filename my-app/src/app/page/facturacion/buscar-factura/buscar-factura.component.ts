@@ -5,6 +5,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 
 import { FacturaService } from '../../../core/service/factura.service';
 import { FacturaDto } from '../../../core/models/factura-dto';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-buscar-factura',
@@ -15,39 +16,39 @@ import { FacturaDto } from '../../../core/models/factura-dto';
     FormsModule
   ],
   templateUrl: './buscar-factura.component.html',
-  styleUrl: './buscar-factura.component.css'
+  styleUrls: ['./buscar-factura.component.css']
 })
 export class BuscarFacturaComponent {
 
-  // Columnas a mostrar en la tabla
+  // Columnas visibles en la tabla
   displayedColumns: string[] = ['id', 'fecha', 'cliente', 'estado', 'acciones'];
 
   // Fuente de datos para la tabla
-  dataSource: any[] = [];
+  dataSource = new MatTableDataSource<any>([]);
 
-  // Lista de facturas obtenidas desde el servicio
+  // Lista de facturas recibidas desde el servicio
   facturas: FacturaDto[] = [];
 
-  // Valor ingresado por el usuario para la búsqueda
+  // Texto ingresado por el usuario en el campo de búsqueda
   campoBusqueda: string = '';
 
 
-
-  
   constructor(
-    private facturaService: FacturaService
+    private facturaService: FacturaService,
+    private router: Router
   ) {}
 
 
-
-  // Método principal que ejecuta la búsqueda de la factura
+  // Ejecuta la búsqueda de facturas según el tipo seleccionado y el valor ingresado
   buscarFactura(): void {
     const tipoBusqueda = (document.querySelector('input[name="tipoBusqueda"]:checked') as HTMLInputElement)?.value;
 
     this.facturaService.consultarFactura(Number(this.campoBusqueda), tipoBusqueda).subscribe({
       next: data => {
-        this.facturas = [data.respuesta]; // Se asigna la respuesta a la lista
-        this.cargarTabla(); // Se actualiza la tabla con los datos
+        if (data && data.respuesta && Array.isArray(data.respuesta)) {
+          this.facturas = data.respuesta;
+          this.cargarTabla();
+        }
       },
       error: error => {
         alert("Error al buscar la factura: " + error.error.mensaje);
@@ -56,17 +57,26 @@ export class BuscarFacturaComponent {
   }
 
 
-  // Carga la información de las facturas en el formato necesario para la tabla
+  // Carga los datos recibidos en el formato necesario para la tabla
   private cargarTabla(): void {
-    for (const factura of this.facturas) {
-      const json = {
-        id: factura.idFactura,
-        fecha: 'null', // Aquí se debe asignar una fecha real si está disponible
-        cliente: factura.cedulaCliente,
-        estado: factura.estadoFactura
-      };
+    const tabla = this.facturas.map(factura => ({
+      id: factura.idFactura,
+      fecha: 'null', // Reemplazar con la fecha real si está disponible
+      cliente: factura.cedulaCliente,
+      estado: factura.estadoFactura
+    }));
 
-      this.dataSource.push(json);
-    }
+    this.dataSource = new MatTableDataSource(tabla);
+
   }
+
+
+  editarFactura(id: number): void {
+
+    this.facturaService.setIdFacturaActualizando(id);
+
+    this.router.navigate(["facturacion/actualizar-factura"]);
+  }
+
+
 }
