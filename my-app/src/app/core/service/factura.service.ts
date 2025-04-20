@@ -34,7 +34,7 @@ export class FacturaService {
   /**
    * Retorna la factura previamente cargada que coincide con el ID actual
    */
-  public buscarFactura(): FacturaDto | undefined {
+  public getFacturaActualizar(): FacturaDto | undefined {
     return this.facturasCargadas.find(f => f.idFactura === this.idFacturaActualizando);
   }
 

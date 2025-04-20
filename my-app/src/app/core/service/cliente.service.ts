@@ -1,0 +1,24 @@
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { RespuestaDto } from "../models/respuesta-dto";
+import { ClienteDto } from "../models/cliente-dto";
+import { Observable } from "rxjs";
+
+
+@Injectable({
+    providedIn: 'root'
+})
+export class ClienteService {
+  private clienteURL: string = 'http://localhost:9090/api/manejocliente';
+  private clientesCargados: any[] = [];
+
+  constructor(private http: HttpClient) {}
+
+    /*
+    * Función para consultar un cliente
+    */
+  public buscarCliente(codigo:number):Observable<RespuestaDto<ClienteDto>>{
+    return this.http.get<RespuestaDto<ClienteDto>>(`${this.clienteURL}/buscarCliente/${codigo}`);
+  }
+
+}
