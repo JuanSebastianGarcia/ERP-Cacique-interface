@@ -1,142 +1,156 @@
-<!-- Título principal de la sección -->
+<!-- ===============================
+     Section Title: Main Heading
+     Indicates the start of the invoice editing form.
+================================ -->
 <h2>Realizar cambios</h2>
 
-<!-- =====================================
-     Bloque: Datos del cliente
-     Muestra la información básica del cliente.
-     Los campos son solo lectura (disabled).
-====================================== -->
+<!-- ===============================
+     Block: Client Data
+     Displays basic client information.
+     All fields are read-only.
+================================ -->
 <fieldset>
   <legend>Datos del cliente</legend>
 
-  <!-- Cédula -->
+  <!-- Client ID (Cedula) -->
   <div class="form-group">
     <label>Cédula</label>
-    <input type="text" class="form-control" [value]="cliente.cedula">
+    <input type="text" class="form-control" [value]="cliente.cedula" readonly>
   </div>
 
-  <!-- Nombre o razón social -->
+  <!-- Client Name or Business Name -->
   <div class="form-group">
     <label>Señor</label>
-    <input type="text" class="form-control" [value]="cliente.nombre" disabled>
+    <input type="text" class="form-control" [value]="cliente.nombre" readonly>
   </div>
 
-  <!-- Teléfono -->
+  <!-- Client Phone Number -->
   <div class="form-group">
     <label>Teléfono</label>
-    <input type="text" class="form-control" [value]="cliente.telefono" disabled>
+    <input type="text" class="form-control" [value]="cliente.telefono" readonly>
   </div>
 
-  <!-- Correo electrónico -->
+  <!-- Client Email Address -->
   <div class="form-group">
     <label>Correo</label>
-    <input type="text" class="form-control" [value]="cliente.email" disabled>
+    <input type="text" class="form-control" [value]="cliente.email" readonly>
   </div>
 
-  <!-- direccion  -->
+  <!-- Client Physical Address -->
   <div class="form-group">
-    <label>Direccion</label>
-    <input type="text" class="form-control" [value]="cliente.direccion" disabled>
+    <label>Dirección</label>
+    <input type="text" class="form-control" [value]="cliente.direccion" readonly>
   </div>
-
 </fieldset>
 
-<!-- =====================================
-     Bloque: Lista de productos
-     Tabla dinámica con los productos de la factura.
-====================================== -->
-
+<!-- ===============================
+     Block: Product List
+     Displays the invoice products in a dynamic table.
+     Includes editable status and delete option.
+================================ -->
 <table mat-table [dataSource]="listaProductos" class="mat-elevation-z8">
-  <!-- Columna ID Factura -->
+
+  <!-- Column: Product ID -->
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef> id </th>
+    <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+  </ng-container>  
+
+  <!-- Column: Product Description -->
   <ng-container matColumnDef="Descripcion">
-    <th mat-header-cell *matHeaderCellDef> Descripcion  </th>
+    <th mat-header-cell *matHeaderCellDef> Descripcion </th>
     <td mat-cell *matCellDef="let element"> {{element.Descripcion}} </td>
   </ng-container>
 
-  <!-- Columna Fecha -->
+  <!-- Column: Product Status (editable dropdown) -->
   <ng-container matColumnDef="Estado">
     <th mat-header-cell *matHeaderCellDef> Estado </th>
-    <td mat-cell *matCellDef="let element"> {{element.Estado}} </td>
+    <td mat-cell *matCellDef="let element">
+      <mat-form-field appearance="fill">
+        <!-- Dropdown to select product status -->
+        <mat-select [(ngModel)]="element.Estado" 
+        (selectionChange)="cambiarEstado($event.value, element.id)">
+          <mat-option *ngFor="let estado of estadosDisponibles" [value]="estado">
+            {{ estado }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </td>
   </ng-container>
 
-  <!-- Columna Nombre Cliente -->
+  <!-- Column: Product Price -->
   <ng-container matColumnDef="Precio">
     <th mat-header-cell *matHeaderCellDef> Precio </th>
     <td mat-cell *matCellDef="let element"> {{element.Precio}} </td>
   </ng-container>
 
-
-  <!-- Columna Acciones -->
+  <!-- Column: Actions (Delete button) -->
   <ng-container matColumnDef="acciones">
     <th mat-header-cell *matHeaderCellDef> Eliminar producto </th>
     <td mat-cell *matCellDef="let element">
-      <!-- Botón para editar la factura -->
-      <button mat-icon-button class="boton-edicion" aria-label="Editar">
-        <mat-icon>edit</mat-icon>
+      <!-- Button to delete the selected product -->
+      <button mat-icon-button class="boton-eliminar" aria-label="Eliminar" (click)="eliminarProducto(element.id)">
+        <mat-icon>delete</mat-icon>
       </button>
     </td>
   </ng-container>
 
-  <!-- Definición de filas y columnas -->
+  <!-- Row and Column Definitions -->
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
 
-
-  <!-- Botón para agregar un nuevo producto -->
-  <button class="btn btn-secondary" (click)="agregarProducto()">
-    Agregar producto
-  </button>
-
-
-<!-- =====================================
-     Bloque: Totales de la factura
-====================================== -->
+<!-- ===============================
+     Block: Invoice Totals
+     Displays total amount and amount paid.
+     These fields are read-only.
+================================ -->
 <div class="totales">
   <div>
     <label>Valor total factura</label>
-    <input type="text"
-           class="form-control"
-           [value]="valorTotal"
-           disabled>
+    <input type="text" class="form-control" [value]="valorTotal" disabled>
   </div>
 
   <div>
     <label>Valor pagado</label>
-    <input type="text"
-           class="form-control"
-           [value]="valorPagado"
-           disabled>
+    <input type="text" class="form-control" [value]="valorPagado" disabled>
   </div>
 </div>
 
-<!-- =====================================
-     Bloque: Pago
-     Permite seleccionar método de pago y valor.
-====================================== -->
+<!-- ===============================
+     Block: Payment Section
+     Allows input of payment method and value.
+================================ -->
 <fieldset>
   <legend>Pago</legend>
 
-  <!-- Método de pago -->
+  <!-- Payment Method Selector using Angular Material dropdown -->
   <div class="form-group">
     <label>Método de pago</label>
-    <select class="form-control">
-      <option>Efectivo</option>
-      <option>Tarjeta</option>
-      <option>Transferencia</option>
-    </select>
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-select [(ngModel)]="metodoSeleccionado" name="metodoPago">
+        <mat-option *ngFor="let metodo of metodoPago" [value]="metodo">
+          {{ metodo }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
   </div>
 
-  <!-- Valor a pagar -->
+
+
+  <!-- Input for payment amount -->
   <div class="form-group">
     <label>Valor a pagar</label>
-    <input type="text" class="form-control">
+    <input type="number" class="form-control" [(ngModel)]="valorPago" name="valorPago" min="0">
   </div>
-</fieldset>
 
-<!-- Botón principal para guardar la factura actualizada -->
+
+<!-- ===============================
+     Block: Save Button
+     Final action to submit changes to the invoice.
+================================ -->
 <div class="boton-guardar">
-  <button class="btn btn-success">
+  <button class="btn btn-success" (click)="guardarCambios()"> 
     Guardar cambios
   </button>
 </div>

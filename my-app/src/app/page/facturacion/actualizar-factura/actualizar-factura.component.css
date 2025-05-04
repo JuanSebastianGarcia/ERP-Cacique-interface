@@ -131,4 +131,9 @@ body {
     font-weight: bold;
     border-radius: 5px;
   }
+
+  .boton-eliminar {
+    background-color: red;
+  }
+  
   

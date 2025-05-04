@@ -1,17 +1,25 @@
 /**
- * Componente responsable de visualizar y actualizar una factura seleccionada.
- * Incluye utilidades para renderizar la información y gestionar productos.
+ * Invoice Update Component
+ * 
+ * Responsible for displaying and managing an existing invoice's details.
+ * Provides functionality to:
+ * - View and edit invoice information
+ * - Update product statuses
+ * - Remove products from the invoice
+ * - Process payments
  */
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
 import { FacturaService } from '../../../core/service/factura.service';
 import { ClienteService } from '../../../core/service/cliente.service';
 import { ClienteDto } from '../../../core/models/cliente-dto';
 import { FacturaDto } from '../../../core/models/factura-dto';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { FormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-actualizar-factura',
@@ -19,29 +27,45 @@ import { FormsModule } from '@angular/forms';
   imports: [
     MatIconModule,
     MatTableModule,
-    FormsModule
+    FormsModule,
+    MatSelectModule,
+    MatFormFieldModule,
+    MatInputModule,
+    CommonModule
   ],
   templateUrl: './actualizar-factura.component.html',
   styleUrl: './actualizar-factura.component.css'
 })
 export class ActualizarFacturaComponent implements OnInit {
 
-  displayedColumns: string[] = ['Descripcion', 'Estado', 'Precio', 'acciones'];
-  listaProductos = new MatTableDataSource<any>([]);
+  /** Column definitions for the products table */
+  public displayedColumns: string[] = ['id','Descripcion', 'Estado', 'Precio', 'acciones'];
 
+  /** Data source for the Angular Material products table */
+  public listaProductos = new MatTableDataSource<any>([]);
 
-  /** Valor total de la factura */
+  /** Available payment methods for the invoice */
+  public metodoPago = ["EFECTIVO","BANCOLOMBIA","DAVIVIENDA"];
+
+  /** Available status options for products */
+  public estadosDisponibles: string[] = ['ENTREGADO','PENDIENTE','EMPACADO'];
+
+  /** Current payment amount being processed */
+  public valorPago: number = 0;
+
+  /** Currently selected payment method */
+  public metodoSeleccionado = "EFECTIVO";
+
+  /** Total value of all products in the invoice */
   public valorTotal = 0;
 
-  /** Valor ya pagado por el cliente */
+  /** Amount already paid by the client */
   public valorPagado = 0;
 
-  /** Lista de productos asociados a la factura */
+  /** Product list (maintained separately from the table data source) */
   public productos: any[] = [];
 
-
-
-  /** Datos del cliente relacionados a la factura */
+  /** Client information linked to this invoice */
   public cliente: ClienteDto = {
     cedula: '',
     nombre: '',
@@ -50,81 +74,73 @@ export class ActualizarFacturaComponent implements OnInit {
     direccion: ''
   };
 
-
+  /** Current invoice being edited */
+  private factura?: FacturaDto;
 
   /**
-   * Constructor: inyección de dependencias
-   * @param facturaService Servicio para operaciones con facturas
-   * @param clienteService Servicio para operaciones con clientes
+   * Component constructor
+   * 
+   * @param facturaService - Service for invoice operations (fetching, updating)
+   * @param clienteService - Service for retrieving client information
    */
   constructor(
     private facturaService: FacturaService,
     private clienteService: ClienteService
   ) {}
 
-
-
-
-
   /**
-   * Hook de inicialización del componente.
-   * Se ejecuta automáticamente al cargar el componente.
+   * Lifecycle hook that runs when the component initializes
+   * Loads the current invoice and initializes the UI
    */
   ngOnInit(): void {
-    const factura = this.facturaService.getFacturaActualizar();
-    this.renderizarFactura(factura);
+    this.factura = this.facturaService.getFacturaActualizar();
+    this.renderizarFactura();
   }
-
-
-
 
   /**
-   * Carga y visualiza los datos principales de la factura.
-   * @param factura Objeto que contiene los datos de la factura a visualizar
+   * Initializes the view with invoice data
+   * Sets up client information, payment values, and products table
    */
-  private renderizarFactura(factura: any): void {
-    this.buscarCliente(factura.cedulaCliente);        // Carga datos del cliente
-    this.renderizarValores(factura);                  // Calcula totales
-    this.renderizarProductos(factura);                // Carga productos
+  private renderizarFactura(): void {
+    this.buscarCliente(this.factura!.cedulaCliente);  // Load client details
+    this.renderizarValores();                         // Calculate financial values
+    this.renderizarProductos();                       // Setup products table
   }
 
-
-  private renderizarProductos(factura: FacturaDto): void {
-
-    
-    const tablaProductos = factura.listaProductos.map(producto => ({
+  /**
+   * Transforms raw product data into the format needed for the UI table
+   * Updates the table's data source with formatted product information
+   */
+  private renderizarProductos(): void {
+    const tablaProductos = this.factura!.listaProductos.map(producto => ({
+      id: producto.idRelacion,
       Descripcion: producto.prenda + "-" + producto.talla + "-" + producto.horario + "-" + producto.genero + "-" + producto.institucion,
       Estado: producto.estado,
       Precio: producto.precio,
-    })) 
+    }));
 
-
-    this.listaProductos = new MatTableDataSource(tablaProductos); // Asigna la lista de productos a la tabla
+    this.listaProductos.data = tablaProductos;
   }
 
-
   /**
-   * Calcula los valores totales de la factura y asigna al componente.
-   * @param factura Factura con la lista de productos y valor pagado
+   * Calculates and updates the invoice's financial values
+   * Sets the total value and amount already paid
    */
-  private renderizarValores(factura: FacturaDto): void {
+  private renderizarValores(): void {
     let total: number = 0;
 
-    factura.listaProductos.forEach(producto => {
+    this.factura!.listaProductos.forEach(producto => {
       total += producto.precio;
     });
 
     this.valorTotal = total;
-    this.valorPagado = factura.valorPagado;
+    this.valorPagado = this.factura!.valorPagado;
   }
 
-
-
-
-
   /**
-   * Consulta los datos del cliente por cédula desde el servicio.
-   * @param cedula Cédula del cliente asociada a la factura
+   * Fetches client information based on the client ID
+   * 
+   * @param cedula - The client's identification number
    */
   private buscarCliente(cedula: string): void {
     this.clienteService.buscarCliente(Number(cedula)).subscribe({
@@ -136,13 +152,10 @@ export class ActualizarFacturaComponent implements OnInit {
     });
   }
 
-
-
-
-
   /**
-   * Asigna los datos del cliente consultado a la propiedad del componente.
-   * @param cliente Datos del cliente consultado
+   * Updates the component's client information with data from the API
+   * 
+   * @param cliente - Client data object returned from the service
    */
   private renderizarCliente(cliente: ClienteDto): void {
     this.cliente.cedula = cliente.cedula;
@@ -152,26 +165,64 @@ export class ActualizarFacturaComponent implements OnInit {
     this.cliente.direccion = cliente.direccion;
   }
 
-
-
-
-
-
   /**
-   * Elimina un producto de la factura (lógica pendiente de implementación).
-   * @param producto Producto que se desea eliminar
+   * Removes a product from the invoice if it hasn't been delivered
+   * Products with status 'ENTREGADO' (delivered) cannot be removed
+   * 
+   * @param idProducto - ID of the product to remove
    */
-  public eliminarProducto(producto: any): void {
-    // TODO: implementar lógica de eliminación y actualización de totales
+  public eliminarProducto(idProducto: number): void {
+    const producto = this.factura!.listaProductos.find(producto => producto.idRelacion === idProducto);
+
+    if (producto && producto.estado !== 'ENTREGADO') {
+      console.log("Eliminando producto con id: " + idProducto);
+      this.factura!.listaProductos = this.factura!.listaProductos.filter(producto => producto.idRelacion !== idProducto);
+      this.renderizarProductos(); // Refresh the products table
+    } else {
+      alert("No se puede eliminar el producto porque ya fue entregado.");
+    }
   }
 
+  /**
+   * Updates the status of a product in the invoice
+   * Products with status 'ENTREGADO' (delivered) cannot be modified
+   * 
+   * @param nuevoEstado - New status to apply to the product
+   * @param idProducto - ID of the product to update
+   */
+  public cambiarEstado(nuevoEstado: string, idProducto: number) {
+    // Find the product in the invoice's product list
+    const producto = this.factura!.listaProductos.find(producto => producto.idRelacion === idProducto);
 
-
+    // Update product status if it hasn't been delivered yet
+    if (producto!.estado !== 'ENTREGADO') {
+      producto!.estado = nuevoEstado;
+      this.renderizarProductos(); // Refresh the products table
+    } else {
+      alert("No se puede cambiar el estado del producto.");
+      this.renderizarProductos(); // Refresh the products table
+    }
+  }
 
   /**
-   * Agrega un nuevo producto a la factura (lógica pendiente de implementación).
+   * Saves all changes made to the invoice
+   * Updates payment information and submits to the backend
    */
-  public agregarProducto(): void {
-    // TODO: implementar lógica de agregado y actualización de totales
+  public guardarCambios() {
+    // Update payment information
+    this.factura!.metodoPago = this.metodoSeleccionado;
+    this.factura!.pago = this.valorPago;
+
+    console.log(this.factura!);
+    
+    // Send updated invoice to the backend
+    this.facturaService.actualizarFactura(this.factura!).subscribe({
+      next: data => {
+        alert(data.respuesta);
+      },
+      error: error => {
+        alert(error.error.respuesta);
+      }
+    });
   }
 }

@@ -1,0 +1,115 @@
+/* Contenedor principal */
+.datos-cliente, .lista-productos, .seccion-pago {
+    border: 1px solid #0044cc;
+    padding: 15px;
+    margin-bottom: 20px;
+  }
+  
+  /* Encabezados de secciones */
+  .datos-cliente h3,
+  .lista-productos h3,
+  .seccion-pago h3 {
+    margin-top: 0;
+  }
+  
+  /* Fila de búsqueda */
+  .fila-busqueda {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 15px;
+  }
+  
+  /* Entrada y botones alineados */
+  .columna-cedula {
+    display: flex;
+    gap: 10px;
+    flex: 1;
+  }
+  
+  .columna-registrar {
+    flex-shrink: 0;
+  }
+  
+  /* Campos de datos del cliente */
+  .fila-datos {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .campo label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 4px;
+  }
+  
+  .campo input {
+    width: 100%;
+    background-color: white;
+  }
+  
+  /* Tabla productos */
+  table {
+    width: 100%;
+    margin-top: 15px;
+  }
+  
+  /* Botón eliminar */
+  button[mat-icon-button] {
+    background-color: #ff4d4d;
+    color: white;
+  }
+  
+  /* Botones verdes */
+  button[type="button"] {
+    background-color: #4CAF50;
+    border: none;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-weight: bold;
+    color: white;
+  }
+  
+  button[type="button"]:hover {
+    background-color: #388E3C;
+  }
+  
+  /* Valor total factura */
+  .valor-total {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 20px;
+    gap: 10px;
+  }
+  
+  .valor-total input {
+    background-color: #ccc;
+    text-align: right;
+    padding: 4px;
+    width: 100px;
+  }
+  
+  /* Sección pago */
+  .seccion-pago {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .seccion-pago .campo {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Botón generar factura */
+  div[style*="justify-content: flex-end"] button {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  div[style*="justify-content: flex-end"] button:hover {
+    background-color: #388E3C;
+  }
+  

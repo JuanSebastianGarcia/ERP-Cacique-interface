@@ -33,6 +33,8 @@ export class BuscarFacturaComponent {
   campoBusqueda: string = '';
 
 
+  
+
   constructor(
     private facturaService: FacturaService,
     private router: Router

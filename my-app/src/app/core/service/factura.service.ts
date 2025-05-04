@@ -11,7 +11,7 @@ import { FacturaDto } from "../models/factura-dto";
 })
 export class FacturaService {
 
-  private facturaURL: string = 'http://localhost:9090/api/manejoFactura/buscarFactura';
+  private facturaURL: string = 'http://localhost:9090/api/manejoFactura/';
   private facturasCargadas: FacturaDto[] = [];
   private idFacturaActualizando: number = 0;
 
@@ -21,7 +21,7 @@ export class FacturaService {
    * Función para consultar una factura
    */
   public consultarFactura(codigo: number, tipoCodigo: string): Observable<RespuestaDto<FacturaDto>> {
-    return this.http.get<RespuestaDto<FacturaDto>>(`${this.facturaURL}/${codigo}/${tipoCodigo}`).pipe(
+    return this.http.get<RespuestaDto<FacturaDto>>(`${this.facturaURL}buscarFactura/${codigo}/${tipoCodigo}`).pipe(
       tap((respuesta) => {
         if (respuesta && Array.isArray(respuesta.respuesta)) {
           this.facturasCargadas = respuesta.respuesta;
@@ -44,5 +44,13 @@ export class FacturaService {
    */
   public setIdFacturaActualizando(id: number): void {
     this.idFacturaActualizando = id;
+  }
+
+
+
+  public actualizarFactura(factura: FacturaDto): Observable<RespuestaDto<String>> {
+    
+    return this.http.put<RespuestaDto<String>>(`${this.facturaURL}actualizarFactura`, factura);
+  
   }
 }
