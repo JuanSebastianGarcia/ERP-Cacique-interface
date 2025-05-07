@@ -1,0 +1,48 @@
+<div class="dialog-container">
+    <div class="dialog-header">
+      <h1>Agregar producto</h1>
+    </div>
+  
+    <div class="form-row">
+      <div class="form-group">
+        <label>Prenda</label>
+        <select [(ngModel)]="producto.prenda">
+          <option *ngFor="let item of prendas" [value]="item">{{ item }}</option>
+        </select>
+      </div>
+  
+      <div class="form-group">
+        <label>Talla</label>
+        <select [(ngModel)]="producto.talla">
+          <option *ngFor="let item of tallas" [value]="item">{{ item }}</option>
+        </select>
+      </div>
+  
+      <div class="form-group">
+        <label>Institucion</label>
+        <select [(ngModel)]="producto.institucion">
+          <option *ngFor="let item of instituciones" [value]="item">{{ item }}</option>
+        </select>
+      </div>
+  
+      <div class="form-group">
+        <label>Genero</label>
+        <select [(ngModel)]="producto.genero">
+          <option *ngFor="let item of generos" [value]="item">{{ item }}</option>
+        </select>
+      </div>
+  
+      <div class="form-group">
+        <label>Horario</label>
+        <select [(ngModel)]="producto.horario">
+          <option *ngFor="let item of horarios" [value]="item">{{ item }}</option>
+        </select>
+      </div>
+    </div>
+  
+    <div class="button-row">
+      <button class="cancel-button" (click)="cancelar()">Cancelar</button>
+      <button class="add-button" (click)="agregar()">Agregar</button>
+    </div>
+  </div>
+  

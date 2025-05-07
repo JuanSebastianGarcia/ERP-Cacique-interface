@@ -21,4 +21,11 @@ export class ClienteService {
     return this.http.get<RespuestaDto<ClienteDto>>(`${this.clienteURL}/buscarCliente/${codigo}`);
   }
 
+  public crearCliente(cliente: ClienteDto): Observable<RespuestaDto<string>> {
+    return this.http.post<RespuestaDto<string>>(`${this.clienteURL}/crearCliente`, cliente);
+  }
+
+
+
+
 }

@@ -1,0 +1,65 @@
+.registro-container {
+    padding: 0;
+    margin: 0;
+    font-family: Arial, sans-serif;
+  }
+  
+  .titulo {
+    background-color: #7ba936;
+    color: black;
+    text-align: center;
+    padding: 25px 0;
+    margin: 0;
+    font-size: 38px;
+  }
+  
+  .formulario {
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    max-width: 700px;
+    margin: auto;
+  }
+  
+  .campo-formulario {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 15px 0;
+  }
+  
+  .campo-formulario label {
+    font-size: 22px;
+    width: 200px;
+  }
+  
+  .campo-formulario input {
+    width: 60%;
+    padding: 10px;
+    font-size: 16px;
+  }
+  
+  .botones {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+  }
+  
+  .cancelar {
+    background-color: #b73424;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 18px;
+    cursor: pointer;
+  }
+  
+  .registrar {
+    background-color: #7ba936;
+    color: black;
+    border: none;
+    padding: 12px 24px;
+    font-size: 18px;
+    cursor: pointer;
+  }
+  

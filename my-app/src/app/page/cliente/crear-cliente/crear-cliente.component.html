@@ -1,0 +1,47 @@
+<!-- Main container for the client registration form -->
+<div class="registro-container">
+
+  <!-- Title of the form -->
+  <h1 class="titulo">Register Client</h1>
+
+  <!-- Registration form -->
+  <form class="formulario">
+
+    <!-- Full name input field -->
+    <div class="campo-formulario">
+      <label>Full Name</label>
+      <input type="text" placeholder="Please enter" [(ngModel)]="cliente.nombre" name="nombre">
+    </div>
+
+    <!-- Identification number input field -->
+    <div class="campo-formulario">
+      <label>ID Number</label>
+      <input type="text" placeholder="Please enter" [(ngModel)]="cliente.cedula" name="cedula">
+    </div>
+
+    <!-- Phone number input field -->
+    <div class="campo-formulario">
+      <label>Phone</label>
+      <input type="text" placeholder="Please enter" [(ngModel)]="cliente.telefono" name="telefono">
+    </div>
+
+    <!-- Email input field -->
+    <div class="campo-formulario">
+      <label>Email</label>
+      <input type="email" placeholder="Please enter" [(ngModel)]="cliente.email" name="email">
+    </div>
+
+    <!-- Address input field -->
+    <div class="campo-formulario">
+      <label>Address</label>
+      <input type="text" placeholder="Please enter" [(ngModel)]="cliente.direccion" name="direccion">
+    </div>
+
+    <!-- Action buttons -->
+    <div class="botones">
+      <button type="button" class="cancelar" (click)="cancelar()">Cancel</button>
+      <button type="button" class="registrar" (click)="registrar()">Register</button>
+    </div>
+
+  </form>
+</div>
