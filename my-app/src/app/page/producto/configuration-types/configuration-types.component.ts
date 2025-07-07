@@ -10,7 +10,7 @@ import { CreateDataConfigComponent } from '../create-data-config/create-data-con
 import { MensajeInformacionComponent } from '../../../shared/components/mensaje-informacion/mensaje-informacion.component';
 import { MensajeConfirmacionComponent } from '../../../shared/components/mensaje-confirmacion/mensaje-confirmacion.component';
 import { MensajeAlertaComponent } from '../../../shared/components/mensaje-alerta/mensaje-alerta.component';
-
+import { CommonModule } from '@angular/common';
 
 export interface Elements {
   name: string;
@@ -22,7 +22,8 @@ export interface Elements {
   selector: 'app-configuration-types',
   standalone: true,
   imports: [MatGridListModule,
-    MatTableModule
+    MatTableModule,
+    CommonModule
   ],
   templateUrl: './configuration-types.component.html',
   styleUrl: './configuration-types.component.css'
@@ -36,7 +37,7 @@ export class ConfigurationTypesComponent implements OnInit {
   dataSource = new MatTableDataSource<ConfigTypesDto>([]);
 
 
-  private tipoActual: string = '';//variable que almacena la opcion buscada 
+  public tipoActual: string = '';//variable que almacena la opcion buscada 
 
 
   constructor(private configurationTypesSerice: ConfigurationTypesService,

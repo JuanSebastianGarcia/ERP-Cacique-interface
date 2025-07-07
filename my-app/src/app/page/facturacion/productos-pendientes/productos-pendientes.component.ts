@@ -20,7 +20,7 @@ import { ProductoPendienteDto } from '../../../core/models/producto-pendiente-dt
 export class ProductosPendientesComponent implements OnInit {
 
   /** Columns to be displayed in the Material table */
-  displayedColumns: string[] = [
+  public displayedColumns: string[] = [
     'prenda',
     'institucion',
     'talla',
@@ -32,15 +32,17 @@ export class ProductosPendientesComponent implements OnInit {
   ];
 
   /** Table data source for pending products */
-  dataSource = new MatTableDataSource<any>([]);
+  public dataSource = new MatTableDataSource<any>([]);
+
+  private productosPendientesOriginal: any[] = [];
 
   /** Filter object bound to the UI dropdowns */
-  filtros = {
-    prenda: 'camisa',
-    talla: 'XS',
-    institucion: 'Tecnologico',
-    genero: 'Hombre',
-    horario: 'Mañana'
+  public filtros = {
+    prenda: '',
+    talla: '',
+    institucion: '',
+    genero: '',
+    horario: ''
   };
 
   /** Dropdown options for filters */
@@ -74,8 +76,19 @@ export class ProductosPendientesComponent implements OnInit {
    * Executes a search operation using current filters.
    */
   public buscar(): void {
-    
-    
+
+    console.log('Filtros: ', this.filtros);
+
+    const filtrado = this.productosPendientesOriginal.filter(producto =>
+      (this.filtros.prenda !== '' ? producto.prenda === this.filtros.prenda : true) &&
+      (this.filtros.talla !== '' ? producto.talla === this.filtros.talla : true) &&
+      (this.filtros.institucion !== '' ? producto.institucion === this.filtros.institucion : true) &&
+      (this.filtros.genero !== '' ? producto.genero === this.filtros.genero : true) &&
+      (this.filtros.horario !== '' ? producto.horario === this.filtros.horario : true)
+    );
+    this.dataSource.data = filtrado;
+
+
   }
 
   /**
@@ -122,6 +135,9 @@ export class ProductosPendientesComponent implements OnInit {
       fecha: producto.fecha,
       idFactura: producto.idFactura
     }));
+    
+    
+    this.productosPendientesOriginal = productosPendientes;
     this.dataSource.data = productosPendientes;
   }
 

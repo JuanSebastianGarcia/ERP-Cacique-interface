@@ -35,7 +35,7 @@ export class ConfigurationTypesService {
   * @return lista de datos encontrada
   */
   public buscarHorarios(): Observable<RespuestaDto<ConfigTypesDto[]>> {
-    return this.http.get<RespuestaDto<ConfigTypesDto[]>>(`${this.configTypesUrl}/buscarHorarios`);
+    return this.http.get<RespuestaDto<ConfigTypesDto[]>>(`${this.configTypesUrl}/horario`);
   }
 
 
@@ -45,7 +45,7 @@ export class ConfigurationTypesService {
   * @return lista de datos encontrada
   */
   public buscarTallas(): Observable<RespuestaDto<ConfigTypesDto[]>> {
-    return this.http.get<RespuestaDto<ConfigTypesDto[]>>(`${this.configTypesUrl}/buscarTallas`);
+    return this.http.get<RespuestaDto<ConfigTypesDto[]>>(`${this.configTypesUrl}/talla`);
   }
 
 
@@ -55,7 +55,7 @@ export class ConfigurationTypesService {
   * @return lista de datos encontrada
   */
   public buscarPrendas(): Observable<RespuestaDto<ConfigTypesDto[]>> {
-    return this.http.get<RespuestaDto<ConfigTypesDto[]>>(`${this.configTypesUrl}/buscarPrendas`);
+    return this.http.get<RespuestaDto<ConfigTypesDto[]>>(`${this.configTypesUrl}/prenda`);
   }
 
 
@@ -65,7 +65,7 @@ export class ConfigurationTypesService {
   *@return lista de datos encontrada
   */
   public buscarGeneros(): Observable<RespuestaDto<ConfigTypesDto[]>> {
-    return this.http.get<RespuestaDto<ConfigTypesDto[]>>(`${this.configTypesUrl}/buscarGeneros`);
+    return this.http.get<RespuestaDto<ConfigTypesDto[]>>(`${this.configTypesUrl}/genero`);
   }
 
 
@@ -75,7 +75,7 @@ export class ConfigurationTypesService {
   * @return lista de datos encontrada
   */
   public buscarInstituciones(): Observable<RespuestaDto<ConfigTypesDto[]>> {
-    return this.http.get<RespuestaDto<ConfigTypesDto[]>>(`${this.configTypesUrl}/buscarInstituciones`);
+    return this.http.get<RespuestaDto<ConfigTypesDto[]>>(`${this.configTypesUrl}/institucion`);
   }
 
 
@@ -87,7 +87,7 @@ export class ConfigurationTypesService {
    * @return respuesta del servidor
    */
   public eliminarGeneros(dato: string): Observable<RespuestaDto<string>> {
-    return this.http.delete<RespuestaDto<string>>(`${this.configTypesUrl}/eliminarGenero/${dato}`);
+    return this.http.delete<RespuestaDto<string>>(`${this.configTypesUrl}/genero/${dato}`);
   }
 
   /*
@@ -98,7 +98,7 @@ export class ConfigurationTypesService {
    * @return respuesta del servidor
    */
   public eliminarPrendas(dato: string): Observable<RespuestaDto<string>> {
-    return this.http.delete<RespuestaDto<string>>(`${this.configTypesUrl}/eliminarPrenda/${dato}`);
+    return this.http.delete<RespuestaDto<string>>(`${this.configTypesUrl}/prenda/${dato}`);
   }
 
 
@@ -110,7 +110,7 @@ export class ConfigurationTypesService {
    * @return respuesta del servidor
    */
   public eliminarTallas(dato: string): Observable<RespuestaDto<string>> {
-    return this.http.delete<RespuestaDto<string>>(`${this.configTypesUrl}/eliminarTalla/${dato}`);
+    return this.http.delete<RespuestaDto<string>>(`${this.configTypesUrl}/talla/${dato}`);
   }
 
 
@@ -122,7 +122,7 @@ export class ConfigurationTypesService {
    * @return respuesta del servidor
    */
   public eliminarHorarios(dato: string): Observable<RespuestaDto<string>> {
-    return this.http.delete<RespuestaDto<string>>(`${this.configTypesUrl}/eliminarHorario/${dato}`);
+    return this.http.delete<RespuestaDto<string>>(`${this.configTypesUrl}/horario/${dato}`);
   }
 
 
@@ -134,7 +134,7 @@ export class ConfigurationTypesService {
    * @return respuesta del servidor
    */
   public eliminarInstituciones(dato: string): Observable<RespuestaDto<string>> {
-    return this.http.delete<RespuestaDto<string>>(`${this.configTypesUrl}/eliminarInstitucion/${dato}`);
+      return this.http.delete<RespuestaDto<string>>(`${this.configTypesUrl}/institucion/${dato}`);
   }
 
 
@@ -150,7 +150,7 @@ export class ConfigurationTypesService {
   public agregarInstitucion(dato: string): Observable<RespuestaDto<string>> {
 
     this.datoDto.nombreTipo=dato;
-    return this.http.post<RespuestaDto<string>>(`${this.configTypesUrl}/crearInstitucion`,this.datoDto);
+    return this.http.post<RespuestaDto<string>>(`${this.configTypesUrl}/institucion`,this.datoDto);
   }
 
 
@@ -163,7 +163,7 @@ export class ConfigurationTypesService {
   */
   public agregarhorario(dato: string): Observable<RespuestaDto<string>> {
     this.datoDto.nombreTipo=dato;
-    return this.http.post<RespuestaDto<string>>(`${this.configTypesUrl}/crearHorario`,this.datoDto);
+    return this.http.post<RespuestaDto<string>>(`${this.configTypesUrl}/horario`,this.datoDto);
   }
 
 
@@ -176,7 +176,7 @@ export class ConfigurationTypesService {
   */
   public agregartalla(dato: string): Observable<RespuestaDto<string>> {
     this.datoDto.nombreTipo=dato;
-    return this.http.post<RespuestaDto<string>>(`${this.configTypesUrl}/crearTalla`,this.datoDto);
+    return this.http.post<RespuestaDto<string>>(`${this.configTypesUrl}/talla`,this.datoDto);
   }
 
     /*
@@ -188,7 +188,7 @@ export class ConfigurationTypesService {
   */
   public agregarprenda(dato: string): Observable<RespuestaDto<string>> {
     this.datoDto.nombreTipo=dato;
-    return this.http.post<RespuestaDto<string>>(`${this.configTypesUrl}/crearPrenda`,this.datoDto);
+    return this.http.post<RespuestaDto<string>>(`${this.configTypesUrl}/prenda`,this.datoDto);
   }
 
 
@@ -201,7 +201,7 @@ export class ConfigurationTypesService {
   */
   public agregarGenero(dato: string): Observable<RespuestaDto<string>> {
     this.datoDto.nombreTipo=dato;
-    return this.http.post<RespuestaDto<string>>(`${this.configTypesUrl}/crearGenero`,this.datoDto);
+    return this.http.post<RespuestaDto<string>>(`${this.configTypesUrl}/genero`,this.datoDto);
   }
 
 

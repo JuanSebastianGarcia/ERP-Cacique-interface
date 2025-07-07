@@ -1,13 +1,18 @@
-<h1 mat-dialog-title class="alert-title">Confirmar accion</h1>
-
-<div class="alert-box">
-    <mat-dialog-content class="mat-dialog">
-        <p class="alert-message">{{message}}</p>
-    </mat-dialog-content>
-
-    <mat-dialog-actions>
-        <button type="button" class="btn btn-secondary" (click)="cancelar()">cancelar</button>
-        <button type="button" class="btn btn-success" (click)="confirmar()">continuar</button>
-    </mat-dialog-actions>
-
+<div class="alert-container alert-warning">
+    <div class="alert-header">
+        Confirmar acción
+    </div>
+    <div class="alert-body">
+        <div class="alert-icon">🤔</div>
+        <h3 class="alert-message">¿Estás seguro?</h3>
+        <p class="alert-description">{{message}}</p>
+        <div class="alert-actions">
+            <button class="alert-btn alert-btn-secondary" (click)="cancelar()" type="button">
+                Cancelar
+            </button>
+            <button class="alert-btn alert-btn-danger" (click)="confirmar()" type="button">
+                Sí, continuar
+            </button>
+        </div>
+    </div>
 </div>

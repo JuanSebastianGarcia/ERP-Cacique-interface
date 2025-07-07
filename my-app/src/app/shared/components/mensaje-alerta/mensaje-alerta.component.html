@@ -1,14 +1,17 @@
-<h1 mat-dialog-title class="alert-title"> Alert</h1>
-
-<div class="alert-box">
-
-
-    <mat-dialog-content class="mat-dialog">
-        <p class="alert-message">{{message}}</p>
-    </mat-dialog-content>
-
-    <mat-dialog-actions>
-        <button type="button" class="btn btn-danger" (click)="confirmar()">OK</button>
-    </mat-dialog-actions>
-
+<div class="alert-container alert-error">
+    <div class="alert-header">
+        <button class="alert-close" (click)="confirmar()" type="button">×</button>
+        Error
+        <div class="alert-progress"></div>
+    </div>
+    <div class="alert-body">
+        <div class="alert-icon">❌</div>
+        <h3 class="alert-message">Ocurrió un error</h3>
+        <p class="alert-description">{{message}}</p>
+        <div class="alert-actions">
+            <button class="alert-btn alert-btn-danger" (click)="confirmar()" type="button">
+                OK
+            </button>
+        </div>
+    </div>
 </div>

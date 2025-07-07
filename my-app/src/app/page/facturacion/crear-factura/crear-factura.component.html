@@ -1,19 +1,26 @@
+<!-- Título principal -->
 <h1>Generar factura de venta</h1>
 
+<!-- Sección: Datos del cliente -->
 <div class="datos-cliente">
   <h3>Datos del cliente</h3>
 
+  <!-- Fila para búsqueda de cliente -->
   <div class="fila-busqueda">
+    <!-- Campo: Cédula del cliente -->
     <div class="columna-cedula">
       <label for="cedula">Cédula</label>
       <input type="text" id="cedula" placeholder="escribir cédula" [(ngModel)]="cedulaCliente" name="cedulaCliente">
       <button type="button" (click)="buscarCliente()">Buscar cliente</button>
     </div>
+
+    <!-- Botón para registrar nuevo cliente -->
     <div class="columna-registrar">
       <button type="button" (click)="registrarCliente()">Registrar cliente</button>
     </div>
   </div>
 
+  <!-- Fila con datos básicos del cliente -->
   <div class="fila-datos">
     <div class="campo">
       <label for="senior">Señor</label>
@@ -30,25 +37,30 @@
   </div>
 </div>
 
-<!-- Lista de productos -->
+<!-- Sección: Lista de productos -->
 <div class="lista-productos">
+  <!-- Encabezado con botón para agregar producto -->
   <div class="encabezado-tabla" style="display: flex; justify-content: space-between; align-items: center;">
     <h3>Lista de productos</h3>
     <button type="button" (click)="agregarProducto()">Agregar producto</button>
   </div>
 
+  <!-- Tabla de productos -->
   <table mat-table [dataSource]="listaProductos" class="mat-elevation-z8">
-
+    
+    <!-- Columna: ID -->
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef> ID </th>
       <td mat-cell *matCellDef="let element"> {{element.id}} </td>
     </ng-container>
 
+    <!-- Columna: Descripción -->
     <ng-container matColumnDef="Descripcion">
       <th mat-header-cell *matHeaderCellDef> Descripción </th>
       <td mat-cell *matCellDef="let element"> {{element.Descripcion}} </td>
     </ng-container>
 
+    <!-- Columna: Estado con selector -->
     <ng-container matColumnDef="Estado">
       <th mat-header-cell *matHeaderCellDef> Estado </th>
       <td mat-cell *matCellDef="let element">
@@ -62,11 +74,13 @@
       </td>
     </ng-container>
 
+    <!-- Columna: Precio -->
     <ng-container matColumnDef="Precio">
       <th mat-header-cell *matHeaderCellDef> Precio </th>
       <td mat-cell *matCellDef="let element"> {{element.Precio}} </td>
     </ng-container>
 
+    <!-- Columna: Acción eliminar -->
     <ng-container matColumnDef="acciones">
       <th mat-header-cell *matHeaderCellDef> Eliminar producto </th>
       <td mat-cell *matCellDef="let element">
@@ -76,42 +90,42 @@
       </td>
     </ng-container>
 
+    <!-- Filas de la tabla -->
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 
-
-  <!-- Valor total factura -->
-<div style="display: flex; justify-content: flex-end; align-items: center; margin-top: 20px;">
-  <label style="margin-right: 10px;"><strong>Valor total factura</strong></label>
-  <input type="text" [value]="valorTotalFactura" disabled>
-</div>
-
-<!-- Sección de pago -->
-<div class="seccion-pago" style="margin-top: 20px; border: 1px solid #ccc; padding: 15px;">
-  <h3>Pago</h3>
-
-  <div class="campo">
-    <label for="metodoPago">Método de pago</label>
-    <mat-form-field appearance="fill">
-      <mat-select [(ngModel)]="metodoPago" name="metodoPago">
-        <mat-option *ngFor="let opcion of opcionesPago" [value]="opcion">
-          {{ opcion }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+  <!-- Valor total de la factura -->
+  <div style="display: flex; justify-content: flex-end; align-items: center; margin-top: 20px;">
+    <label style="margin-right: 10px;"><strong>Valor total factura</strong></label>
+    <input type="text" [value]="valorTotalFactura" disabled>
   </div>
 
-  <div class="campo">
-    <label for="valorPago">Valor a pagar</label>
-    <input type="number" id="valorPago" placeholder="Escriba el valor" [(ngModel)]="valorPago" name="valorPago">
+  <!-- Sección: Información de pago -->
+  <div class="seccion-pago" style="margin-top: 20px; border: 1px solid #ccc; padding: 15px;">
+    <h3>Pago</h3>
+
+    <!-- Selector de método de pago -->
+    <div class="campo">
+      <label for="metodoPago">Método de pago</label>
+      <mat-form-field appearance="fill">
+        <mat-select [(ngModel)]="metodoPago" name="metodoPago">
+          <mat-option *ngFor="let opcion of opcionesPago" [value]="opcion">
+            {{ opcion }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <!-- Campo: Valor a pagar -->
+    <div class="campo">
+      <label for="valorPago">Valor a pagar</label>
+      <input type="number" id="valorPago" placeholder="Escriba el valor" [(ngModel)]="valorPago" name="valorPago">
+    </div>
+  </div>
+
+  <!-- Botón: Generar factura -->
+  <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+    <button type="button" (click)="generarFactura()">Generar factura</button>
   </div>
 </div>
-
-<!-- Botón generar factura -->
-<div style="display: flex; justify-content: flex-end; margin-top: 20px;">
-  <button type="button" (click)="generarFactura()">Generar factura</button>
-</div>
-
-</div>
-

@@ -17,6 +17,9 @@ import { MensajeAlertaComponent } from '../../../shared/components/mensaje-alert
 })
 export class IngresarComponent {
 
+  // Propiedades para la nueva interfaz
+  showPassword: boolean = false;
+  isLoading: boolean = false;
 
   //formulario que almacena los datos del login
   loginData: LoginDto = {
@@ -34,6 +37,22 @@ export class IngresarComponent {
     private router: Router,
     public dialog: MatDialog) { };
 
+  /*
+  Función para mostrar/ocultar contraseña
+  */
+  togglePassword(): void {
+    this.showPassword = !this.showPassword;
+  }
+
+  /*
+  Función para manejar recuperación de contraseña
+  */
+  showForgotPassword(): void {
+    // Funcionalidad por implementar
+    const dialogRef = this.dialog.open(MensajeAlertaComponent, { 
+      data: 'Funcionalidad de recuperación de contraseña - Por implementar' 
+    });
+  }
 
   /*
   ingresar al servicio. validar si el empleado existe o no
@@ -41,14 +60,17 @@ export class IngresarComponent {
   login() {
 
     if (this.validarCampos()) {
+      this.isLoading = true;
 
       this.loginService.ingresarUsuario(this.loginData).subscribe({
         next: (data: RespuestaDto<string>) => {
           // Manejar el caso de éxito
           this.tokenService.login(data.respuesta);
+          this.isLoading = false;
           this.router.navigate(["productos"]);
         },
         error: (error) => {
+          this.isLoading = false;
           
           if (error.error.error) {//error en los datos
             const dialogRef = this.dialog.open(MensajeAlertaComponent, { data: error.error.respuesta });
@@ -65,8 +87,6 @@ export class IngresarComponent {
 
   }
 
-
-
   /*
   *se valida que los campos del login no esten vacios
   *return (true) si los campos estan completados, (false) si algun campo esta vacio
@@ -79,7 +99,5 @@ export class IngresarComponent {
     }
     return respuesta;
   }
-
-
 
 }

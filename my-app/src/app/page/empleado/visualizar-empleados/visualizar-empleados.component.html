@@ -1,85 +1,118 @@
-<div class="container">
-
-    <!--ESTRUCTURA SUPERIOR -->
-
-    <h2>Lista de empleados</h2>
-
-    <div>
-        <!-- Boton refrescar tabla-->
-        <button class="btn btn-primary" type="button" (click)="buscarEmpleados()">Refrescar tabla</button>
-    </div>
+<div class="main-container">
 
 
 
-    <!--ESTRUCTURA DE LA TABLA-->
-    <div class="row">
-        <div class="col-12">
-            <mat-card>
-                <mat-card-content>
-                    <p>Lista de empleados</p>
-                </mat-card-content>
-                <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <!-- Content -->
+    <main class="content">
+        <!-- Page Header -->
+        <div class="content-header">
+            <h2 class="page-title">
+                <span class="page-icon">👥</span>
+                Lista de empleados
+            </h2>
+            <p class="page-subtitle">Gestiona y visualiza todos los empleados del sistema</p>
+            
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button class="btn btn-primary" type="button" (click)="buscarEmpleados()">
+                    🔄 Refrescar tabla
+                </button>
+                <button class="btn btn-success">
+                    📊 Exportar lista
+                </button>
+            </div>
+        </div>
 
+        <!-- Table Section -->
+        <div class="table-container-card">
+            <div class="table-header">
+                <h3 class="table-title">Lista de empleados</h3>
+            </div>
 
+            <!-- Search Bar -->
+            <div class="search-container">
+                <input 
+                    type="text" 
+                    class="search-input" 
+                    placeholder="🔍 Buscar por nombre, cédula, email o cargo..."
+                >
+            </div>
+
+            <!-- Table -->
+            <div class="table-wrapper">
+                <table mat-table [dataSource]="dataSource" class="data-table mat-elevation-z8">
+                    
                     <!-- Id Column -->
                     <ng-container matColumnDef="id">
                         <th mat-header-cell *matHeaderCellDef> No. </th>
                         <td mat-cell *matCellDef="let element"> {{element.id}} </td>
                     </ng-container>
-
+                    
                     <!-- nombre Column -->
                     <ng-container matColumnDef="nombre">
-                        <th mat-header-cell *matHeaderCellDef> nombre </th>
+                        <th mat-header-cell *matHeaderCellDef> Nombre </th>
                         <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
                     </ng-container>
-
+                    
                     <!-- cedula Column -->
                     <ng-container matColumnDef="cedula">
-                        <th mat-header-cell *matHeaderCellDef> cedula </th>
+                        <th mat-header-cell *matHeaderCellDef> Cédula </th>
                         <td mat-cell *matCellDef="let element"> {{element.cedula}} </td>
                     </ng-container>
-
-                    <!-- Talla Column -->
+                    
+                    <!-- Telefono Column -->
                     <ng-container matColumnDef="telefono">
-                        <th mat-header-cell *matHeaderCellDef> telefono </th>
+                        <th mat-header-cell *matHeaderCellDef> Teléfono </th>
                         <td mat-cell *matCellDef="let element"> {{element.telefono}} </td>
                     </ng-container>
-
-                    <!-- Horario Column -->
+                    
+                    <!-- Email Column -->
                     <ng-container matColumnDef="email">
-                        <th mat-header-cell *matHeaderCellDef> email </th>
+                        <th mat-header-cell *matHeaderCellDef> Email </th>
                         <td mat-cell *matCellDef="let element"> {{element.email}} </td>
                     </ng-container>
-
-                    <!-- Genero Column -->
+                    
+                    <!-- TipoEmpleado Column -->
                     <ng-container matColumnDef="tipoEmpleado">
-                        <th mat-header-cell *matHeaderCellDef> tipoEmpleado </th>
-                        <td mat-cell *matCellDef="let element"> {{element.tipoEmpleado}} </td>
+                        <th mat-header-cell *matHeaderCellDef> Tipo Empleado </th>
+                        <td mat-cell *matCellDef="let element">
+                            <span class="employee-badge" 
+                                  [ngClass]="{
+                                      'badge-jefe': element.tipoEmpleado === 'JEFE',
+                                      'badge-empleado': element.tipoEmpleado === 'EMPLEADO',
+                                      'badge-gerente': element.tipoEmpleado === 'GERENTE'
+                                  }">
+                                {{element.tipoEmpleado}}
+                            </span>
+                        </td>
                     </ng-container>
-
-
+                    
                     <!-- Botón Column -->
                     <ng-container matColumnDef="boton">
                         <th mat-header-cell *matHeaderCellDef> Acción </th>
                         <td mat-cell *matCellDef="let element">
-                            <button type="button" class="btn btn-danger"
-                                (click)="eliminarEmpleado(element.cedula)">
-                                <i class="bi bi-trash"></i>
-                            </button>
+                            <div class="action-icons">
+                                <button class="action-icon view-icon" title="Ver detalles">
+                                    👁️
+                                </button>
+                                <button class="action-icon edit-icon" title="Editar">
+                                    ✏️
+                                </button>
+                                <button type="button" class="action-icon delete-icon"
+                                    (click)="eliminarEmpleado(element.cedula)" title="Eliminar">
+                                    🗑️
+                                </button>
+                            </div>
                         </td>
                     </ng-container>
-
+                    
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="table-row"></tr>
                 </table>
-
-
-
-
-            </mat-card>
+            </div>
         </div>
-    </div>
+    </main>
 
-
-
+    <!-- Floating Action Button -->
+    <button class="fab">+</button>
 </div>

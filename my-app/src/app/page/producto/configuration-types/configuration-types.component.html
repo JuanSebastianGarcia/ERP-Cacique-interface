@@ -1,65 +1,78 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Cacique ERP - Editar Datos</title>
 </head>
 
 <body>
-
-    <div class="container">
-
-        <h1>Editar datos</h1>
-
-        <div class="container-1">
-            <label for="search">Buscar por</label>
-            <div class="button-group">
-              <button type="button" class="btn btn-options btn-secondary" (click)="buscar('institucion')">Instituciones</button>
-              <button type="button" class="btn btn-options btn-secondary" (click)="buscar('horario')">Horarios</button>
-              <button type="button" class="btn btn-options btn-secondary" (click)="buscar('talla')">Tallas</button>
-              <button type="button" class="btn btn-options btn-secondary" (click)="buscar('prenda')">Prendas</button>
-              <button type="button" class="btn btn-options btn-secondary" (click)="buscar('genero')">Generos</button>
+    <!-- Main Content -->
+    <main class="content">
+        <div class="content-header">
+            <h2 class="page-title">Editar datos</h2>
+            <p class="page-subtitle">Selecciona una categoría para editar los datos maestros del sistema</p>
+            
+            <!-- Category Tabs -->
+            <div class="category-tabs">
+                <button class="category-tab" [class.active]="tipoActual === 'institucion'" (click)="buscar('institucion')">
+                    🏫 Instituciones
+                </button>
+                <button class="category-tab" [class.active]="tipoActual === 'horario'" (click)="buscar('horario')">
+                    🕐 Horarios
+                </button>
+                <button class="category-tab" [class.active]="tipoActual === 'talla'" (click)="buscar('talla')">
+                    📏 Tallas
+                </button>
+                <button class="category-tab" [class.active]="tipoActual === 'prenda'" (click)="buscar('prenda')">
+                    👕 Prendas
+                </button>
+                <button class="category-tab" [class.active]="tipoActual === 'genero'" (click)="buscar('genero')">
+                    👥 Géneros
+                </button>
             </div>
-          </div>    
-
-        <div>
-            <button type="button" class="btn btn-agregar btn-success"  (click)="agregarDato()">agregar</button>
         </div>
 
-        <div class="table-types">
-            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 demo-table ">
-               
-                <!-- Position Column -->
-                <ng-container matColumnDef="idTipo">
-                    <th mat-header-cell *matHeaderCellDef> No. </th>
-                    <td mat-cell *matCellDef="let element"> {{element.idTipo}} </td>
-                </ng-container>
+        <!-- Add Button -->
+        <button class="add-btn" (click)="agregarDato()">
+            <span>➕</span>
+            <span>Agregar</span>
+        </button>
 
-                <!-- Name Column -->
-                <ng-container matColumnDef="nombreTipo">
-                    <th mat-header-cell *matHeaderCellDef> Name </th>
-                    <td mat-cell *matCellDef="let element"> {{element.nombreTipo}} </td>
-                </ng-container>
-               
-                <!-- Opcion column-->
-                <ng-container matColumnDef="boton">
-                    <th mat-header-cell *matHeaderCellDef> Opción </th>
-                    <td mat-cell *matCellDef="let element">
-                        <button mat-button class="btn btn-danger" (click)="eliminarDatoConfirmacion(element.nombreTipo)">
-                            <i class="bi bi-trash"></i>
-                        </button>
-                    </td>
-                </ng-container>
-
-                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <!-- Data Container -->
+        <div class="data-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Nombre</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let element of dataSource.data; let i = index" class="table-row">
+                        <td>{{ element.idTipo }}</td>
+                        <td>{{ element.nombreTipo }}</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="action-btn delete-btn" (click)="eliminarDatoConfirmacion(element.nombreTipo)">
+                                    🗑️
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
             </table>
+
+            <!-- Empty State -->
+            <div class="empty-state" *ngIf="dataSource.data.length === 0">
+                <div class="empty-icon">📋</div>
+                <h3 class="empty-title">No hay datos registrados</h3>
+                <p>Haz clic en "Agregar" para crear el primer registro</p>
+            </div>
         </div>
-
-    </div>
-
+    </main>
 </body>
 
 </html>

@@ -15,7 +15,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MensajeAlertaComponent } from '../../../shared/components/mensaje-alerta/mensaje-alerta.component';
 import { MensajeConfirmacionComponent } from '../../../shared/components/mensaje-confirmacion/mensaje-confirmacion.component';
 import { MensajeInformacionComponent } from '../../../shared/components/mensaje-informacion/mensaje-informacion.component';
-
+import { RespuestaDto } from '../../../core/models/respuesta-dto';
 
 @Component({
   selector: 'app-visualizar-productos',
@@ -32,8 +32,6 @@ import { MensajeInformacionComponent } from '../../../shared/components/mensaje-
   styleUrl: './visualizar-productos.component.css'
 })
 
-
-
 /*
 *Este componente esta hecho para mostrar la tabla de pructos ademas de poder realziar busquedas en la tabla
 *usando los datos de condifiguracion de las listas
@@ -46,12 +44,10 @@ export class VisualizarProductosComponent implements OnInit {
   //esta es la funcionalidad del paginador
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-
   //cargar el paginador
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
-
 
   /*
   *Variables que almacenan la opcion de las listas
@@ -62,9 +58,6 @@ export class VisualizarProductosComponent implements OnInit {
   public horario: string = '';
   public genero: string = '';
 
-
-
-
   /*
   *Arrays que almacenan los datos de las listas desplegables
   */
@@ -73,7 +66,6 @@ export class VisualizarProductosComponent implements OnInit {
   public tallas = [{ value: '', viewValue: '' }];
   public horarios = [{ value: '', viewValue: '' }];
   public generos = [{ value: '', viewValue: '' }];
-
 
   //formulario que almacena el filtro para buscar
   private filtros: FiltroListaProductoDto = {
@@ -84,30 +76,37 @@ export class VisualizarProductosComponent implements OnInit {
     institucion: ''
   }
 
+  // Modal variables
+  public isModalOpen: boolean = false;
+  public isLoading: boolean = false;
+  public showSuccessMessage: boolean = false;
 
+  // Formulario para el modal
+  public productoModal: ProductoDto = {
+    id: 0,
+    prenda: '',
+    institucion: '',
+    talla: '',
+    horario: '',
+    genero: '',
+    precio: 0,
+    cantidad: 0
+  };
 
   constructor(private productoService: ProductoService,
     private router: Router,
     private configureTypesService: ConfigurationTypesService,
     private dialog: MatDialog) { };
 
-
-
-
   ngOnInit(): void {
-
     this.cargarListas();//cargar los datos para las listas desplegables
-
     this.buscarProductos();//cargar todos los productos por primera vez
   }
-
-
 
   /*
   *buscar lista de productos conectandose al servicio
   */
   buscarProductos() {
-
     this.construirFiltro();//construccion del filtro
     
     this.productoService.buscarProductos(this.filtros).subscribe({
@@ -118,21 +117,15 @@ export class VisualizarProductosComponent implements OnInit {
         const dialogRef = this.dialog.open(MensajeAlertaComponent, { data: 'Ocurrio un error' });
       }
     })
-    
   }
-
 
   /*
   *limpiar el filtro de busqueda y restablecer la tabla
   */
   limpiarBusqueda() {
-
     this.limpiarListas();//limpiar vista
     this.buscarProductos();//restablecer tabla
-
   }
-
-
 
   /*
   *solicitar una confirmacion para la eliminacion del producto usando un modal
@@ -142,7 +135,6 @@ export class VisualizarProductosComponent implements OnInit {
   *
   */
   eliminarProductoConfirmar(id: number) {
-
     const dialogRef = this.dialog.open(MensajeConfirmacionComponent, { data: "¿Esta seguro de eliminar el producto?" })
 
     dialogRef.afterClosed().subscribe(respuesta => {
@@ -153,15 +145,12 @@ export class VisualizarProductosComponent implements OnInit {
     )
   }
 
-
-  
   /*
   *Se encarga de hacer la solicitud al servicio para eliminar el producto
   *
   *@param id - id del producto que se desea eliminar
   */
   private eliminarProductoSolicitud(id:number){
-
     this.productoService.eliminarProducto(id).subscribe(
       {
         next: data => {
@@ -173,26 +162,14 @@ export class VisualizarProductosComponent implements OnInit {
         }
       }
     );
-
   }
-
-
-
-
-
-
 
   /*
-  *invocar el componente que contiene el formulario para crear un producto
+  *invocar el modal para crear un producto
   */
   agregarProducto() {
-
-    //invocar componente
-    this.router.navigate(["productos/crear-producto"]);
-
+    this.openModal();
   }
-
-
 
   /*
   *registra la informacion del producto seleccionado para editar y la almacena para posteriormente enviarla 
@@ -203,7 +180,108 @@ export class VisualizarProductosComponent implements OnInit {
     this.router.navigate(["productos/editar-producto"]);
   }
 
+  // Modal methods
+  openModal() {
+    this.isModalOpen = true;
+    this.resetModalForm();
+    document.body.style.overflow = 'hidden';
+  }
 
+  closeModal() {
+    this.isModalOpen = false;
+    document.body.style.overflow = 'auto';
+    this.resetModalForm();
+  }
+
+  /*
+  *crear un nuevo producto desde el modal
+  */
+  crearProductoModal() {
+    if (this.validarDatosProductoModal()) {
+      this.isLoading = true;
+      
+      this.productoService.agregarProducto(this.productoModal).subscribe({
+        next: (data: RespuestaDto<string>) => {
+          this.isLoading = false;
+          this.showSuccessMessage = true;
+          
+          setTimeout(() => {
+            this.showSuccessMessage = false;
+          }, 3000);
+          
+          this.closeModal();
+          this.buscarProductos(); // Recargar la tabla
+        },
+        error: error => {
+          this.isLoading = false;
+          const dialogRef = this.dialog.open(MensajeAlertaComponent, { data: error.error.respuesta });
+        }
+      });
+    }
+  }
+
+  /*
+  *validar los datos del producto en el modal
+  */
+  private validarDatosProductoModal(): boolean {
+    let respuesta: boolean = true;
+
+    // Validar que todos los campos estén llenos
+    if (!this.productoModal.prenda || !this.productoModal.institucion || !this.productoModal.talla || 
+        !this.productoModal.horario || !this.productoModal.genero) {
+      respuesta = false;
+      const dialogRef = this.dialog.open(MensajeAlertaComponent, { data: 'Todos los campos son obligatorios' });
+    }
+
+    // Validar que sean enteros
+    if (!(Number.isInteger(this.productoModal.cantidad) && Number.isInteger(this.productoModal.precio))) {
+      respuesta = false;
+      const dialogRef = this.dialog.open(MensajeAlertaComponent, { data: 'El precio y las cantidades tienen que ser enteros' });
+    }
+
+    // Validar que sean mayores que cero
+    if (!(this.productoModal.cantidad >= 0 && this.productoModal.precio >= 0)) {
+      respuesta = false;
+      const dialogRef = this.dialog.open(MensajeAlertaComponent, { data: 'No pueden haber datos menores a cero' });
+    }
+
+    return respuesta;
+  }
+
+  /*
+  *limpiar el formulario del modal
+  */
+  resetModalForm() {
+    this.productoModal = {
+      id: 0,
+      prenda: '',
+      institucion: '',
+      talla: '',
+      horario: '',
+      genero: '',
+      precio: 0,
+      cantidad: 0
+    };
+  }
+
+  /*
+  *obtener el preview del producto para mostrar en el modal
+  */
+  getPreview(): string {
+    if (this.productoModal.prenda || this.productoModal.institucion || this.productoModal.talla || 
+        this.productoModal.precio || this.productoModal.cantidad) {
+      return `
+        <p><strong>Prenda:</strong> ${this.productoModal.prenda || '-'}</p>
+        <p><strong>Institución:</strong> ${this.productoModal.institucion || '-'}</p>
+        <p><strong>Talla:</strong> ${this.productoModal.talla ? this.productoModal.talla.toUpperCase() : '-'}</p>
+        <p><strong>Horario:</strong> ${this.productoModal.horario || '-'}</p>
+        <p><strong>Género:</strong> ${this.productoModal.genero || '-'}</p>
+        <p><strong>Precio:</strong> $${this.productoModal.precio ? this.productoModal.precio.toLocaleString() : '0'}</p>
+        <p><strong>Cantidad:</strong> ${this.productoModal.cantidad || '0'} unidades</p>
+      `;
+    }
+    return '<p>Complete los campos para ver la vista previa...</p>';
+  }
 
   /*
   *restablecer las listas a un valor vacio
@@ -216,38 +294,28 @@ export class VisualizarProductosComponent implements OnInit {
     this.genero = '';
   }
 
-
-
-
-
   /*
   * procesar el friltro para añadir las opciones del usuario
   */
   private construirFiltro() {
-
     this.filtros.genero = this.genero;
     this.filtros.institucion = this.institucion;
     this.filtros.horario = this.horario;
     this.filtros.prenda = this.prenda;
     this.filtros.talla = this.talla;
-
   }
-
 
   /*
   * se encarga de cargar los datos de configuracion para las listas desplegbales en la busqueda, se hace un
   * mapeo del dto al array que se imprime
   */
   private cargarListas() {
-
     this.cargarInstituciones();
     this.cargarTallas();
     this.cargarGeneros();
     this.cargarPrendas();
     this.cargarHorarios();
-
   }
-
 
   /*
   *cargar las horarios en la lista desplegable para la busqueda
@@ -268,8 +336,6 @@ export class VisualizarProductosComponent implements OnInit {
     )
   }
 
-
-
   /*
   *cargar las prendas en la lista desplegable para la busqueda
   */
@@ -288,9 +354,6 @@ export class VisualizarProductosComponent implements OnInit {
       }
     )
   }
-
-
-
 
   /*
   *cargar las generos en la lista desplegable para la busqueda
@@ -311,7 +374,6 @@ export class VisualizarProductosComponent implements OnInit {
     )
   }
 
-
   /*
   *cargar las tallas en la lista desplegable para la busqueda
   */
@@ -331,7 +393,6 @@ export class VisualizarProductosComponent implements OnInit {
     )
   }
 
-
   /*
   *cargar las instituciones en la lista desplegable para la busqueda
   */
@@ -350,8 +411,6 @@ export class VisualizarProductosComponent implements OnInit {
       }
     )
   }
-
-
 }
 
 

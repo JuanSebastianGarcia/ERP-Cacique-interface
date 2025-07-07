@@ -3,7 +3,7 @@ import { FiltroListaProductoDto } from '../models/filtro-lista-producto-dto';
 import { ProductoDto } from '../models/producto-dto';
 import { Observable } from 'rxjs';
 import { RespuestaDto } from '../models/respuesta-dto';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +16,7 @@ export class ProductoService {
   /*
   *url que lleva a la api de los productos
   */
-  private productosURL='http://localhost:9090/api/manejoProducto'
+  private productosURL='http://localhost:9090/api/producto'
 
 
   //variable que almacena la informacion del producto actualizando
@@ -41,7 +41,14 @@ export class ProductoService {
   *envia una solicitud al servidor para que retorne una lista de productos
   */
   public buscarProductos(filtroProducto:FiltroListaProductoDto): Observable<RespuestaDto<ProductoDto[]>>{
-    return this.http.post<RespuestaDto<ProductoDto[]>>(`${this.productosURL}/buscarProductos`,filtroProducto);
+    let params = new HttpParams()
+      .set('prenda', filtroProducto.prenda)
+      .set('talla', filtroProducto.talla)
+      .set('horario', filtroProducto.horario)
+      .set('genro', filtroProducto.genero)
+      .set('institucion', filtroProducto.institucion);
+
+    return this.http.get<RespuestaDto<ProductoDto[]>>(`${this.productosURL}`, { params });
   }
 
 
@@ -50,7 +57,7 @@ export class ProductoService {
   *envia una solicitud al servidor para eliminar un producto de la lista
   */
   eliminarProducto(id: number) {
-    return this.http.delete<RespuestaDto<string>>(`${this.productosURL}/eliminarProducto/${id}`);
+    return this.http.delete<RespuestaDto<string>>(`${this.productosURL}/${id}`);
   }
 
   /*
@@ -58,7 +65,7 @@ export class ProductoService {
   *envia una solicitud al servidor para agregar un producto
   */
   agregarProducto(productoData: ProductoDto):Observable<RespuestaDto<string>> {
-    return this.http.post<RespuestaDto<string>>(`${this.productosURL}/crearProducto`,productoData)
+    return this.http.post<RespuestaDto<string>>(`${this.productosURL}`,productoData)
   }
 
   /*
@@ -66,7 +73,7 @@ export class ProductoService {
   *envia una solicitud al servidor para actualizar los datos del producto
   */
   actualizarProducto(productoData: ProductoDto):Observable<RespuestaDto<string>>{
-    return this.http.post<RespuestaDto<string>>(`${this.productosURL}/actualizarProducto`,productoData);
+    return this.http.post<RespuestaDto<string>>(`${this.productosURL}`,productoData);
   }
 
 

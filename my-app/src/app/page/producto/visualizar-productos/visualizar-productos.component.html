@@ -9,172 +9,247 @@
 
 <body>
 
-    <div class="container">
+    <!-- Header integrado en barra lateral -->
+    <div class="main-container">
+        <!-- Main Content -->
+        <main class="content">
+            <div class="content-header">
+                <h2 class="content-title">INVENTARIO</h2>
+                
+                <!-- Filters -->
+                <div class="filter-section">
+                    <div class="filter-group">
+                        <label class="filter-label">PRENDAS</label>
+                        <select class="filter-select" [(ngModel)]="prenda">
+                            <option value="">Todas las prendas</option>
+                            <option *ngFor="let prenda of prendas" [value]="prenda.value">
+                                {{prenda.viewValue}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">INSTITUCIONES</label>
+                        <select class="filter-select" [(ngModel)]="institucion">
+                            <option value="">Todas las instituciones</option>
+                            <option *ngFor="let institucion of instituciones" [value]="institucion.value">
+                                {{institucion.viewValue}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">TALLAS</label>
+                        <select class="filter-select" [(ngModel)]="talla">
+                            <option value="">Todas las tallas</option>
+                            <option *ngFor="let talla of tallas" [value]="talla.value">
+                                {{talla.viewValue}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">HORARIOS</label>
+                        <select class="filter-select" [(ngModel)]="horario">
+                            <option value="">Todos los horarios</option>
+                            <option *ngFor="let horario of horarios" [value]="horario.value">
+                                {{horario.viewValue}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">GÉNEROS</label>
+                        <select class="filter-select" [(ngModel)]="genero">
+                            <option value="">Todos los géneros</option>
+                            <option *ngFor="let genero of generos" [value]="genero.value">
+                                {{genero.viewValue}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
 
-        <!-- Título principal de la aplicación de inventario -->
-        <h1>INVENTARIO</h1>
-
-
-        <!--
-        ========================================================================
-        SECCIÓN DE FILTROS
-        Estructura superior para los filtros y botones de acción que permiten
-        filtrar el inventario por diferentes categorías.
-        ========================================================================
-        -->
-        <div class="row align-items-end">
-            
-            <!-- Filtro de prendas -->
-            <div class="col-md-auto">
-                <h4>PRENDAS</h4>
-                <mat-form-field>
-                    <mat-label>Prenda</mat-label>
-                    <mat-select [(ngModel)]="prenda">
-                        <mat-option *ngFor="let prenda of prendas" [value]="prenda.value">
-                            {{prenda.viewValue}} 
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="btn-secondary" type="button" (click)="limpiarBusqueda()">
+                        🗑️ LIMPIAR BÚSQUEDA
+                    </button>
+                    <button class="btn-primary" type="button" (click)="buscarProductos()">
+                        🔍 BUSCAR
+                    </button>
+                </div>
             </div>
 
-            
-            <!-- Filtro de instituciones -->
-            <div class="col-md-auto">
-                <h4>INSTITUCIONES</h4>
-                <mat-form-field>
-                    <mat-label>Institución</mat-label>
-                    <mat-select [(ngModel)]="institucion">
-                        <mat-option *ngFor="let institucion of instituciones"
-                            [value]="institucion.value">{{institucion.viewValue}}</mat-option>
-                    </mat-select>
-                </mat-form-field>
+            <!-- Table -->
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Prenda</th>
+                            <th>Institución</th>
+                            <th>Talla</th>
+                            <th>Horario</th>
+                            <th>Género</th>
+                            <th>Precio</th>
+                            <th>Cantidad</th>
+                            <th>Opción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let element of dataSource.data" class="data-row">
+                            <td>{{element.id}}</td>
+                            <td>{{element.prenda}}</td>
+                            <td>{{element.institucion}}</td>
+                            <td>{{element.talla}}</td>
+                            <td>{{element.horario}}</td>
+                            <td>{{element.genero}}</td>
+                            <td>${{element.precio | number:'1.0-0'}}</td>
+                            <td>{{element.cantidad}}</td>
+                            <td>
+                                <div class="action-icons">
+                                    <div class="action-icon delete-icon" (click)="eliminarProductoConfirmar(element.id)">
+                                        🗑️
+                                    </div>
+                                    <div class="action-icon edit-icon" (click)="actualizarProducto(element)">
+                                        ✏️
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- Floating Action Button -->
+    <button class="fab" (click)="agregarProducto()" title="Agregar Producto">+</button>
+
+    <!-- Modal de Agregar Producto -->
+    <div class="modal-overlay" [class.active]="isModalOpen" (click)="closeModal()">
+        <div class="form-container" (click)="$event.stopPropagation()">
+            <!-- Close button -->
+            <button class="close-btn" (click)="closeModal()">×</button>
+
+            <!-- Form Header -->
+            <div class="form-header">
+                <h2 class="form-title">AGREGAR UN PRODUCTO</h2>
+                <p class="form-subtitle">Complete todos los campos para agregar un nuevo producto al inventario</p>
             </div>
 
-            <!-- Filtro de tallas -->
-            <div class="col-md-auto">
-                <h4>TALLAS</h4>
-                <mat-form-field>
-                    <mat-label>Talla</mat-label>
-                    <mat-select [(ngModel)]="talla">
-                        <mat-option *ngFor="let talla of tallas" [value]="talla.value">{{talla.viewValue}}</mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
+            <!-- Form -->
+            <form (ngSubmit)="crearProductoModal()" #productForm="ngForm">
+                <div class="form-grid">
+                    <!-- Left Column -->
+                    <div class="form-column">
+                        <div class="form-group">
+                            <label class="form-label">Prendas</label>
+                            <select class="form-select" [(ngModel)]="productoModal.prenda" name="prenda" required>
+                                <option value="">Selecciona una prenda</option>
+                                <option *ngFor="let prenda of prendas" [value]="prenda.value">
+                                    {{prenda.viewValue}}
+                                </option>
+                            </select>
+                        </div>
 
-            <!-- Filtro de horarios -->
-            <div class="col-md-auto">
-                <h4>HORARIOS</h4>
-                <mat-form-field>
-                    <mat-label>Horario</mat-label>
-                    <mat-select [(ngModel)]="horario">
-                        <mat-option *ngFor="let horario of horarios"
-                            [value]="horario.value">{{horario.viewValue}}</mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
+                        <div class="form-group">
+                            <label class="form-label">Instituciones</label>
+                            <select class="form-select" [(ngModel)]="productoModal.institucion" name="institucion" required>
+                                <option value="">Selecciona una institución</option>
+                                <option *ngFor="let institucion of instituciones" [value]="institucion.value">
+                                    {{institucion.viewValue}}
+                                </option>
+                            </select>
+                        </div>
 
-            <!-- Filtro de géneros -->
-            <div class="col-md-auto">
-                <h4>GÉNEROS</h4>
-                <mat-form-field>
-                    <mat-label>Género</mat-label>
-                    <mat-select [(ngModel)]="genero">
-                        <mat-option *ngFor="let genero of generos"
-                            [value]="genero.value">{{genero.viewValue}}</mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
+                        <div class="form-group">
+                            <label class="form-label">Tallas</label>
+                            <select class="form-select" [(ngModel)]="productoModal.talla" name="talla" required>
+                                <option value="">Selecciona una talla</option>
+                                <option *ngFor="let talla of tallas" [value]="talla.value">
+                                    {{talla.viewValue}}
+                                </option>
+                            </select>
+                        </div>
 
-            <!-- Botones de acción para la búsqueda -->
-            <div class="col-md-auto">
-                <!-- Limpia todos los filtros de búsqueda -->
-                <button class="btn btn-primary" type="button" (click)="limpiarBusqueda()">LIMPIAR BUSQUEDA</button>
-            </div>
-            <div class="col-md-auto">
-                <!-- Ejecuta la búsqueda con los filtros seleccionados -->
-                <button class="btn btn-primary" type="button" (click)="buscarProductos()">BUSCAR</button>
-            </div>
+                        <div class="form-group">
+                            <label class="form-label">Horarios</label>
+                            <select class="form-select" [(ngModel)]="productoModal.horario" name="horario" required>
+                                <option value="">Selecciona un horario</option>
+                                <option *ngFor="let horario of horarios" [value]="horario.value">
+                                    {{horario.viewValue}}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Géneros</label>
+                            <select class="form-select" [(ngModel)]="productoModal.genero" name="genero" required>
+                                <option value="">Selecciona un género</option>
+                                <option *ngFor="let genero of generos" [value]="genero.value">
+                                    {{genero.viewValue}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Right Column -->
+                    <div class="form-column">
+                        <div class="form-group">
+                            <label class="form-label">Precio</label>
+                            <div class="input-with-icon">
+                                <span class="input-icon">$</span>
+                                <input 
+                                    type="number" 
+                                    class="form-input" 
+                                    [(ngModel)]="productoModal.precio"
+                                    name="precio"
+                                    placeholder="0" 
+                                    min="0" 
+                                    step="1000"
+                                    required
+                                >
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Cantidad</label>
+                            <div class="input-with-icon">
+                                <span class="input-icon">📦</span>
+                                <input 
+                                    type="number" 
+                                    class="form-input" 
+                                    [(ngModel)]="productoModal.cantidad"
+                                    name="cantidad"
+                                    placeholder="0" 
+                                    min="0" 
+                                    step="1"
+                                    required
+                                >
+                            </div>
+                        </div>
+
+                        <!-- Preview Card -->
+                        <div class="preview-card">
+                            <h4 class="preview-title">Vista previa del producto</h4>
+                            <div class="preview-content" [innerHTML]="getPreview()"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="form-actions">
+                    <button type="button" class="btn btn-form-secondary" (click)="resetModalForm()">
+                        Limpiar
+                    </button>
+                    <button type="submit" class="btn btn-form-primary" [class.loading]="isLoading" [disabled]="isLoading">
+                        <span *ngIf="!isLoading">Agregar</span>
+                    </button>
+                </div>
+            </form>
         </div>
+    </div>
 
-
-
-
-        <!--
-        ========================================================================
-        TABLA DE INVENTARIO
-        Muestra los productos de inventario con sus detalles y opciones de
-        edición/eliminación.
-        ========================================================================
-        -->
-        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-            <!-- Columna de ID -->
-            <ng-container matColumnDef="id">
-                <th mat-header-cell *matHeaderCellDef> No. </th>
-                <td mat-cell *matCellDef="let element"> {{element.id}} </td>
-            </ng-container>
-            
-            <!-- Columna de prenda -->
-            <ng-container matColumnDef="prenda">
-                <th mat-header-cell *matHeaderCellDef> Prenda </th>
-                <td mat-cell *matCellDef="let element"> {{element.prenda}} </td>
-            </ng-container>
-            
-            <!-- Columna de institución -->
-            <ng-container matColumnDef="institucion">
-                <th mat-header-cell *matHeaderCellDef> Institución </th>
-                <td mat-cell *matCellDef="let element"> {{element.institucion}} </td>
-            </ng-container>
-            
-            <!-- Columna de talla -->
-            <ng-container matColumnDef="talla">
-                <th mat-header-cell *matHeaderCellDef> Talla </th>
-                <td mat-cell *matCellDef="let element"> {{element.talla}} </td>
-            </ng-container>
-            
-            <!-- Columna de horario -->
-            <ng-container matColumnDef="horario">
-                <th mat-header-cell *matHeaderCellDef> Horario </th>
-                <td mat-cell *matCellDef="let element"> {{element.horario}} </td>
-            </ng-container>
-            
-            <!-- Columna de género -->
-            <ng-container matColumnDef="genero">
-                <th mat-header-cell *matHeaderCellDef> Género </th>
-                <td mat-cell *matCellDef="let element"> {{element.genero}} </td>
-            </ng-container>
-            
-            <!-- Columna de precio -->
-            <ng-container matColumnDef="precio">
-                <th mat-header-cell *matHeaderCellDef> Precio </th>
-                <td mat-cell *matCellDef="let element"> {{element.precio}} </td>
-            </ng-container>
-            
-            <!-- Columna de cantidad -->
-            <ng-container matColumnDef="cantidad">
-                <th mat-header-cell *matHeaderCellDef> Cantidad </th>
-                <td mat-cell *matCellDef="let element"> {{element.cantidad}} </td>
-            </ng-container>
-            
-            <!-- Columna de opciones (botones de editar y eliminar) -->
-            <ng-container matColumnDef="boton">
-                <th mat-header-cell *matHeaderCellDef> Opción </th>
-                <td mat-cell *matCellDef="let element">
-                    <!-- Botón para eliminar un producto (muestra diálogo de confirmación) -->
-                    <button type="button" class="btn btn-danger" (click)="eliminarProductoConfirmar(element.id)">
-                        <i class="bi bi-trash"></i>
-                    </button>
-                    <!-- Botón para actualizar/editar un producto -->
-                    <button type="button" class="btn btn-warning" (click)="actualizarProducto(element)">
-                        <i class="bi bi-pencil"></i>
-                    </button>
-                </td>
-            </ng-container>
-            
-            <!-- Definición de filas y columnas para la tabla -->
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table>
-        
+    <!-- Success Message -->
+    <div class="success-message" [class.show]="showSuccessMessage">
+        ✅ Producto agregado exitosamente
     </div>
 
 </body>

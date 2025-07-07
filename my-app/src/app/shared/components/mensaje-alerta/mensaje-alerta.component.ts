@@ -2,30 +2,13 @@ import { Component, Inject, OnInit } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
   MatDialogRef,
-  MatDialogTitle,
-  MatDialogContent,
-  MatDialogActions,
-  MatDialogClose,
 } from '@angular/material/dialog';
-import {MatButtonModule} from '@angular/material/button';
-import {FormsModule} from '@angular/forms';
-import {MatInputModule} from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
 import { CreateDataConfigComponent } from '../../../page/producto/create-data-config/create-data-config.component';
-import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-mensaje-alerta',
   standalone: true,
-  imports: [MatFormFieldModule,
-    MatInputModule,
-    FormsModule,
-    MatButtonModule,
-    MatDialogTitle,
-    MatDialogContent,
-    MatDialogActions,
-    MatDialogClose,
-    MatIconModule],
+  imports: [],
   templateUrl: './mensaje-alerta.component.html',
   styleUrl: './mensaje-alerta.component.css'
 })
@@ -37,9 +20,6 @@ export class MensajeAlertaComponent implements OnInit {
 
     }
 
-
-
-    
   ngOnInit(): void {
   }
 
@@ -49,7 +29,5 @@ export class MensajeAlertaComponent implements OnInit {
   confirmar(){
     this.dialogRef.close();
   };
-
-
 
 }

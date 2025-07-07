@@ -13,7 +13,7 @@ export class EmpleadoService {
   /*
   *url que lleva a la api de los empleados
   */
-  private empleadoURL='http://localhost:9090/api/manejoEmpleado'; 
+  private empleadoURL='http://localhost:9090/api/empleado'; 
 
 
   constructor(private http:HttpClient) { }
@@ -24,7 +24,7 @@ export class EmpleadoService {
   *metodo que hace una solicitud que que pida la lista de empleados
   */
  public buscarEmpleados(): Observable<RespuestaDto<EmpleadoDto[]>> {
-    return this.http.get<RespuestaDto<EmpleadoDto[]>>(`${this.empleadoURL}/buscarEmpleados`);
+    return this.http.get<RespuestaDto<EmpleadoDto[]>>(`${this.empleadoURL}`);
  }
 
 
@@ -32,7 +32,7 @@ export class EmpleadoService {
  *metodo que hace una solicitud al back para eliminar un empeado
  */
  public eliminarEmpleado(cedula:number): Observable<RespuestaDto<string>>{
-   return this.http.delete<RespuestaDto<string>>(`${this.empleadoURL}/eliminarEmpleado/${cedula}`);
+   return this.http.delete<RespuestaDto<string>>(`${this.empleadoURL}/${cedula}`);
  }
 
  
@@ -40,6 +40,6 @@ export class EmpleadoService {
  *metodo que hace una solicitud al back para agregar un empleado
  */
  public agregarEmpleado(empleadoData: EmpleadoDto):Observable<RespuestaDto<string>>{
-  return this.http.post<RespuestaDto<string>>(`${this.empleadoURL}/crearEmpleado`,empleadoData);
+  return this.http.post<RespuestaDto<string>>(`${this.empleadoURL}`,empleadoData);
   }
 }

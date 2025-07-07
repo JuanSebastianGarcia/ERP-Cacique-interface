@@ -13,7 +13,7 @@ import { ProductoPendienteDto } from "../models/producto-pendiente-dto";
 export class FacturaService {
 
   /** Base URL for invoice-related endpoints */
-  private facturaURL: string = 'http://localhost:9090/api/manejoFactura/';
+  private facturaURL: string = 'http://localhost:9090/api/factura';
 
   /** Internal cache of loaded invoices */
   private facturasCargadas: FacturaDto[] = [];
@@ -30,7 +30,7 @@ export class FacturaService {
    * @returns observable with the response containing invoice data
    */
   public consultarFactura(codigo: number, tipoCodigo: string): Observable<RespuestaDto<FacturaDto>> {
-    return this.http.get<RespuestaDto<FacturaDto>>(`${this.facturaURL}buscarFactura/${codigo}/${tipoCodigo}`).pipe(
+    return this.http.get<RespuestaDto<FacturaDto>>(`${this.facturaURL}/${codigo}/${tipoCodigo}`).pipe(
       tap((respuesta) => {
         if (respuesta && Array.isArray(respuesta.respuesta)) {
           this.facturasCargadas = respuesta.respuesta;
@@ -61,7 +61,7 @@ export class FacturaService {
    * @returns observable with the response message
    */
   public actualizarFactura(factura: FacturaDto): Observable<RespuestaDto<String>> {
-    return this.http.put<RespuestaDto<String>>(`${this.facturaURL}actualizarFactura`, factura);
+    return this.http.put<RespuestaDto<String>>(`${this.facturaURL}`, factura);
   }
 
   /**
@@ -70,12 +70,12 @@ export class FacturaService {
    * @returns observable with the response message
    */
   public generarFactura(factura: FacturaDto): Observable<RespuestaDto<String>> {
-    return this.http.post<RespuestaDto<String>>(`${this.facturaURL}generarFactura`, factura);
+    return this.http.post<RespuestaDto<String>>(`${this.facturaURL}`, factura);
   }
 
 
   public buscarProductosPendientes(): Observable<RespuestaDto<ProductoPendienteDto[]>>{
-    return this.http.get<RespuestaDto<ProductoPendienteDto[]>>(`${this.facturaURL}consultarProductosPendientes`);
+    return this.http.get<RespuestaDto<ProductoPendienteDto[]>>(`${this.facturaURL}/consultarProductosPendientes`);
 
   }
 }

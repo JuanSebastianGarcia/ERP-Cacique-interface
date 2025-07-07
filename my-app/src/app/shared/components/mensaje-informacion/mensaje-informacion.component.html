@@ -1,12 +1,17 @@
-<h1 mat-dialog-title class="alert-title">Confirmar accion</h1>
-
-<div class="alert-box">
-    <mat-dialog-content class="mat-dialog">
-        <p class="alert-message">{{message}}</p>
-    </mat-dialog-content>
-
-    <mat-dialog-actions>
-        <button type="button" class="btn btn-success" (click)="confirmar()">continuar</button>
-    </mat-dialog-actions>
-
+<div class="alert-container alert-info">
+    <div class="alert-header">
+        <button class="alert-close" (click)="confirmar()" type="button">×</button>
+        Información
+        <div class="alert-progress"></div>
+    </div>
+    <div class="alert-body">
+        <div class="alert-icon">ℹ️</div>
+        <h3 class="alert-message">Información importante</h3>
+        <p class="alert-description">{{message}}</p>
+        <div class="alert-actions">
+            <button class="alert-btn alert-btn-primary" (click)="confirmar()" type="button">
+                De acuerdo
+            </button>
+        </div>
+    </div>
 </div>

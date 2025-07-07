@@ -1,16 +1,56 @@
-<body>
-  <div class="login-form">
-      <h1>CACIQUE SPORT</h1>
-      <form (ngSubmit)="login()">
-          <div class="form-group">
-            <label for="email">Correo:</label>
-            <input type="email" class="form-control" id="email" [(ngModel)]="loginData.email" name="email" required>
-          </div>
-          <div class="form-group">
-            <label for="password">Contraseña:</label>
-            <input type="password" class="form-control" id="password" [(ngModel)]="loginData.password" name="password" required>
-          </div>
-          <button type="submit" class="btn-login">Iniciar sesión</button>
-      </form>
-  </div>
-</body>
+<div class="login-container">
+    <div class="logo-container">
+        <div class="logo"></div>
+        <h1 class="company-name">CACIQUE SPORT</h1>
+        <p class="company-subtitle">Confecciones</p>
+    </div>
+
+    <form (ngSubmit)="login()">
+        <div class="form-group">
+            <label for="email" class="form-label">Correo Electrónico</label>
+            <input 
+                type="email" 
+                id="email" 
+                name="email" 
+                class="form-input" 
+                placeholder="Ingresa tu correo electrónico"
+                [(ngModel)]="loginData.email"
+                required
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="password" class="form-label">Contraseña</label>
+            <div class="password-container">
+                <input 
+                    [type]="showPassword ? 'text' : 'password'" 
+                    id="password" 
+                    name="password" 
+                    class="form-input" 
+                    placeholder="Ingresa tu contraseña"
+                    [(ngModel)]="loginData.password"
+                    required
+                >
+                <button type="button" class="password-toggle" (click)="togglePassword()">
+                    {{ showPassword ? '🙈' : '👁️' }}
+                </button>
+            </div>
+        </div>
+
+        <button type="submit" class="login-button">
+            {{ isLoading ? 'Iniciando sesión...' : 'Iniciar Sesión' }}
+        </button>
+    </form>
+
+    <div class="forgot-password">
+        <a href="#" (click)="showForgotPassword()">¿Olvidaste tu contraseña?</a>
+    </div>
+
+    <div class="divider">
+        <span>Acceso Seguro</span>
+    </div>
+
+    <div class="footer-text">
+        © 2025 Cacique Sport. Todos los derechos reservados.
+    </div>
+</div>
