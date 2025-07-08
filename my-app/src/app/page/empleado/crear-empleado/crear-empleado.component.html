@@ -8,61 +8,132 @@
 </head>
 
 <body>
+    <!-- Modal para Agregar Empleado -->
+    <div class="modal-overlay active">
+        <div class="form-container">
+            <!-- Close button -->
+            <button class="close-btn" (click)="cerrarModal()">×</button>
 
-    <div class="agregar-empleado-form">
-        <h1>Agregar Empleado</h1>
+            <!-- Form Header -->
+            <div class="form-header">
+                <h2 class="form-title">AGREGAR EMPLEADO</h2>
+                <p class="form-subtitle">Complete todos los campos para agregar un nuevo empleado al sistema</p>
+            </div>
+
+            <!-- Form -->
             <form (ngSubmit)="agregarEmpleado()">
-                <mat-card-content>FORMULARIO</mat-card-content>
+                <div class="form-grid">
+                    <!-- Left Column -->
+                    <div class="form-column">
+                        <div class="form-group">
+                            <label class="form-label">Nombre completo</label>
+                            <input 
+                                type="text" 
+                                class="form-input" 
+                                id="nombre" 
+                                [(ngModel)]="empleadoData.nombre" 
+                                name="nombre" 
+                                placeholder="Ingresa el nombre completo"
+                                required
+                            >
+                        </div>
 
-                <!-- Campo del nombre -->
-                <div class="container">
-                    <label for="nombre">Nombre:</label>
-                    <input type="text" id="nombre" [(ngModel)]="empleadoData.nombre" name="nombre" required>
+                        <div class="form-group">
+                            <label class="form-label">Número de cédula</label>
+                            <input 
+                                type="number" 
+                                class="form-input" 
+                                id="cedula" 
+                                [(ngModel)]="cedulaNoValidada" 
+                                name="cedula" 
+                                placeholder="Ej: 1234567890"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Número de teléfono</label>
+                            <input 
+                                type="number" 
+                                class="form-input" 
+                                id="telefono" 
+                                [(ngModel)]="telefonoNoValidado" 
+                                name="telefono" 
+                                placeholder="Ej: 3001234567"
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Right Column -->
+                    <div class="form-column">
+                        <div class="form-group">
+                            <label class="form-label">Correo electrónico</label>
+                            <input 
+                                type="text" 
+                                class="form-input" 
+                                id="email" 
+                                [(ngModel)]="empleadoData.email" 
+                                name="email" 
+                                placeholder="ejemplo@correo.com"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Contraseña</label>
+                            <input 
+                                type="password" 
+                                class="form-input" 
+                                id="password" 
+                                [(ngModel)]="empleadoData.password" 
+                                name="password" 
+                                placeholder="Crear contraseña segura"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Rol o Cargo</label>
+                            <mat-form-field appearance="outline" class="mat-form-field-custom">
+                                <mat-label>Selecciona un cargo</mat-label>
+                                <mat-select [(ngModel)]="empleadoData.tipoEmpleado" [ngModelOptions]="{standalone: true}">
+                                    <mat-option *ngFor="let tipo of tipoEmpleados" [value]="tipo.value">
+                                        {{tipo.viewValue}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                        <!-- Preview Card -->
+                        <div class="preview-card">
+                            <h4 class="preview-title">Vista previa del empleado</h4>
+                            <div id="employeePreview">
+                                <p *ngIf="!empleadoData.nombre; else showPreview">Complete los campos para ver la vista previa...</p>
+                                <ng-template #showPreview>
+                                    <div class="preview-content">
+                                        <p><strong>Nombre:</strong> {{empleadoData.nombre || 'Sin especificar'}}</p>
+                                        <p><strong>Cédula:</strong> {{cedulaNoValidada || 'Sin especificar'}}</p>
+                                        <p><strong>Email:</strong> {{empleadoData.email || 'Sin especificar'}}</p>
+                                        <p><strong>Cargo:</strong> {{empleadoData.tipoEmpleado || 'Sin especificar'}}</p>
+                                    </div>
+                                </ng-template>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Campo de la cédula -->
-                <div class="container">
-                    <label for="cedula">Cédula:</label>
-                    <input type="number" id="cedula" [(ngModel)]="cedulaNoValidada" name="cedula" required>
+                <!-- Action Buttons -->
+                <div class="form-actions">
+                    <button type="button" class="btn btn-form-secondary" onclick="resetEmployeeForm()">
+                        Limpiar
+                    </button>
+                    <button type="button" (click)="agregarEmpleado()" class="btn btn-form-primary">
+                        Agregar empleado
+                    </button>
                 </div>
-
-                <!-- Campo del teléfono -->
-                <div class="container">
-                    <label for="telefono">Teléfono:</label>
-                    <input type="number" id="telefono" [(ngModel)]="telefonoNoValidado" name="telefono" required>
-                </div>
-
-                <!-- Campo del email -->
-                <div class="container">
-                    <label for="email">Correo electrónico:</label>
-                    <input type="text" id="email" [(ngModel)]="empleadoData.email" name="email" required>
-                </div>
-
-                <!-- Campo del password -->
-                <div class="container">
-                    <label for="password">Contraseña:</label>
-                    <input type="password" id="password" [(ngModel)]="empleadoData.password" name="password" required>
-                </div>
-
-                <!-- Lista de cargos -->
-                <div>
-                    <h4>Rol o Cargo</h4>
-                    <mat-form-field>
-                        <mat-label>Cargo</mat-label>
-                        <mat-select [(ngModel)]="empleadoData.tipoEmpleado" [ngModelOptions]="{standalone: true}">
-                            <mat-option *ngFor="let tipo of tipoEmpleados"
-                                [value]="tipo.value">{{tipo.viewValue}}</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-
-
-
-
             </form>
-            <button type="button" (click)="agregarEmpleado()" class="btn btn-success" >agregar empleado</button>
-       
-
+        </div>
     </div>
 </body>
 

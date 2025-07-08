@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { EmpleadoService } from '../../../core/service/empleado.service';
 import { Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MensajeAlertaComponent } from '../../../shared/components/mensaje-alerta/mensaje-alerta.component';
 import { MensajeInformacionComponent } from '../../../shared/components/mensaje-informacion/mensaje-informacion.component';
 
@@ -50,6 +50,7 @@ export class CrearEmpleadoComponent {
 
 
   constructor(private empleadoService: EmpleadoService,
+    private dialogRef: MatDialogRef<CrearEmpleadoComponent>,
     private router: Router,
     private dialog: MatDialog) { };
 
@@ -60,7 +61,7 @@ export class CrearEmpleadoComponent {
   /*
   *se encarga de hacer una solicitud para el registro de un nuevo empleado
   */
-  agregarEmpleado() {
+  public agregarEmpleado() {
 
     //validacion de datos
     if (this.validarDatosEmpleado() == true) {
@@ -71,7 +72,7 @@ export class CrearEmpleadoComponent {
       this.empleadoService.agregarEmpleado(this.empleadoData).subscribe({
         next: data => {
           const dialogRef = this.dialog.open(MensajeInformacionComponent, { data: 'Empleado agregado' });
-          this.router.navigate(['empleados']);
+          this.dialogRef.close();
         },
         error: error => {
           console.log(error.error)
@@ -81,6 +82,13 @@ export class CrearEmpleadoComponent {
       });
     }
 
+  }
+
+  /*
+  *se encarga de cerrar el modal y navegar de vuelta a la lista de empleados
+  */
+  public cerrarModal() {
+    this.dialogRef.close();
   }
 
 

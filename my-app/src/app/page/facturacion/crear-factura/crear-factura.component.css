@@ -1,115 +1,383 @@
-/* Contenedor principal */
-.datos-cliente, .lista-productos, .seccion-pago {
-    border: 1px solid #0044cc;
-    padding: 15px;
-    margin-bottom: 20px;
+/* Modern styles for crear-factura component */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Content Area */
+:host {
+  display: block;
+  padding: 30px;
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #1e8449 100%);
+  min-height: calc(100vh - 60px);
+  overflow-y: visible;
+}
+
+.page-header {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  padding: 30px;
+  margin-bottom: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  animation: fadeInUp 0.6s ease;
+}
+
+.page-title {
+  color: #2c3e50;
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.page-title-icon {
+  font-size: 36px;
+}
+
+/* Section Cards */
+.section-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  padding: 30px;
+  margin-bottom: 25px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  animation: fadeInUp 0.6s ease;
+  animation-delay: 0.1s;
+  animation-fill-mode: both;
+}
+
+.section-title {
+  color: #2c3e50;
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.section-title::after {
+  content: '';
+  flex: 1;
+  height: 2px;
+  background: linear-gradient(90deg, #27ae60 0%, transparent 100%);
+  margin-left: 10px;
+}
+
+/* Form Elements */
+.customer-form {
+  display: grid;
+  gap: 20px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 15px;
+  align-items: end;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-label {
+  color: #2c3e50;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.form-input {
+  padding: 15px 20px;
+  border: 2px solid #ecf0f1;
+  border-radius: 12px;
+  font-size: 16px;
+  background: #fafbfc;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.form-input:focus {
+  border-color: #27ae60;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
+  transform: translateY(-1px);
+}
+
+.form-input:disabled {
+  background: #f8f9fa;
+  color: #6c757d;
+  cursor: not-allowed;
+}
+
+.btn {
+  padding: 14px 25px;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #27ae60, #2ecc71);
+  color: white;
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  color: white;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Products Section */
+.products-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.products-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 15px;
+}
+
+.products-table th {
+  background: #f8f9fa;
+  color: #2c3e50;
+  font-weight: 600;
+  padding: 15px;
+  text-align: left;
+  border-bottom: 2px solid #e9ecef;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.products-table th:first-child {
+  border-radius: 10px 0 0 0;
+}
+
+.products-table th:last-child {
+  border-radius: 0 10px 0 0;
+  text-align: center;
+}
+
+.products-table td {
+  padding: 15px;
+  border-bottom: 1px solid #f0f4f8;
+  color: #2c3e50;
+  font-size: 15px;
+}
+
+.products-table tbody tr {
+  transition: all 0.3s ease;
+}
+
+.products-table tbody tr:hover {
+  background: #f8f9fa;
+  transform: scale(1.01);
+}
+
+.delete-btn {
+  background: #e74c3c;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+}
+
+.delete-btn:hover {
+  background: #c0392b;
+  transform: translateY(-2px);
+}
+
+/* Empty State */
+.empty-products {
+  text-align: center;
+  padding: 40px;
+  color: #7f8c8d;
+  background: #f8f9fa;
+  border-radius: 10px;
+  margin: 20px 0;
+}
+
+.empty-icon {
+  font-size: 48px;
+  opacity: 0.5;
+  margin-bottom: 10px;
+}
+
+/* Total Section */
+.total-section {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.total-label {
+  color: #2c3e50;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.total-value {
+  color: #27ae60;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+/* Payment Section */
+.payment-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.form-select {
+  padding: 15px 20px;
+  border: 2px solid #ecf0f1;
+  border-radius: 12px;
+  font-size: 16px;
+  background: #fafbfc;
+  transition: all 0.3s ease;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237f8c8d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+  background-size: 20px;
+  padding-right: 45px;
+}
+
+.form-select:focus {
+  border-color: #27ae60;
+  background-color: white;
+  box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
+}
+
+/* Generate Button */
+.generate-section {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.btn-generate {
+  background: linear-gradient(135deg, #27ae60, #2ecc71);
+  color: white;
+  padding: 18px 40px;
+  font-size: 18px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-generate:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(39, 174, 96, 0.3);
+}
+
+/* Angular Material Overrides */
+::ng-deep .mat-form-field {
+  width: 100%;
+}
+
+::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
+  background: #fafbfc;
+  border-radius: 12px;
+  border: 2px solid #ecf0f1;
+}
+
+::ng-deep .mat-form-field-appearance-fill:hover .mat-form-field-flex {
+  background: white;
+  border-color: #27ae60;
+}
+
+::ng-deep .mat-form-field-appearance-fill.mat-focused .mat-form-field-flex {
+  border-color: #27ae60;
+  box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
+}
+
+::ng-deep .mat-table {
+  background: transparent;
+}
+
+::ng-deep .mat-header-cell {
+  background: #f8f9fa;
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+::ng-deep .mat-cell {
+  border-bottom: 1px solid #f0f4f8;
+}
+
+::ng-deep .mat-row:hover {
+  background: #f8f9fa;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  :host {
+    padding: 20px;
   }
   
-  /* Encabezados de secciones */
-  .datos-cliente h3,
-  .lista-productos h3,
-  .seccion-pago h3 {
-    margin-top: 0;
+  .payment-grid {
+    grid-template-columns: 1fr;
   }
-  
-  /* Fila de búsqueda */
-  .fila-busqueda {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    margin-bottom: 15px;
+
+  .form-row {
+    grid-template-columns: 1fr;
   }
-  
-  /* Entrada y botones alineados */
-  .columna-cedula {
-    display: flex;
-    gap: 10px;
-    flex: 1;
-  }
-  
-  .columna-registrar {
-    flex-shrink: 0;
-  }
-  
-  /* Campos de datos del cliente */
-  .fila-datos {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  .campo label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 4px;
-  }
-  
-  .campo input {
-    width: 100%;
-    background-color: white;
-  }
-  
-  /* Tabla productos */
-  table {
-    width: 100%;
-    margin-top: 15px;
-  }
-  
-  /* Botón eliminar */
-  button[mat-icon-button] {
-    background-color: #ff4d4d;
-    color: white;
-  }
-  
-  /* Botones verdes */
-  button[type="button"] {
-    background-color: #4CAF50;
-    border: none;
-    padding: 6px 12px;
-    cursor: pointer;
-    font-weight: bold;
-    color: white;
-  }
-  
-  button[type="button"]:hover {
-    background-color: #388E3C;
-  }
-  
-  /* Valor total factura */
-  .valor-total {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    margin-top: 20px;
-    gap: 10px;
-  }
-  
-  .valor-total input {
-    background-color: #ccc;
-    text-align: right;
-    padding: 4px;
-    width: 100px;
-  }
-  
-  /* Sección pago */
-  .seccion-pago {
-    display: flex;
+
+  .products-header {
     flex-direction: column;
     gap: 15px;
+    align-items: stretch;
   }
-  
-  .seccion-pago .campo {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  /* Botón generar factura */
-  div[style*="justify-content: flex-end"] button {
-    background-color: #4CAF50;
-    color: white;
-  }
-  
-  div[style*="justify-content: flex-end"] button:hover {
-    background-color: #388E3C;
-  }
+}
   

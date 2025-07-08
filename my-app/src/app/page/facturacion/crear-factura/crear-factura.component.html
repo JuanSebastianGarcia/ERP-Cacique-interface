@@ -1,131 +1,146 @@
-<!-- Título principal -->
-<h1>Generar factura de venta</h1>
-
-<!-- Sección: Datos del cliente -->
-<div class="datos-cliente">
-  <h3>Datos del cliente</h3>
-
-  <!-- Fila para búsqueda de cliente -->
-  <div class="fila-busqueda">
-    <!-- Campo: Cédula del cliente -->
-    <div class="columna-cedula">
-      <label for="cedula">Cédula</label>
-      <input type="text" id="cedula" placeholder="escribir cédula" [(ngModel)]="cedulaCliente" name="cedulaCliente">
-      <button type="button" (click)="buscarCliente()">Buscar cliente</button>
-    </div>
-
-    <!-- Botón para registrar nuevo cliente -->
-    <div class="columna-registrar">
-      <button type="button" (click)="registrarCliente()">Registrar cliente</button>
-    </div>
+<!-- Main Content -->
+<main>
+  <!-- Page Header -->
+  <div class="page-header">
+    <h2 class="page-title">
+      <span class="page-title-icon">🧾</span>
+      Generar factura de venta
+    </h2>
   </div>
 
-  <!-- Fila con datos básicos del cliente -->
-  <div class="fila-datos">
-    <div class="campo">
-      <label for="senior">Señor</label>
-      <input type="text" id="senior" [value]="cliente.nombre" disabled>
-    </div>
-    <div class="campo">
-      <label for="telefono">Teléfono</label>
-      <input type="text" id="telefono" [value]="cliente.telefono" disabled>
-    </div>
-    <div class="campo">
-      <label for="correo">Correo</label>
-      <input type="text" id="correo" [value]="cliente.correo" disabled>
-    </div>
-  </div>
-</div>
-
-<!-- Sección: Lista de productos -->
-<div class="lista-productos">
-  <!-- Encabezado con botón para agregar producto -->
-  <div class="encabezado-tabla" style="display: flex; justify-content: space-between; align-items: center;">
-    <h3>Lista de productos</h3>
-    <button type="button" (click)="agregarProducto()">Agregar producto</button>
-  </div>
-
-  <!-- Tabla de productos -->
-  <table mat-table [dataSource]="listaProductos" class="mat-elevation-z8">
+  <!-- Customer Data Section -->
+  <div class="section-card">
+    <h3 class="section-title">
+      <span>👤</span>
+      Datos del cliente
+    </h3>
     
-    <!-- Columna: ID -->
-    <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef> ID </th>
-      <td mat-cell *matCellDef="let element"> {{element.id}} </td>
-    </ng-container>
+    <form class="customer-form">
+      <div class="form-row">
+        <div class="form-group" style="width: 200px;">
+          <label class="form-label">Cédula</label>
+          <input type="text" class="form-input" id="cedula" placeholder="Escribir cédula" [(ngModel)]="cedulaCliente" name="cedulaCliente">
+        </div>
+        <div></div>
+        <div style="display: flex; gap: 10px;">
+          <button type="button" class="btn btn-primary" (click)="buscarCliente()">
+            🔍 Buscar cliente
+          </button>
+          <button type="button" class="btn btn-secondary" (click)="registrarCliente()">
+            ➕ Registrar cliente
+          </button>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Señor(a)</label>
+        <input type="text" class="form-input" id="customerName" placeholder="Nombre completo del cliente" [value]="cliente.nombre" disabled>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Teléfono</label>
+        <input type="tel" class="form-input" id="phone" placeholder="Número de teléfono" [value]="cliente.telefono" disabled>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Correo</label>
+        <input type="email" class="form-input" id="email" placeholder="Correo electrónico" [value]="cliente.correo" disabled>
+      </div>
+    </form>
+  </div>
 
-    <!-- Columna: Descripción -->
-    <ng-container matColumnDef="Descripcion">
-      <th mat-header-cell *matHeaderCellDef> Descripción </th>
-      <td mat-cell *matCellDef="let element"> {{element.Descripcion}} </td>
-    </ng-container>
+  <!-- Products Section -->
+  <div class="section-card">
+    <div class="products-header">
+      <h3 class="section-title" style="margin-bottom: 0;">
+        Lista de productos
+      </h3>
+      <button class="btn btn-primary" (click)="agregarProducto()">
+        Agregar producto
+      </button>
+    </div>
 
-    <!-- Columna: Estado con selector -->
-    <ng-container matColumnDef="Estado">
-      <th mat-header-cell *matHeaderCellDef> Estado </th>
-      <td mat-cell *matCellDef="let element">
+    <div id="productsContainer">
+      <!-- Products Table -->
+      <table class="products-table" mat-table [dataSource]="listaProductos" *ngIf="listaProductos.data.length > 0">
+        <thead>
+          <tr>
+            <th style="width: 80px;">ID</th>
+            <th>Descripción</th>
+            <th style="width: 200px;">Estado</th>
+            <th style="width: 150px;">Precio</th>
+            <th style="width: 150px;">Eliminar producto</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;" style="animation: fadeInUp 0.3s ease">
+            <td mat-cell *matCellDef="let element">{{element.id}}</td>
+            <td mat-cell *matCellDef="let element">{{element.Descripcion}}</td>
+            <td mat-cell *matCellDef="let element">
+              <mat-form-field appearance="fill">
+                <mat-select [(ngModel)]="element.Estado" (selectionChange)="cambiarEstado($event.value, element.id)" [name]="'estado_' + element.id">
+                  <mat-option *ngFor="let estado of estadosDisponibles" [value]="estado">
+                    {{ estado }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </td>
+            <td mat-cell *matCellDef="let element">${{element.Precio.toLocaleString()}}</td>
+            <td mat-cell *matCellDef="let element" style="text-align: center;">
+              <button class="delete-btn" (click)="eliminarProducto(element.id)">
+                🗑️ Eliminar
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Empty State -->
+      <div class="empty-products" *ngIf="listaProductos.data.length === 0">
+        <div class="empty-icon">🛒</div>
+        <h4>No hay productos agregados</h4>
+        <p>Haz clic en "Agregar producto" para comenzar</p>
+      </div>
+
+      <!-- Total Section -->
+      <div class="total-section" *ngIf="listaProductos.data.length > 0">
+        <span class="total-label">Valor total factura</span>
+        <span class="total-value">${{valorTotalFactura.toLocaleString()}}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Payment Section -->
+  <div class="section-card">
+    <h3 class="section-title">
+      <span>💳</span>
+      Pago
+    </h3>
+    
+    <div class="payment-grid">
+      <div class="form-group">
+        <label class="form-label">Método de pago</label>
         <mat-form-field appearance="fill">
-          <mat-select [(ngModel)]="element.Estado" (selectionChange)="cambiarEstado($event.value, element.id)" [name]="'estado_' + element.id">
-            <mat-option *ngFor="let estado of estadosDisponibles" [value]="estado">
-              {{ estado }}
+          <mat-select [(ngModel)]="metodoPago" name="metodoPago" class="form-select">
+            <mat-option *ngFor="let opcion of opcionesPago" [value]="opcion">
+              {{ opcion }}
             </mat-option>
           </mat-select>
         </mat-form-field>
-      </td>
-    </ng-container>
-
-    <!-- Columna: Precio -->
-    <ng-container matColumnDef="Precio">
-      <th mat-header-cell *matHeaderCellDef> Precio </th>
-      <td mat-cell *matCellDef="let element"> {{element.Precio}} </td>
-    </ng-container>
-
-    <!-- Columna: Acción eliminar -->
-    <ng-container matColumnDef="acciones">
-      <th mat-header-cell *matHeaderCellDef> Eliminar producto </th>
-      <td mat-cell *matCellDef="let element">
-        <button mat-icon-button aria-label="Eliminar" (click)="eliminarProducto(element.id)">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </td>
-    </ng-container>
-
-    <!-- Filas de la tabla -->
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
-
-  <!-- Valor total de la factura -->
-  <div style="display: flex; justify-content: flex-end; align-items: center; margin-top: 20px;">
-    <label style="margin-right: 10px;"><strong>Valor total factura</strong></label>
-    <input type="text" [value]="valorTotalFactura" disabled>
-  </div>
-
-  <!-- Sección: Información de pago -->
-  <div class="seccion-pago" style="margin-top: 20px; border: 1px solid #ccc; padding: 15px;">
-    <h3>Pago</h3>
-
-    <!-- Selector de método de pago -->
-    <div class="campo">
-      <label for="metodoPago">Método de pago</label>
-      <mat-form-field appearance="fill">
-        <mat-select [(ngModel)]="metodoPago" name="metodoPago">
-          <mat-option *ngFor="let opcion of opcionesPago" [value]="opcion">
-            {{ opcion }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-
-    <!-- Campo: Valor a pagar -->
-    <div class="campo">
-      <label for="valorPago">Valor a pagar</label>
-      <input type="number" id="valorPago" placeholder="Escriba el valor" [(ngModel)]="valorPago" name="valorPago">
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Valor a pagar</label>
+        <input type="number" class="form-input" id="paymentAmount" placeholder="0" min="0" [(ngModel)]="valorPago" name="valorPago">
+      </div>
     </div>
   </div>
 
-  <!-- Botón: Generar factura -->
-  <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
-    <button type="button" (click)="generarFactura()">Generar factura</button>
+  <!-- Generate Invoice Button -->
+  <div class="generate-section">
+    <button class="btn-generate" (click)="generarFactura()">
+      <span>📄</span>
+      <span>Generar factura</span>
+    </button>
   </div>
-</div>
+</main>

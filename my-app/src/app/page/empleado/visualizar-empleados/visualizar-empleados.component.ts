@@ -5,17 +5,19 @@ import { EmpleadoDto } from '../../../core/models/empleado-dto';
 import { CommonModule } from '@angular/common';
 import { EmpleadoService } from '../../../core/service/empleado.service';
 import { Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MensajeInformacionComponent } from '../../../shared/components/mensaje-informacion/mensaje-informacion.component';
 import { MensajeAlertaComponent } from '../../../shared/components/mensaje-alerta/mensaje-alerta.component';
 import { MensajeConfirmacionComponent } from '../../../shared/components/mensaje-confirmacion/mensaje-confirmacion.component';
+import { CrearEmpleadoComponent } from '../crear-empleado/crear-empleado.component';
 
 @Component({
   selector: 'app-visualizar-empleados',
   standalone: true,
   imports: [MatCardModule,
             MatTableModule,
-            CommonModule
+            CommonModule,
+            MatDialogModule
   ],
   templateUrl: './visualizar-empleados.component.html',
   styleUrl: './visualizar-empleados.component.css'
@@ -91,4 +93,11 @@ export class VisualizarEmpleadosComponent implements OnInit{
     });
 
   }
+
+
+  
+  public agregarEmpleado(){
+    const dialogRef = this.dialog.open(CrearEmpleadoComponent,{data:'Agregar empleado'}); 
+  }
+  
 }
