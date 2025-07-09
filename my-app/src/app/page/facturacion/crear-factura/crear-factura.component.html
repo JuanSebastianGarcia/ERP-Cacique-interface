@@ -1,6 +1,6 @@
-<!-- Main Content -->
+<!-- ========================= CONTENIDO PRINCIPAL ========================= -->
 <main>
-  <!-- Page Header -->
+  <!-- ========================= ENCABEZADO DE LA PÁGINA ========================= -->
   <div class="page-header">
     <h2 class="page-title">
       <span class="page-title-icon">🧾</span>
@@ -8,14 +8,16 @@
     </h2>
   </div>
 
-  <!-- Customer Data Section -->
+  <!-- ========================= SECCIÓN DE DATOS DEL CLIENTE ========================= -->
   <div class="section-card">
     <h3 class="section-title">
       <span>👤</span>
       Datos del cliente
     </h3>
     
+    <!-- Formulario de datos del cliente -->
     <form class="customer-form">
+      <!-- Fila con campo de cédula y botones -->
       <div class="form-row">
         <div class="form-group" style="width: 200px;">
           <label class="form-label">Cédula</label>
@@ -32,16 +34,19 @@
         </div>
       </div>
       
+      <!-- Campo de nombre del cliente -->
       <div class="form-group">
         <label class="form-label">Señor(a)</label>
         <input type="text" class="form-input" id="customerName" placeholder="Nombre completo del cliente" [value]="cliente.nombre" disabled>
       </div>
       
+      <!-- Campo de teléfono del cliente -->
       <div class="form-group">
         <label class="form-label">Teléfono</label>
         <input type="tel" class="form-input" id="phone" placeholder="Número de teléfono" [value]="cliente.telefono" disabled>
       </div>
       
+      <!-- Campo de correo del cliente -->
       <div class="form-group">
         <label class="form-label">Correo</label>
         <input type="email" class="form-input" id="email" placeholder="Correo electrónico" [value]="cliente.correo" disabled>
@@ -49,8 +54,9 @@
     </form>
   </div>
 
-  <!-- Products Section -->
+  <!-- ========================= SECCIÓN DE PRODUCTOS ========================= -->
   <div class="section-card">
+    <!-- Encabezado de la sección de productos -->
     <div class="products-header">
       <h3 class="section-title" style="margin-bottom: 0;">
         Lista de productos
@@ -60,9 +66,10 @@
       </button>
     </div>
 
+    <!-- Contenedor de productos -->
     <div id="productsContainer">
-      <!-- Products Table -->
-      <table class="products-table" mat-table [dataSource]="listaProductos" *ngIf="listaProductos.data.length > 0">
+      <!-- Tabla de productos -->
+      <table class="products-table" id="productsTable" *ngIf="listaProductos.data.length > 0">
         <thead>
           <tr>
             <th style="width: 80px;">ID</th>
@@ -72,11 +79,11 @@
             <th style="width: 150px;">Eliminar producto</th>
           </tr>
         </thead>
-        <tbody>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;" style="animation: fadeInUp 0.3s ease">
-            <td mat-cell *matCellDef="let element">{{element.id}}</td>
-            <td mat-cell *matCellDef="let element">{{element.Descripcion}}</td>
-            <td mat-cell *matCellDef="let element">
+        <tbody id="productsTableBody">
+          <tr *ngFor="let element of listaProductos.data; let i = index" style="animation: fadeInUp 0.3s ease">
+            <td>{{element.id}}</td>
+            <td>{{element.Descripcion}}</td>
+            <td>
               <mat-form-field appearance="fill">
                 <mat-select [(ngModel)]="element.Estado" (selectionChange)="cambiarEstado($event.value, element.id)" [name]="'estado_' + element.id">
                   <mat-option *ngFor="let estado of estadosDisponibles" [value]="estado">
@@ -85,8 +92,8 @@
                 </mat-select>
               </mat-form-field>
             </td>
-            <td mat-cell *matCellDef="let element">${{element.Precio.toLocaleString()}}</td>
-            <td mat-cell *matCellDef="let element" style="text-align: center;">
+            <td>${{element.Precio.toLocaleString()}}</td>
+            <td style="text-align: center;">
               <button class="delete-btn" (click)="eliminarProducto(element.id)">
                 🗑️ Eliminar
               </button>
@@ -95,14 +102,14 @@
         </tbody>
       </table>
 
-      <!-- Empty State -->
+      <!-- Estado vacío - cuando no hay productos -->
       <div class="empty-products" *ngIf="listaProductos.data.length === 0">
         <div class="empty-icon">🛒</div>
         <h4>No hay productos agregados</h4>
         <p>Haz clic en "Agregar producto" para comenzar</p>
       </div>
 
-      <!-- Total Section -->
+      <!-- Sección de total de la factura -->
       <div class="total-section" *ngIf="listaProductos.data.length > 0">
         <span class="total-label">Valor total factura</span>
         <span class="total-value">${{valorTotalFactura.toLocaleString()}}</span>
@@ -110,14 +117,16 @@
     </div>
   </div>
 
-  <!-- Payment Section -->
+  <!-- ========================= SECCIÓN DE PAGO ========================= -->
   <div class="section-card">
     <h3 class="section-title">
       <span>💳</span>
       Pago
     </h3>
     
+    <!-- Grid de campos de pago -->
     <div class="payment-grid">
+      <!-- Campo de método de pago -->
       <div class="form-group">
         <label class="form-label">Método de pago</label>
         <mat-form-field appearance="fill">
@@ -129,6 +138,7 @@
         </mat-form-field>
       </div>
       
+      <!-- Campo de valor a pagar -->
       <div class="form-group">
         <label class="form-label">Valor a pagar</label>
         <input type="number" class="form-input" id="paymentAmount" placeholder="0" min="0" [(ngModel)]="valorPago" name="valorPago">
@@ -136,7 +146,7 @@
     </div>
   </div>
 
-  <!-- Generate Invoice Button -->
+  <!-- ========================= BOTÓN DE GENERAR FACTURA ========================= -->
   <div class="generate-section">
     <button class="btn-generate" (click)="generarFactura()">
       <span>📄</span>
