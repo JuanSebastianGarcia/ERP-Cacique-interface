@@ -156,7 +156,29 @@
 /* Content Wrapper */
 .content-wrapper {
   flex: 1;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 20px;
+  height: calc(100vh - 73px);
+}
+
+/* Scrollbar styling for content wrapper */
+.content-wrapper::-webkit-scrollbar {
+  width: 8px;
+}
+
+.content-wrapper::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+}
+
+.content-wrapper::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #27ae60, #2ecc71);
+  border-radius: 10px;
+}
+
+.content-wrapper::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
 }
 
 /* Responsive Design */

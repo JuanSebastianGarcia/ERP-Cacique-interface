@@ -1,0 +1,19 @@
+/* Estilos generales para el contenedor principal */
+.app-container {
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Asegurar que no haya scroll en el body cuando no sea necesario */
+:host {
+  display: block;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Smooth scrolling para toda la aplicación */
+* {
+  scroll-behavior: smooth;
+}
