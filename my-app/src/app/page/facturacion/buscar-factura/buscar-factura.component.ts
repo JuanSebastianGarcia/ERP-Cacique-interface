@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -11,6 +12,7 @@ import { Router } from '@angular/router';
   selector: 'app-buscar-factura',
   standalone: true,
   imports: [
+    CommonModule,
     MatIconModule,
     MatTableModule,
     FormsModule

@@ -1,14 +1,410 @@
-mat-dialog-actions button {
-    margin-left: 8px;
-    /* Espacio entre botones */
-    padding: 10px 20px;
-    /* Aumenta el tamaño del botón */
-    font-size: 16px;
-    /* Aumenta el tamaño del texto */
-    margin: 10px;
+/* Modal Container */
+.modal-container {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  max-width: 600px !important;
+  width: 100% !important;
+  min-width: 500px;
+  background: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(20px) !important;
+  border-radius: 20px !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2) !important;
+  animation: fadeInUp 0.6s ease;
+  overflow: hidden !important;
+  position: relative;
+  transform: translateZ(0); /* Fuerza aceleración de hardware */
 }
 
-mat-dialog-actions {
-    display: flex;
-    justify-content: flex-end;
+/* Header */
+.modal-header {
+  padding: 35px 40px !important;
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px 20px 0 0 !important;
+  margin: 0 !important;
+  /* Asegura que el header respete los bordes redondeados */
+}
+
+.modal-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: inherit;
+  opacity: 0.1;
+  z-index: 0;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  position: relative;
+  z-index: 1;
+}
+
+.header-icon {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+}
+
+.icon-symbol {
+  font-size: 24px;
+  line-height: 1;
+}
+
+.header-text {
+  flex: 1;
+}
+
+.modal-title {
+  color: white;
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0 0 5px 0;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.modal-subtitle {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 14px;
+  margin: 0;
+  opacity: 0.95;
+}
+
+.close-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 2;
+}
+
+.close-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: rotate(90deg) scale(1.1);
+}
+
+.close-button span {
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 1;
+}
+
+/* Body */
+.modal-body {
+  padding: 35px 40px !important;
+  background: transparent !important;
+}
+
+.input-section {
+  margin-bottom: 25px;
+}
+
+.input-label {
+  display: block;
+  color: #2c3e50;
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Modern Input Styling */
+.modern-input {
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.modern-input .mat-mdc-form-field-wrapper {
+  padding-bottom: 0;
+}
+
+.modern-input .mat-mdc-form-field-flex {
+  background: white;
+  border-radius: 12px;
+  border: 2px solid #e9ecef;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.modern-input .mat-mdc-form-field-flex:hover {
+  border-color: #3498db;
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.15);
+}
+
+.modern-input.mat-focused .mat-mdc-form-field-flex {
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.modern-input .mat-mdc-form-field-infix {
+  padding: 15px;
+  min-height: auto;
+  border-top: none;
+}
+
+.modern-input .mat-mdc-input-element {
+  font-size: 15px;
+  color: #2c3e50;
+  font-weight: 500;
+}
+
+.modern-input .mat-mdc-input-element::placeholder {
+  color: #95a5a6;
+  opacity: 1;
+}
+
+/* Hide Material Design underline */
+.modern-input .mat-mdc-form-field-subscript-wrapper,
+.modern-input .mat-mdc-form-field-bottom-align::before {
+  display: none;
+}
+
+.modern-input .mdc-line-ripple {
+  display: none;
+}
+
+/* Actions */
+.modal-actions {
+  padding: 25px 40px 35px !important;
+  display: flex !important;
+  gap: 20px !important;
+  justify-content: flex-end !important;
+  margin: 0 !important;
+  background: transparent !important;
+}
+
+.modal-actions .btn {
+  flex: 1;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-cancel {
+  background: #ecf0f1;
+  color: #2c3e50;
+}
+
+.btn-cancel:hover {
+  background: #d5dbdb;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.btn-add {
+  background: linear-gradient(135deg, #27ae60, #2ecc71);
+  color: white;
+  box-shadow: 0 5px 20px rgba(39, 174, 96, 0.3);
+}
+
+.btn-add:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(39, 174, 96, 0.4);
+}
+
+.btn-add:disabled {
+  background: #bdc3c7 !important;
+  cursor: not-allowed !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+.btn-icon {
+  font-size: 14px;
+  line-height: 1;
+}
+
+/* Button ripple effect */
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.btn:hover::before {
+  left: 100%;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Forzar bordes redondeados desde el inicio */
+:host {
+  border-radius: 20px !important;
+  overflow: hidden !important;
+}
+
+:host ::ng-deep * {
+  border-radius: inherit;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .modal-container {
+    margin: 20px !important;
+    max-width: calc(100vw - 40px) !important;
+    min-width: auto !important;
+  }
+  
+  .modal-header {
+    padding: 25px 25px !important;
+  }
+  
+  .modal-body {
+    padding: 25px 25px !important;
+  }
+  
+  .modal-actions {
+    padding: 20px 25px 25px !important;
+    flex-direction: column !important;
+    gap: 15px !important;
+  }
+  
+  .modal-actions .btn {
+    flex: none !important;
+    width: 100% !important;
+  }
+  
+  .modal-title {
+    font-size: 18px !important;
+  }
+  
+  .modal-subtitle {
+    font-size: 13px !important;
+  }
+}
+
+/* Focus styles for accessibility */
+.btn:focus-visible {
+  outline: 2px solid #3498db;
+  outline-offset: 2px;
+}
+
+.close-button:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 2px;
+}
+
+/* Smooth transitions for all interactive elements */
+* {
+  transition: all 0.3s ease;
+}
+
+/* Enhanced backdrop */
+::ng-deep .cdk-overlay-backdrop {
+  background: rgba(0, 0, 0, 0.6) !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+/* Material Dialog overrides - MUY IMPORTANTE para bordes redondeados */
+::ng-deep .mat-mdc-dialog-container {
+  padding: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 20px !important;
+  overflow: hidden !important;
+  max-width: 600px !important;
+  width: 100% !important;
+}
+
+::ng-deep .mat-mdc-dialog-content {
+  padding: 0 !important;
+  margin: 0 !important;
+  border-radius: 20px !important;
+  overflow: hidden !important;
+}
+
+::ng-deep .mat-mdc-dialog-actions {
+  padding: 0 !important;
+  margin: 0 !important;
+  min-height: auto !important;
+  border-radius: 0 0 20px 20px !important;
+}
+
+/* Forzar bordes redondeados en todos los elementos del dialog */
+::ng-deep .mat-mdc-dialog-surface {
+  border-radius: 20px !important;
+  overflow: hidden !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+::ng-deep .mdc-dialog {
+  border-radius: 20px !important;
+  overflow: hidden !important;
+}
+
+::ng-deep .mdc-dialog__surface {
+  border-radius: 20px !important;
+  overflow: hidden !important;
+  background: transparent !important;
+}
+
+/* Asegurar que el contenedor principal tenga los bordes redondeados */
+::ng-deep .cdk-overlay-pane {
+  border-radius: 20px !important;
+  overflow: hidden !important;
+}
+
+/* Custom scrollbar for overflow content */
+.modal-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal-container::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
+}
+
+.modal-container::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 3px;
+}
+
+.modal-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.5);
 }

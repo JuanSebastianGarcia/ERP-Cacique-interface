@@ -1,13 +1,55 @@
-<h1 mat-dialog-title class="alert-title">{{message}}</h1>
-<mat-dialog-content>
-    <p>Agregar nombre del dato     
-    </p>
-    <mat-form-field>
-        <mat-label>Nuevo dato</mat-label>
-        <input matInput [(ngModel)]="respuesta">
-    </mat-form-field>
-</mat-dialog-content>
-<mat-dialog-actions>
-    <button type="button" class="btn btn-secondary" (click)="onNoClick()">Cancelar</button>
-    <button type="button" class="btn btn-success" [mat-dialog-close]="respuesta" cdkFocusInitial>Agregar</button>
-</mat-dialog-actions>
+<!-- Modal Container -->
+<div class="modal-container">
+  <!-- Header -->
+  <div class="modal-header" [ngStyle]="getHeaderStyle()">
+    <div class="header-content">
+      <div class="header-icon">
+        <span class="icon-symbol">{{ getIcon() }}</span>
+      </div>
+      <div class="header-text">
+        <h2 class="modal-title">{{ getTitle() }}</h2>
+        <p class="modal-subtitle">{{ getSubtitle() }}</p>
+      </div>
+    </div>
+    <button class="close-button" (click)="onNoClick()">
+      <span>×</span>
+    </button>
+  </div>
+
+  <!-- Body -->
+  <mat-dialog-content class="modal-body">
+    <div class="input-section">
+      <label class="input-label">{{ getSubtitle() }}</label>
+      <mat-form-field class="modern-input">
+        <input 
+          matInput 
+          [(ngModel)]="respuesta"
+          [placeholder]="getPlaceholder()"
+          class="styled-input"
+          cdkFocusInitial
+        >
+      </mat-form-field>
+    </div>
+  </mat-dialog-content>
+
+  <!-- Actions -->
+  <mat-dialog-actions class="modal-actions">
+    <button 
+      type="button" 
+      class="btn btn-cancel" 
+      (click)="onNoClick()"
+    >
+      🔙 Cancelar
+    </button>
+    <button 
+      type="button" 
+      class="btn btn-add" 
+      [mat-dialog-close]="respuesta"
+      [disabled]="!respuesta.trim()"
+      [ngStyle]="getAddButtonStyle()"
+    >
+      <span class="btn-icon">➕</span>
+      Agregar
+    </button>
+  </mat-dialog-actions>
+</div>

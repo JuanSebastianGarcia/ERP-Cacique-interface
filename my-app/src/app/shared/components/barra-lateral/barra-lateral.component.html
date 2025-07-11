@@ -13,7 +13,7 @@
   <aside class="sidebar">
     <div class="menu-section">
       <h3 class="menu-title">Inventario</h3>
-      <a routerLink="/productos" class="menu-item" routerLinkActive="active">
+      <a routerLink="/productos" class="menu-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
         <span class="menu-icon">👁️</span>
         Productos
       </a>

@@ -61,7 +61,7 @@ export class FacturaService {
    * @returns observable with the response message
    */
   public actualizarFactura(factura: FacturaDto): Observable<RespuestaDto<String>> {
-    return this.http.put<RespuestaDto<String>>(`${this.facturaURL}`, factura);
+    return this.http.put<RespuestaDto<String>>(`${this.facturaURL}/${factura.idFactura}`, factura);
   }
 
   /**

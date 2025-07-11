@@ -9,60 +9,161 @@
 
 <body>
     <div class="main-container">
-        <mat-card class="product-card">
-            <h1>Editar Producto</h1>
-            <div class="container">
-                <h2>Informacion del producto</h2>
-                <div class="data-section">
-                    <mat-card class="data-card"><label>id: {{ productoData.id }}</label></mat-card>
-                    <mat-card class="data-card"><label>prenda: {{ productoData.prenda }}</label></mat-card>
-                    <mat-card class="data-card"><label>institucion: {{ productoData.institucion }}</label></mat-card>
-                    <mat-card class="data-card"><label>talla: {{ productoData.talla }}</label></mat-card>
-                    <mat-card class="data-card"><label>horario: {{ productoData.horario }}</label></mat-card>
-                    <mat-card class="data-card"><label>genero: {{ productoData.genero }}</label></mat-card>
-                    <mat-card class="data-card"><label>precio: {{ productoData.precio }}</label></mat-card>
-                    <mat-card class="data-card"><label>cantidad: {{ productoData.cantidad }}</label></mat-card>
+        <!-- Main Content -->
+        <main class="content">
+            <!-- Header -->
+            <div class="content-header">
+                <h2 class="content-title">EDITAR PRODUCTO</h2>
+                <p class="content-subtitle">Información del producto y campos de edición</p>
+            </div>
+
+            <!-- Product Information Section -->
+            <div class="info-container">
+                <div class="info-header">
+                    <h3 class="info-title">📦 INFORMACIÓN ACTUAL DEL PRODUCTO</h3>
                 </div>
 
-                <div class="container">
-
-                    <h2>Informacion a actualizar</h2>
-                    
-                    <div class="input-group">
-                        <label for="precio">Precio:</label>
-                        <input type="number" id="precio" [(ngModel)]="productoData.precio" name="precio"
-                            placeholder="Ingresa el precio" min="0" step="100.00" required>
+                <div class="info-grid">
+                    <div class="info-card">
+                        <div class="info-label">ID</div>
+                        <div class="info-value">{{productoData.id}}</div>
                     </div>
-                
-                    <div class="input-group">
-                        <label for="cantidad-agregar">Agregar:</label>
-                        <input type="number" id="cantidad-agregar" [(ngModel)]="cantidadAgregar" name="cantidad-agregar"
-                            placeholder="Ingresa la cantidad">
+                    <div class="info-card">
+                        <div class="info-label">PRENDA</div>
+                        <div class="info-value">{{productoData.prenda}}</div>
                     </div>
-                
-                    <div class="input-group">
-                        <label for="cantidad-descontar">Descontar:</label>
-                        <input type="number" id="cantidad-descontar" [(ngModel)]="cantidadDescontar" name="cantidad-descontar"
-                            placeholder="Ingresa la cantidad">
+                    <div class="info-card">
+                        <div class="info-label">INSTITUCIÓN</div>
+                        <div class="info-value">{{productoData.institucion}}</div>
                     </div>
-                
-
-                
-                    <div class="btn-crear">
-                        <button class="btn btn-success" (click)="actualizarProducto()">Guardar</button>
+                    <div class="info-card">
+                        <div class="info-label">TALLA</div>
+                        <div class="info-value">{{productoData.talla}}</div>
                     </div>
-                </div>
-                <div class="btn-volver">
-                    <button class="btn btn-success" (click)="volver()">Volver</button>
+                    <div class="info-card">
+                        <div class="info-label">HORARIO</div>
+                        <div class="info-value">{{productoData.horario}}</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-label">GÉNERO</div>
+                        <div class="info-value">{{productoData.genero}}</div>
+                    </div>
+                    <div class="info-card highlight">
+                        <div class="info-label">PRECIO ACTUAL</div>
+                        <div class="info-value price">${{productoData.precio | number:'1.0-0'}}</div>
+                    </div>
+                    <div class="info-card highlight">
+                        <div class="info-label">CANTIDAD ACTUAL</div>
+                        <div class="info-value quantity">{{productoData.cantidad}}</div>
+                    </div>
                 </div>
             </div>
-            
-        </mat-card>
-        
+
+            <!-- Edit Form Section -->
+            <div class="form-container">
+                <div class="form-header">
+                    <h3 class="form-title">✏️ EDITAR INFORMACIÓN</h3>
+                    <p class="form-subtitle">Actualice el precio y ajuste la cantidad del producto</p>
+                </div>
+
+                <form (ngSubmit)="actualizarProducto()" #editForm="ngForm">
+                    <div class="form-grid">
+                        <!-- Left Column -->
+                        <div class="form-column">
+                            <div class="form-group">
+                                <label class="form-label">💰 NUEVO PRECIO</label>
+                                <div class="input-with-icon">
+                                    <span class="input-icon">$</span>
+                                    <input 
+                                        type="number" 
+                                        class="form-input" 
+                                        [(ngModel)]="productoData.precio"
+                                        name="precio"
+                                        placeholder="Ingrese el nuevo precio" 
+                                        min="0" 
+                                        step="1000"
+                                        required
+                                    >
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">📈 AGREGAR CANTIDAD</label>
+                                <div class="input-with-icon">
+                                    <span class="input-icon">+</span>
+                                    <input 
+                                        type="number" 
+                                        class="form-input" 
+                                        [(ngModel)]="cantidadAgregar"
+                                        name="cantidadAgregar"
+                                        placeholder="Cantidad a agregar" 
+                                        min="0" 
+                                        step="1"
+                                        value="0"
+                                    >
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Column -->
+                        <div class="form-column">
+                            <div class="form-group">
+                                <label class="form-label">📉 DESCONTAR CANTIDAD</label>
+                                <div class="input-with-icon">
+                                    <span class="input-icon">-</span>
+                                    <input 
+                                        type="number" 
+                                        class="form-input" 
+                                        [(ngModel)]="cantidadDescontar"
+                                        name="cantidadDescontar"
+                                        placeholder="Cantidad a descontar" 
+                                        min="0" 
+                                        step="1"
+                                        value="0"
+                                    >
+                                </div>
+                            </div>
+
+                            <!-- Preview Card -->
+                            <div class="preview-card">
+                                <h4 class="preview-title">📊 Vista previa de cambios</h4>
+                                <div class="preview-content">
+                                    <div class="preview-item">
+                                        <span class="preview-label">Cantidad final:</span>
+                                        <span class="preview-value">{{productoData.cantidad + (cantidadAgregar || 0) - (cantidadDescontar || 0)}}</span>
+                                    </div>
+                                    <div class="preview-item">
+                                        <span class="preview-label">Agregar:</span>
+                                        <span class="preview-value positive">+{{cantidadAgregar || 0}}</span>
+                                    </div>
+                                    <div class="preview-item">
+                                        <span class="preview-label">Descontar:</span>
+                                        <span class="preview-value negative">-{{cantidadDescontar || 0}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-form-secondary" (click)="volver()">
+                            🔙 Volver
+                        </button>
+                        <button type="submit" class="btn btn-form-primary" [class.loading]="isLoading" [disabled]="isLoading">
+                            <span *ngIf="!isLoading">💾 Guardar Cambios</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <!-- Success Message -->
+    <div class="success-message" [class.show]="showSuccessMessage">
+        ✅ Producto actualizado exitosamente
     </div>
 
 </body>
-
-
 
 </html>

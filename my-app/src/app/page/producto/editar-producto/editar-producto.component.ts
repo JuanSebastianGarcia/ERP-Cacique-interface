@@ -7,11 +7,12 @@ import { ProductoService } from '../../../core/service/producto.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MensajeAlertaComponent } from '../../../shared/components/mensaje-alerta/mensaje-alerta.component';
 import { MensajeInformacionComponent } from '../../../shared/components/mensaje-informacion/mensaje-informacion.component';
+import { CommonModule, DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-editar-producto',
   standalone: true,
-  imports: [MatCardModule, FormsModule,],
+  imports: [MatCardModule, FormsModule, DecimalPipe,CommonModule ],
   templateUrl: './editar-producto.component.html',
   styleUrl: './editar-producto.component.css'
 })
@@ -48,6 +49,9 @@ export class EditarProductoComponent implements OnInit {
   public cantidadAgregar: number = 0;
   public cantidadDescontar: number = 0;
 
+  // Variables para el estado de la interfaz
+  public isLoading: boolean = false;
+  public showSuccessMessage: boolean = false;
 
 
   constructor(private router: Router,
@@ -73,16 +77,17 @@ export class EditarProductoComponent implements OnInit {
   *y asignando los nuevos datos
   */
   actualizarProducto() {
+    if (this.isLoading) return;
 
     let datosValidados: boolean = this.validarDatos();
 
     //se validan las restas
     if (datosValidados) {
+      this.isLoading = true;
       this.productoData.cantidad += this.cantidadAgregar - this.cantidadDescontar;
 
       this.enviarSolicitudActualizar();
     }
-
   }
 
 
@@ -100,18 +105,29 @@ export class EditarProductoComponent implements OnInit {
   * hace una solicitud de actualizacion del producto
   */
   private enviarSolicitudActualizar() {
-
     this.productoService.actualizarProducto(this.productoData).subscribe(
       {
         next: data => {
-          const dialogRef=this.dialog.open(MensajeInformacionComponent,{data:'Producto actualizado'});
-          this.router.navigate(['productos']);
+          this.isLoading = false;
+          this.showSuccessMessage = true;
+          
+          // Ocultar mensaje después de 3 segundos
+          setTimeout(() => {
+            this.showSuccessMessage = false;
+          }, 3000);
+          
+          const dialogRef = this.dialog.open(MensajeInformacionComponent, {data: 'Producto actualizado'});
+          
+          // Navegar después de un breve delay para mostrar el mensaje
+          setTimeout(() => {
+            this.router.navigate(['productos']);
+          }, 1500);
         },
         error: error => {
-          const dialogRef = this.dialog.open(MensajeAlertaComponent,{data:'Ocurrio un error en la actualizacion del producto'})
+          this.isLoading = false;
+          const dialogRef = this.dialog.open(MensajeAlertaComponent, {data: 'Ocurrió un error en la actualización del producto'});
           this.router.navigate(['productos']);
         }
-
       }
     );
   }

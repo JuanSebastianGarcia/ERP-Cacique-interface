@@ -73,7 +73,7 @@ export class ProductoService {
   *envia una solicitud al servidor para actualizar los datos del producto
   */
   actualizarProducto(productoData: ProductoDto):Observable<RespuestaDto<string>>{
-    return this.http.post<RespuestaDto<string>>(`${this.productosURL}`,productoData);
+    return this.http.put<RespuestaDto<string>>(`${this.productosURL}/${productoData.id}`,productoData);
   }
 
 

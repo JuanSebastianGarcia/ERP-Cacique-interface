@@ -72,19 +72,44 @@
 /* Form Elements */
 .customer-form {
   display: grid;
-  gap: 20px;
+  gap: 15px;
+}
+
+/* Sección de cliente más compacta */
+.section-card:has(.customer-form) {
+  padding: 20px;
 }
 
 .form-row {
   display: grid;
   grid-template-columns: auto 1fr auto;
-  gap: 15px;
+  gap: 12px;
   align-items: end;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
+}
+
+/* Form group más compacto en sección de cliente */
+.section-card:has(.customer-form) .form-group {
+  margin-bottom: 0;
+}
+
+.section-card:has(.customer-form) .form-label {
+  margin-bottom: 5px;
+  font-size: 13px;
+}
+
+.section-card:has(.customer-form) .form-input {
+  padding: 12px 15px;
+  font-size: 15px;
+}
+
+.section-card:has(.customer-form) .section-title {
+  font-size: 18px;
+  margin-bottom: 15px;
 }
 
 .form-label {

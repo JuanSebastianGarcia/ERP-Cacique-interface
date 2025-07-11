@@ -200,4 +200,37 @@ export class ProductosPendientesComponent implements OnInit {
       }
     });
   }
+
+  /**
+   * Calculates the number of days since the oldest pending product
+   */
+  public calcularDiasAntiguedad(): number {
+    if (this.dataSource.data.length === 0) {
+      return 0;
+    }
+
+    const fechas = this.dataSource.data.map(producto => new Date(producto.fecha));
+    const fechaMasAntigua = new Date(Math.min(...fechas.map(fecha => fecha.getTime())));
+    const fechaActual = new Date();
+    
+    const diferenciaTiempo = fechaActual.getTime() - fechaMasAntigua.getTime();
+    const diferenciaDias = Math.floor(diferenciaTiempo / (1000 * 3600 * 24));
+    
+    return diferenciaDias;
+  }
+
+  /**
+   * Calculates the number of institutions that have pending products
+   */
+  public calcularInstitucionesConProductosPendientes(): number {
+    if (this.dataSource.data.length === 0) {
+      return 0;
+    }
+
+    const institucionesUnicas = new Set(
+      this.dataSource.data.map(producto => producto.institucion)
+    );
+    
+    return institucionesUnicas.size;
+  }
 }

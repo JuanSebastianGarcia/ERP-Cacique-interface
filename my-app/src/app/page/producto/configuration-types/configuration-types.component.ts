@@ -61,7 +61,7 @@ export class ConfigurationTypesComponent implements OnInit {
   *
   *@param dato - nombre del dato que se eliminara
   */
-  eliminarDatoConfirmacion(dato: string) {
+  public eliminarDatoConfirmacion(dato: string) {
 
     const dialogRef = this.dialog.open(MensajeConfirmacionComponent, { data: "¿Esta seguro de eliminar el dato?" });
 
@@ -81,7 +81,7 @@ export class ConfigurationTypesComponent implements OnInit {
   /*
   *buscar por tipo de configuracion. almacena el tipo de cambio actual
   */
-  buscar(tipo: string) {
+  public buscar(tipo: string) {
 
     this.tipoActual = tipo;
 
@@ -93,7 +93,7 @@ export class ConfigurationTypesComponent implements OnInit {
   /*
   * se encarga de abrir el modal que solitica el nombre del nuevo dato y luego pasarselo al proceso de crear
   */
-  agregarDato() {
+  public agregarDato() {
 
 
     const dialogRef = this.dialog.open(CreateDataConfigComponent, { data: 'Que ' + this.tipoActual + ' desea agregar' });
