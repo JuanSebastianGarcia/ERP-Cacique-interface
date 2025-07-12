@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { ProductoDto } from '../../../core/models/producto-dto';
 import { ProductoService } from '../../../core/service/producto.service';
 import { RespuestaDto } from '../../../core/models/respuesta-dto';
@@ -11,6 +12,8 @@ import { ConfigurationTypesService } from '../../../core/service/configuration-t
 import { MatDialog } from '@angular/material/dialog';
 import { MensajeAlertaComponent } from '../../../shared/components/mensaje-alerta/mensaje-alerta.component';
 import { MensajeInformacionComponent } from '../../../shared/components/mensaje-informacion/mensaje-informacion.component';
+import { MatInputModule } from '@angular/material/input';
+import { MatOptionModule } from '@angular/material/core';
 
 
 @Component({
@@ -18,13 +21,20 @@ import { MensajeInformacionComponent } from '../../../shared/components/mensaje-
   standalone: true,
   imports: [FormsModule,
     MatSelectModule,
+    MatFormFieldModule,
     CommonModule,
-    MatGridListModule
+    MatGridListModule,
+    MatInputModule, 
+    MatOptionModule, 
   ],
   templateUrl: './crear-producto.component.html',
   styleUrl: './crear-producto.component.css'
 })
 export class CrearProductoComponent implements OnInit {
+
+  @Input() isModalMode: boolean = false; // Indica si se usa como modal
+  @Output() productoCreado = new EventEmitter<void>(); // Evento que emite cuando se crea un producto
+  @Output() cancelar = new EventEmitter<void>(); // Evento para cancelar (usado en modo modal)
 
 
   /*
@@ -45,21 +55,21 @@ export class CrearProductoComponent implements OnInit {
   /*
   *LOS SIGUIENTES DATOS ESTAN PARA LAS LISTAS DESPLEGABLES
   */
-  instituciones = [{ value: '', viewValue: '' },];
-  prendas = [{ value: '', viewValue: '' },];
-  tallas = [{ value: '', viewValue: '' },];
-  horarios = [{ value: '', viewValue: '' },];
-  generos = [{ value: '', viewValue: '' },];
+  instituciones: { value: string, viewValue: string }[] = [];
+  prendas: { value: string, viewValue: string }[] = [];
+  tallas: { value: string, viewValue: string }[] = [];
+  horarios: { value: string, viewValue: string }[] = [];
+  generos: { value: string, viewValue: string }[] = [];
 
 
   //formulario dto que sera enviado al servidor para crear el producto
   public productoData: ProductoDto= {
     id: 0,
-    prenda: 'string',
-    institucion: 'string',
-    talla: 'string',
-    horario: 'string',
-    genero: 'string',
+    prenda: '',
+    institucion: '',
+    talla: '',
+    horario: '',
+    genero: '',
     precio: 0,
     cantidad: 0
   }
@@ -83,7 +93,7 @@ export class CrearProductoComponent implements OnInit {
   /*
   *caputar los datos y hacer el registro de un nuevo producto
   */
-  agregarProducto() {
+  public agregarProducto() {
 
     //validacion de los datos
     if (this.validarDatosProducto() == true) {
@@ -92,16 +102,31 @@ export class CrearProductoComponent implements OnInit {
       this.productoService.agregarProducto(this.productoData).subscribe({
 
         next: (data: RespuestaDto<string>) => {
-          const dialogRef = this.dialog.open(MensajeInformacionComponent,{data:data.respuesta});//confirmar la creacion   
+          if (this.isModalMode) {
+            // En modo modal, solo emitir el evento
+            this.productoCreado.emit();
+          } else {
+            // En modo normal, mostrar el mensaje
+            const dialogRef = this.dialog.open(MensajeInformacionComponent,{data:data.respuesta});
+          }
           this.limpiarTabla();
         },
         error: error => {
-          const dialogRef = this.dialog.open(MensajeAlertaComponent,{data:error.error.respuesta});//informar un error
+          const dialogRef = this.dialog.open(MensajeAlertaComponent,{data:error.error.respuesta});
         }
       });
 
     }
 
+  }
+
+
+  /*
+  *método para cancelar la creación (usado en modo modal)
+  */
+  cancelarCreacion() {
+    this.limpiarTabla();
+    this.cancelar.emit();
   }
 
 

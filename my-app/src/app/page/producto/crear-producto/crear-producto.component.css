@@ -1,83 +1,316 @@
-body, html {
-    height: 100%;
-    margin: 50px;
-    font-family: Arial, sans-serif;
-    background-color: white;
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #1e8449 100%);
+    min-height: 100vh;
+    background-attachment: fixed;
+}
+
+/* Modal Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    display: none;
+    align-items: center;
     justify-content: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease;
 }
 
-.container {
-    width: 100%;
-    max-width: 1000px;
-    padding: 10px;
-    border-radius: 8px;
-    background: white;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    border-radius: 8px;
-    border: solid 2px black;
-    margin-right: 400px;
-}
-
-h1 {
-    text-align: center;
-    color: #333;
-}
-
-.form-producto {
+.modal-overlay.active {
     display: flex;
-    flex-direction: column;
-    gap: 30px;  /* Aumenta el espacio entre campos */
 }
 
-.field {
-    margin-bottom: 20px;  /* Añade espacio debajo de cada campo */
+/* Form Container */
+.form-container {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    animation: slideUp 0.4s ease;
 }
 
-mat-form-field {
-    width: 100%;  /* Ajusta esto según la necesidad para controlar el ancho de los campos */
-    margin-bottom: 20px;  /* Añade espacio debajo de cada campo de lista desplegable */
+.form-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #27ae60, #2ecc71, #58d68d);
 }
 
-
-.btn-crear {
-    margin-top: 50px;  /* Espacio antes del botón para bajarlo un poco más */
-    width: 100%;  /* Asegurarse de que el botón ocupe todo el ancho disponible */
-    display: flex;
-    justify-content: center;  /* Centrar el botón horizontalmente */
-}
-
-.btn-create {
-    background-color: #007bff;
+/* Close Button */
+.close-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: #e74c3c;
     color: white;
-    padding: 15px 20px;
-    font-size: 18px;
-    border-radius: 8px;
     border: none;
+    font-size: 20px;
     cursor: pointer;
-    width: 100%;
-    margin-top: 20px; /* Espacio antes del botón */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 10;
 }
 
-.btn-create:hover {
-    background-color: #0056b3;
+.close-btn:hover {
+    transform: rotate(90deg) scale(1.1);
+    background: #c0392b;
 }
 
-/* Estilos específicos para la alineación y disposición de los campos de precio y cantidad */
-.precio-cantidad {
+/* Form Header */
+.form-header {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.form-title {
+    color: #2c3e50;
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    letter-spacing: -0.5px;
+}
+
+.form-subtitle {
+    color: #7f8c8d;
+    font-size: 16px;
+}
+
+/* Form Grid */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.form-column {
     display: flex;
     flex-direction: column;
-    justify-content: center;  /* Alinear los elementos al centro verticalmente */
-    margin-bottom: 20px; /* Espacio debajo de cada grupo de campos */
+    gap: 20px;
 }
 
-.precio-cantidad div {
-    margin-bottom: 15px; /* Espacio entre los campos */
+/* Form Groups */
+.form-group {
+    position: relative;
+    animation: fadeInUp 0.6s ease;
+    animation-fill-mode: both;
 }
 
-input[type="number"] {
-    width: 100%; /* Asegura que el input ocupe todo el ancho del contenedor */
-    padding: 12px 20px; /* Aumenta el padding para hacer el campo más grande */
-    font-size: 16px; /* Aumenta la fuente para mejorar la legibilidad */
-    border: 1px solid #ccc; /* Borde sutil */
-    border-radius: 4px; /* Bordes redondeados para los inputs */
+.form-group:nth-child(1) { animation-delay: 0.1s; }
+.form-group:nth-child(2) { animation-delay: 0.2s; }
+.form-group:nth-child(3) { animation-delay: 0.3s; }
+.form-group:nth-child(4) { animation-delay: 0.4s; }
+.form-group:nth-child(5) { animation-delay: 0.5s; }
+
+.form-label {
+    display: block;
+    color: #2c3e50;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Estilos personalizados para Material Form Field */
+.mat-form-field-custom {
+    width: 100%;
+}
+
+/* Personalización de Material Form Fields */
+::ng-deep .mat-form-field-custom {
+    .mat-mdc-text-field-wrapper {
+        background-color: #fafbfc !important;
+    }
+    
+    .mat-mdc-form-field-focus-overlay {
+        background-color: transparent;
+    }
+    
+    .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__leading,
+    .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__notch,
+    .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__trailing {
+        border-color: #ecf0f1 !important;
+        border-width: 2px !important;
+    }
+    
+    &.mat-focused {
+        .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__leading,
+        .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__notch,
+        .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__trailing {
+            border-color: #27ae60 !important;
+        }
+    }
+    
+    .mat-mdc-form-field-focus-overlay {
+        opacity: 0 !important;
+    }
+    
+    .mdc-text-field {
+        border-radius: 12px !important;
+    }
+    
+    .mat-mdc-form-field-subscript-wrapper {
+        margin-top: 4px;
+    }
+}
+
+/* Action buttons */
+.form-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 35px;
+}
+
+.btn {
+    padding: 14px 30px;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    min-width: 140px;
+}
+
+.btn-form-primary {
+    background: linear-gradient(135deg, #27ae60, #2ecc71);
+    color: white;
+}
+
+.btn-form-primary:disabled {
+    background: #95a5a6;
+    cursor: not-allowed;
+}
+
+.btn-form-secondary {
+    background: #ecf0f1;
+    color: #2c3e50;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.btn:hover:not(:disabled)::before {
+    left: 100%;
+}
+
+.btn:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+/* Preview Card */
+.preview-card {
+    margin-top: 30px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    border: 2px dashed #e0e6ed;
+}
+
+.preview-title {
+    color: #2c3e50;
+    margin-bottom: 10px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.preview-content {
+    color: #7f8c8d;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.preview-content p {
+    margin-bottom: 8px;
+}
+
+.preview-content strong {
+    color: #2c3e50;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-container {
+        padding: 30px 25px;
+        margin: 10px;
+    }
+    
+    .form-title {
+        font-size: 24px;
+    }
 }

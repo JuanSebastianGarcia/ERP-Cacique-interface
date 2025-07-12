@@ -15,7 +15,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MensajeAlertaComponent } from '../../../shared/components/mensaje-alerta/mensaje-alerta.component';
 import { MensajeConfirmacionComponent } from '../../../shared/components/mensaje-confirmacion/mensaje-confirmacion.component';
 import { MensajeInformacionComponent } from '../../../shared/components/mensaje-informacion/mensaje-informacion.component';
-import { RespuestaDto } from '../../../core/models/respuesta-dto';
+import { CrearProductoComponent } from '../crear-producto/crear-producto.component';
 
 @Component({
   selector: 'app-visualizar-productos',
@@ -26,7 +26,7 @@ import { RespuestaDto } from '../../../core/models/respuesta-dto';
     MatSelectModule,
     CommonModule,
     FormsModule,
-    MatButtonModule,
+    MatButtonModule
   ],
   templateUrl: './visualizar-productos.component.html',
   styleUrl: './visualizar-productos.component.css'
@@ -78,20 +78,7 @@ export class VisualizarProductosComponent implements OnInit {
 
   // Modal variables
   public isModalOpen: boolean = false;
-  public isLoading: boolean = false;
   public showSuccessMessage: boolean = false;
-
-  // Formulario para el modal
-  public productoModal: ProductoDto = {
-    id: 0,
-    prenda: '',
-    institucion: '',
-    talla: '',
-    horario: '',
-    genero: '',
-    precio: 0,
-    cantidad: 0
-  };
 
   constructor(private productoService: ProductoService,
     private router: Router,
@@ -167,8 +154,19 @@ export class VisualizarProductosComponent implements OnInit {
   /*
   *invocar el modal para crear un producto
   */
-  agregarProducto() {
-    this.openModal();
+  public agregarProducto() {
+    const dialogRef = this.dialog.open(CrearProductoComponent);
+
+    dialogRef.afterClosed().subscribe(respuesta => {
+      if (respuesta == undefined) {
+      } else {
+        if (respuesta == '') {
+          this.agregarProducto();
+        }
+      }
+    }
+    );
+    
   }
 
   /*
@@ -180,107 +178,24 @@ export class VisualizarProductosComponent implements OnInit {
     this.router.navigate(["productos/editar-producto"]);
   }
 
-  // Modal methods
-  openModal() {
-    this.isModalOpen = true;
-    this.resetModalForm();
-    document.body.style.overflow = 'hidden';
-  }
 
   closeModal() {
     this.isModalOpen = false;
     document.body.style.overflow = 'auto';
-    this.resetModalForm();
   }
 
   /*
-  *crear un nuevo producto desde el modal
+  *método llamado cuando se crea un producto exitosamente desde el componente hijo
   */
-  crearProductoModal() {
-    if (this.validarDatosProductoModal()) {
-      this.isLoading = true;
-      
-      this.productoService.agregarProducto(this.productoModal).subscribe({
-        next: (data: RespuestaDto<string>) => {
-          this.isLoading = false;
-          this.showSuccessMessage = true;
-          
-          setTimeout(() => {
-            this.showSuccessMessage = false;
-          }, 3000);
-          
-          this.closeModal();
-          this.buscarProductos(); // Recargar la tabla
-        },
-        error: error => {
-          this.isLoading = false;
-          const dialogRef = this.dialog.open(MensajeAlertaComponent, { data: error.error.respuesta });
-        }
-      });
-    }
-  }
-
-  /*
-  *validar los datos del producto en el modal
-  */
-  private validarDatosProductoModal(): boolean {
-    let respuesta: boolean = true;
-
-    // Validar que todos los campos estén llenos
-    if (!this.productoModal.prenda || !this.productoModal.institucion || !this.productoModal.talla || 
-        !this.productoModal.horario || !this.productoModal.genero) {
-      respuesta = false;
-      const dialogRef = this.dialog.open(MensajeAlertaComponent, { data: 'Todos los campos son obligatorios' });
-    }
-
-    // Validar que sean enteros
-    if (!(Number.isInteger(this.productoModal.cantidad) && Number.isInteger(this.productoModal.precio))) {
-      respuesta = false;
-      const dialogRef = this.dialog.open(MensajeAlertaComponent, { data: 'El precio y las cantidades tienen que ser enteros' });
-    }
-
-    // Validar que sean mayores que cero
-    if (!(this.productoModal.cantidad >= 0 && this.productoModal.precio >= 0)) {
-      respuesta = false;
-      const dialogRef = this.dialog.open(MensajeAlertaComponent, { data: 'No pueden haber datos menores a cero' });
-    }
-
-    return respuesta;
-  }
-
-  /*
-  *limpiar el formulario del modal
-  */
-  resetModalForm() {
-    this.productoModal = {
-      id: 0,
-      prenda: '',
-      institucion: '',
-      talla: '',
-      horario: '',
-      genero: '',
-      precio: 0,
-      cantidad: 0
-    };
-  }
-
-  /*
-  *obtener el preview del producto para mostrar en el modal
-  */
-  getPreview(): string {
-    if (this.productoModal.prenda || this.productoModal.institucion || this.productoModal.talla || 
-        this.productoModal.precio || this.productoModal.cantidad) {
-      return `
-        <p><strong>Prenda:</strong> ${this.productoModal.prenda || '-'}</p>
-        <p><strong>Institución:</strong> ${this.productoModal.institucion || '-'}</p>
-        <p><strong>Talla:</strong> ${this.productoModal.talla ? this.productoModal.talla.toUpperCase() : '-'}</p>
-        <p><strong>Horario:</strong> ${this.productoModal.horario || '-'}</p>
-        <p><strong>Género:</strong> ${this.productoModal.genero || '-'}</p>
-        <p><strong>Precio:</strong> $${this.productoModal.precio ? this.productoModal.precio.toLocaleString() : '0'}</p>
-        <p><strong>Cantidad:</strong> ${this.productoModal.cantidad || '0'} unidades</p>
-      `;
-    }
-    return '<p>Complete los campos para ver la vista previa...</p>';
+  onProductoCreado() {
+    this.showSuccessMessage = true;
+    
+    setTimeout(() => {
+      this.showSuccessMessage = false;
+    }, 3000);
+    
+    this.closeModal();
+    this.buscarProductos(); // Recargar la tabla
   }
 
   /*
