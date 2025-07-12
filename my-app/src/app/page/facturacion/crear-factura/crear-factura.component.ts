@@ -68,6 +68,8 @@ export class CrearFacturaComponent {
   /** Available payment method options */
   public opcionesPago: string[] = ["EFECTIVO","BANCOLOMBIA","DAVIVIENDA"];
 
+
+
   /** Client detail object */
   public cliente = {
     nombre: '',
@@ -158,6 +160,8 @@ export class CrearFacturaComponent {
     });
   }
 
+
+
   /**
    * Removes product from the invoice and cart by ID
    * @param id - identifier of the product to remove
@@ -206,6 +210,7 @@ export class CrearFacturaComponent {
       return {
         idFactura: 0,
         estadoFactura: '',
+        fechaFactura: '',
         cedulaCliente: this.cedulaCliente + '',
         listaProductos: this.carrito,
         metodoPago: this.metodoPago,
@@ -258,24 +263,28 @@ export class CrearFacturaComponent {
       return sum > this.valorPago;
     }
   
-    /**
-     * Adds product to UI table and cart
-     * @param producto - product DTO selected by the user
-     */
-    private renderizarProducto(producto: ProductoDto): void {
-      this.agregarProductoAlCarrito(producto);
-  
-      const nuevoProducto = {
-        id: this.idProducto++,
-        Descripcion: `${producto.prenda}-${producto.talla}-${producto.horario}-${producto.genero}-${producto.institucion}`,
-        Estado: 'ENTREGADO',
-        Precio: producto.precio
-      };
-  
-      this.listaProductos.data.push(nuevoProducto);
-      this.listaProductos._updateChangeSubscription();
-      this.actualizarValorTotalFactura(producto.precio);
-    }
+      /**
+   * Adds product to UI table and cart
+   * @param producto - product DTO selected by the user
+   */
+  private renderizarProducto(producto: ProductoDto): void {
+    this.agregarProductoAlCarrito(producto);
+
+    const nuevoProducto = {
+      id: this.idProducto++,
+      Descripcion: producto.prenda,
+      Talla: producto.talla,
+      Horario: producto.horario,
+      Genero: producto.genero,
+      Institucion: producto.institucion,
+      Estado: 'ENTREGADO',
+      Precio: producto.precio
+    };
+
+    this.listaProductos.data.push(nuevoProducto);
+    this.listaProductos._updateChangeSubscription();
+    this.actualizarValorTotalFactura(producto.precio);
+  }
   
     /**
      * Adds product data to the internal cart list

@@ -132,7 +132,7 @@ export class ProductosPendientesComponent implements OnInit {
       horario: producto.horario,
       genero: producto.genero,
       descripcion: producto.descripcion,
-      fecha: producto.fecha,
+      fecha: this.formatearFecha(producto.fecha),
       idFactura: producto.idFactura
     }));
     
@@ -140,6 +140,35 @@ export class ProductosPendientesComponent implements OnInit {
     this.productosPendientesOriginal = productosPendientes;
     this.dataSource.data = productosPendientes;
   }
+
+
+  // Formatea la fecha para una mejor legibilidad
+  private formatearFecha(fechaISO: string): string {
+    if (!fechaISO) return 'Sin fecha';
+    
+    try {
+      const fecha = new Date(fechaISO);
+      
+      // Verificar si la fecha es válida
+      if (isNaN(fecha.getTime())) {
+        return fechaISO; // Devolver la fecha original si no es válida
+      }
+
+      // Formatear la fecha en español
+      const opciones: Intl.DateTimeFormatOptions = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        timeZone: 'UTC'
+      };
+
+      return fecha.toLocaleDateString('es-ES', opciones);
+    } catch (error) {
+      console.error('Error al formatear la fecha:', error);
+      return fechaISO; // Devolver la fecha original en caso de error
+    }
+  }
+
 
   /** Loads list of institutions from service */
   private cargarInstituciones(): void {

@@ -69,38 +69,52 @@
     <!-- Contenedor de productos -->
     <div id="productsContainer">
       <!-- Tabla de productos -->
-      <table class="products-table" id="productsTable" *ngIf="listaProductos.data.length > 0">
-        <thead>
-          <tr>
-            <th style="width: 80px;">ID</th>
-            <th>Descripción</th>
-            <th style="width: 200px;">Estado</th>
-            <th style="width: 150px;">Precio</th>
-            <th style="width: 150px;">Eliminar producto</th>
-          </tr>
-        </thead>
-        <tbody id="productsTableBody">
-          <tr *ngFor="let element of listaProductos.data; let i = index" style="animation: fadeInUp 0.3s ease">
-            <td>{{element.id}}</td>
-            <td>{{element.Descripcion}}</td>
-            <td>
-              <mat-form-field appearance="fill">
-                <mat-select [(ngModel)]="element.Estado" (selectionChange)="cambiarEstado($event.value, element.id)" [name]="'estado_' + element.id">
-                  <mat-option *ngFor="let estado of estadosDisponibles" [value]="estado">
+      <div class="table-container" *ngIf="listaProductos.data.length > 0">
+        <table class="products-table" id="productsTable">
+          <thead>
+            <tr>
+              <th class="th-id">ID</th>
+              <th class="th-producto">Producto</th>
+              <th class="th-talla">Talla</th>
+              <th class="th-tipo">Horario</th>
+              <th class="th-genero">Género</th>
+              <th class="th-categoria">Institucion</th>
+              <th class="th-estado">Estado</th>
+              <th class="th-precio">Precio</th>
+              <th class="th-accion">Acción</th>
+            </tr>
+          </thead>
+          <tbody id="productsTableBody">
+            <tr *ngFor="let element of listaProductos.data; let i = index" 
+                class="product-row">
+              <td class="td-id">{{element.id}}</td>
+              <td class="td-producto">{{element.Descripcion}}</td>
+              <td class="td-talla">
+                <span class="talla-badge">{{element.Talla || 'N/A'}}</span>
+              </td>
+              <td class="td-tipo">{{element.Horario || 'N/A'}}</td>
+              <td class="td-genero">{{element.Genero || 'N/A'}}</td>
+              <td class="td-categoria">{{element.Institucion || 'N/A'}}</td>
+              <td class="td-estado">
+                <select class="estado-select" 
+                        [(ngModel)]="element.Estado" 
+                        (ngModelChange)="cambiarEstado($event, element.id)" 
+                        [name]="'estado_' + element.id">
+                  <option *ngFor="let estado of estadosDisponibles" [value]="estado">
                     {{ estado }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-            </td>
-            <td>${{element.Precio.toLocaleString()}}</td>
-            <td style="text-align: center;">
-              <button class="delete-btn" (click)="eliminarProducto(element.id)">
-                🗑️ Eliminar
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+                  </option>
+                </select>
+              </td>
+              <td class="td-precio">${{element.Precio.toLocaleString()}}</td>
+              <td class="td-accion">
+                <button class="delete-btn" (click)="eliminarProducto(element.id)">
+                  🗑️
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
       <!-- Estado vacío - cuando no hay productos -->
       <div class="empty-products" *ngIf="listaProductos.data.length === 0">
@@ -109,10 +123,15 @@
         <p>Haz clic en "Agregar producto" para comenzar</p>
       </div>
 
-      <!-- Sección de total de la factura -->
-      <div class="total-section" *ngIf="listaProductos.data.length > 0">
-        <span class="total-label">Valor total factura</span>
-        <span class="total-value">${{valorTotalFactura.toLocaleString()}}</span>
+      <!-- Footer de la tabla -->
+      <div class="table-footer" *ngIf="listaProductos.data.length > 0">
+        <div class="products-count">
+          <span class="count-text">{{listaProductos.data.length}} productos</span>
+        </div>
+        <div class="total-section">
+          <div class="total-label">Valor total factura</div>
+          <div class="total-value">${{valorTotalFactura.toLocaleString()}}</div>
+        </div>
       </div>
     </div>
   </div>

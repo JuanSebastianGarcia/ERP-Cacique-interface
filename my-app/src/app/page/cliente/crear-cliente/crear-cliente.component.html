@@ -1,47 +1,115 @@
-<!-- Main container for the client registration form -->
-<div class="registro-container">
+<!DOCTYPE html>
+<html lang="en">
 
-  <!-- Title of the form -->
-  <h1 class="titulo">Register Client</h1>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
 
-  <!-- Registration form -->
-  <form class="formulario">
+<body>
+    <!-- Modal para Agregar Cliente -->
+    <div class="modal-overlay active">
+        <div class="form-container">
+            <!-- Close button -->
+            <button class="close-btn" (click)="cerrarModal()">×</button>
 
-    <!-- Full name input field -->
-    <div class="campo-formulario">
-      <label>Full Name</label>
-      <input type="text" placeholder="Please enter" [(ngModel)]="cliente.nombre" name="nombre">
+            <!-- Form Header -->
+            <div class="form-header">
+                <h2 class="form-title">AGREGAR CLIENTE</h2>
+                <p class="form-subtitle">Complete todos los campos para agregar un nuevo cliente al sistema</p>
+            </div>
+
+            <!-- Form -->
+            <form (ngSubmit)="registrar()">
+                <div class="form-grid">
+                    <!-- Left Column -->
+                    <div class="form-column">
+                        <div class="form-group">
+                            <label class="form-label">Nombre completo</label>
+                            <input 
+                                type="text" 
+                                class="form-input" 
+                                id="nombre" 
+                                [(ngModel)]="cliente.nombre" 
+                                name="nombre" 
+                                placeholder="Ingresa el nombre completo"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Número de cédula</label>
+                            <input 
+                                type="text" 
+                                class="form-input" 
+                                id="cedula" 
+                                [(ngModel)]="cliente.cedula" 
+                                name="cedula" 
+                                placeholder="Ej: 1234567890"
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Right Column -->
+                    <div class="form-column">
+                        <div class="form-group">
+                            <label class="form-label">Número de teléfono</label>
+                            <input 
+                                type="tel" 
+                                class="form-input" 
+                                id="telefono" 
+                                [(ngModel)]="cliente.telefono" 
+                                name="telefono" 
+                                placeholder="Ej: 3001234567"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Correo electrónico</label>
+                            <input 
+                                type="email" 
+                                class="form-input" 
+                                id="email" 
+                                [(ngModel)]="cliente.email" 
+                                name="email" 
+                                placeholder="ejemplo@correo.com"
+                                required
+                            >
+                        </div>
+
+                        <!-- Preview Card -->
+                        <div class="preview-card">
+                            <h4 class="preview-title">Vista previa del cliente</h4>
+                            <div id="clientPreview">
+                                <p *ngIf="!cliente.nombre; else showPreview">Complete los campos para ver la vista previa...</p>
+                                <ng-template #showPreview>
+                                    <div class="preview-content">
+                                        <p><strong>Nombre:</strong> {{cliente.nombre || 'Sin especificar'}}</p>
+                                        <p><strong>Cédula:</strong> {{cliente.cedula || 'Sin especificar'}}</p>
+                                        <p><strong>Teléfono:</strong> {{cliente.telefono || 'Sin especificar'}}</p>
+                                        <p><strong>Email:</strong> {{cliente.email || 'Sin especificar'}}</p>
+                                    </div>
+                                </ng-template>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="form-actions">
+                    <button type="button" class="btn btn-form-secondary" (click)="cancelar()">
+                        Cancelar
+                    </button>
+                    <button type="button" (click)="registrar()" class="btn btn-form-primary">
+                        Registrar cliente
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
+</body>
 
-    <!-- Identification number input field -->
-    <div class="campo-formulario">
-      <label>ID Number</label>
-      <input type="text" placeholder="Please enter" [(ngModel)]="cliente.cedula" name="cedula">
-    </div>
-
-    <!-- Phone number input field -->
-    <div class="campo-formulario">
-      <label>Phone</label>
-      <input type="text" placeholder="Please enter" [(ngModel)]="cliente.telefono" name="telefono">
-    </div>
-
-    <!-- Email input field -->
-    <div class="campo-formulario">
-      <label>Email</label>
-      <input type="email" placeholder="Please enter" [(ngModel)]="cliente.email" name="email">
-    </div>
-
-    <!-- Address input field -->
-    <div class="campo-formulario">
-      <label>Address</label>
-      <input type="text" placeholder="Please enter" [(ngModel)]="cliente.direccion" name="direccion">
-    </div>
-
-    <!-- Action buttons -->
-    <div class="botones">
-      <button type="button" class="cancelar" (click)="cancelar()">Cancel</button>
-      <button type="button" class="registrar" (click)="registrar()">Register</button>
-    </div>
-
-  </form>
-</div>
+</html>

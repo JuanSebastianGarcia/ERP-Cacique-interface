@@ -57,4 +57,11 @@ export class CrearClienteComponent {
     console.log('Client registration canceled');
     this.dialogRef.close();
   }
+
+  /**
+   * Closes the modal dialog.
+   */
+  public cerrarModal(): void {
+    this.cancelar();
+  }
 }

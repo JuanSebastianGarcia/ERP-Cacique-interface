@@ -44,7 +44,7 @@ export class BuscarFacturaComponent {
 
 
   // Ejecuta la búsqueda de facturas según el tipo seleccionado y el valor ingresado
-  buscarFactura(): void {
+  public buscarFactura(): void {
     const tipoBusqueda = (document.querySelector('input[name="tipoBusqueda"]:checked') as HTMLInputElement)?.value;
 
     this.facturaService.consultarFactura(Number(this.campoBusqueda), tipoBusqueda).subscribe({
@@ -65,17 +65,53 @@ export class BuscarFacturaComponent {
   private cargarTabla(): void {
     const tabla = this.facturas.map(factura => ({
       id: factura.idFactura,
-      fecha: 'null', // Reemplazar con la fecha real si está disponible
+      fecha: this.formatearFecha(factura.fechaFactura),
       cliente: factura.cedulaCliente,
       estado: factura.estadoFactura
-    }));
-
+    }))
+    .sort((a, b) => {
+      // Los "Pendiente" van primero
+      if (a.estado === 'PENDIENTE' && b.estado !== 'PENDIENTE') {
+        return -1;
+      }
+      if (a.estado !== 'PENDIENTE' && b.estado === 'PENDIENTE') {
+        return 1;
+      }
+      return 0; // Si ambos tienen el mismo estado, se mantienen igual
+    });
+  
     this.dataSource = new MatTableDataSource(tabla);
+  }
 
+  // Formatea la fecha para una mejor legibilidad
+  private formatearFecha(fechaISO: string): string {
+    if (!fechaISO) return 'Sin fecha';
+    
+    try {
+      const fecha = new Date(fechaISO);
+      
+      // Verificar si la fecha es válida
+      if (isNaN(fecha.getTime())) {
+        return fechaISO; // Devolver la fecha original si no es válida
+      }
+
+      // Formatear la fecha en español
+      const opciones: Intl.DateTimeFormatOptions = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        timeZone: 'UTC'
+      };
+
+      return fecha.toLocaleDateString('es-ES', opciones);
+    } catch (error) {
+      console.error('Error al formatear la fecha:', error);
+      return fechaISO; // Devolver la fecha original en caso de error
+    }
   }
 
 
-  editarFactura(id: number): void {
+  public editarFactura(id: number): void {
 
     this.facturaService.setIdFacturaActualizando(id);
 
