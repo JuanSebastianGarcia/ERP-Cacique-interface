@@ -27,6 +27,7 @@
           [placeholder]="getPlaceholder()"
           class="styled-input"
           cdkFocusInitial
+          (keydown.enter)="agregarDato()"
         >
       </mat-form-field>
     </div>

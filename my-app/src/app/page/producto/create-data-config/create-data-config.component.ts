@@ -2,7 +2,6 @@ import { Component, Inject, OnInit } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
   MatDialogRef,
-  MatDialogTitle,
   MatDialogContent,
   MatDialogActions,
   MatDialogClose,
@@ -12,6 +11,12 @@ import {FormsModule} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfigurationTypesService } from '../../../core/service/configuration-types.service';
+import { Observable } from 'rxjs';
+import { RespuestaDto } from '../../../core/models/respuesta-dto';
+import { MensajeInformacionComponent } from '../../../shared/components/mensaje-informacion/mensaje-informacion.component';
+
 
 @Component({
   selector: 'app-create-data-config',
@@ -20,7 +25,6 @@ import { CommonModule } from '@angular/common';
     MatInputModule,
     FormsModule,
     MatButtonModule,
-    MatDialogTitle,
     MatDialogContent,
     MatDialogActions,
     MatDialogClose,
@@ -34,12 +38,18 @@ import { CommonModule } from '@angular/common';
 */
 export class CreateDataConfigComponent implements OnInit {
 
+
+
   public opcion:string='';
   public respuesta:string='';
 
   constructor(
     public dialogRef: MatDialogRef<CreateDataConfigComponent>,
-    @Inject(MAT_DIALOG_DATA) public message:string,) {}
+    public dialog: MatDialog,
+    private configurationTypesSerice: ConfigurationTypesService,
+    @Inject(MAT_DIALOG_DATA) public data: { mensaje: string; tipoDato: string }
+  ) {
+    }
 
   ngOnInit(): void {
   }
@@ -50,7 +60,7 @@ export class CreateDataConfigComponent implements OnInit {
 
   // Métodos para obtener configuración dinámica basada en el message
   getDataType(): string {
-    const msg = this.message?.toLowerCase() || '';
+    const msg = this.data.mensaje?.toLowerCase() || '';
     if (msg.includes('institucion')) return 'instituciones';
     if (msg.includes('prenda')) return 'prendas';
     if (msg.includes('horario')) return 'horarios';
@@ -82,7 +92,7 @@ export class CreateDataConfigComponent implements OnInit {
       'tallas': 'Que talla desea agregar',
       'general': 'Agregar nuevo dato'
     };
-    return titles[type] || this.message || 'Agregar nuevo dato';
+    return titles[type] || this.data.mensaje || 'Agregar nuevo dato';
   }
 
   getSubtitle(): string {
@@ -142,6 +152,80 @@ export class CreateDataConfigComponent implements OnInit {
       'background': this.respuesta?.trim() ? gradients[type] || gradients['general'] : '#bdc3c7',
       'box-shadow': this.respuesta?.trim() ? '0 5px 20px rgba(52, 152, 219, 0.3)' : 'none'
     };
+    
   }
+
+
+    /*
+  * se encarga de abrir el modal que solitica el nombre del nuevo dato y luego pasarselo al proceso de crear
+  */
+  public agregarDato() {
+
+    if (this.respuesta == '') {
+            alert('No se puede agregar un dato vacio');
+            this.dialogRef.close();
+          }
+    else {
+      this.agregarDatoSolicitud(this.respuesta);
+      
+    }
+  }
+
+
+    /*
+    *hace la solicitud al servicio para crear un dato usando la respuesta del modal de agregar dato.
+    *se usa la variable de tipo actual para saber en cual tabla se va a hacer el insert
+    *@ param respuesta - nombre del dato a agregarse
+    */
+  private agregarDatoSolicitud(respuesta: string) {
+    let solicitud$: Observable<RespuestaDto<string>>;
+
+    switch (this.data.tipoDato) {
+      case 'institucion':
+        solicitud$ = this.configurationTypesSerice.agregarInstitucion(respuesta);
+        break;
+      case 'horario':
+        solicitud$ = this.configurationTypesSerice.agregarhorario(respuesta);
+        break;
+      case 'talla':
+        solicitud$ = this.configurationTypesSerice.agregartalla(respuesta);
+        break;
+      case 'prenda':
+        solicitud$ = this.configurationTypesSerice.agregarprenda(respuesta);
+        break;
+      case 'genero':
+        solicitud$ = this.configurationTypesSerice.agregarGenero(respuesta);
+        break;
+      default:
+        console.error('Tipo dato desconocido');
+        return;
+    }
+  
+    solicitud$.subscribe({
+      next: data => {
+        this.dialog.open(MensajeInformacionComponent, { data: data.respuesta });
+        this.dialogRef.close(); 
+      },
+      error: error => {
+        this.dialog.open(MensajeInformacionComponent, { data: error.error.respuesta });
+        this.dialogRef.close(); 
+      }
+    });
+    }
+
+
+      /*
+    *se encarga de imprimir el mensaje que indica la respuesta del back
+    */
+    private imprimirMensaje(respuesta: Observable<RespuestaDto<string>>) {
+      respuesta.subscribe({
+        next: data => {
+          const dialogRef = this.dialog.open(MensajeInformacionComponent, { data: data.respuesta });
+        },
+        error: error => {
+          const dialogRef = this.dialog.open(MensajeInformacionComponent, { data: 'Ocurrio un error' });
+        }
+      });
+    }
 
 }

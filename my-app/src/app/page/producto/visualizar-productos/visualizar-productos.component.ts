@@ -80,6 +80,11 @@ export class VisualizarProductosComponent implements OnInit {
   public isModalOpen: boolean = false;
   public showSuccessMessage: boolean = false;
 
+  // Toast notification variables
+  public showToast: boolean = false;
+  public toastMessage: string = '';
+  public toastType: 'success' | 'error' = 'success';
+
   constructor(private productoService: ProductoService,
     private router: Router,
     private configureTypesService: ConfigurationTypesService,
@@ -158,15 +163,18 @@ export class VisualizarProductosComponent implements OnInit {
     const dialogRef = this.dialog.open(CrearProductoComponent);
 
     dialogRef.afterClosed().subscribe(respuesta => {
-      if (respuesta == undefined) {
-      } else {
-        if (respuesta == '') {
-          this.agregarProducto();
-        }
+      if (!respuesta) {
+        // Usuario cerró sin hacer nada
+        return;
       }
-    }
-    );
-    
+  
+      if (respuesta.error) {
+        this.showToastNotification(respuesta.mensaje || 'Error al crear el producto', 'error');
+      } else {
+        this.showToastNotification(respuesta.mensaje || 'Producto creado exitosamente', 'success');
+        this.buscarProductos(); // Recargar la tabla
+      }
+    });
   }
 
   /*
@@ -196,6 +204,19 @@ export class VisualizarProductosComponent implements OnInit {
     
     this.closeModal();
     this.buscarProductos(); // Recargar la tabla
+  }
+
+  /*
+  *Mostrar notificación toast
+  */
+  private showToastNotification(message: string, type: 'success' | 'error') {
+    this.toastMessage = message;
+    this.toastType = type;
+    this.showToast = true;
+    
+    setTimeout(() => {
+      this.showToast = false;
+    }, 4000);
   }
 
   /*

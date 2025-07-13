@@ -90,60 +90,6 @@ export class ConfigurationTypesComponent implements OnInit {
   }
 
 
-  /*
-  * se encarga de abrir el modal que solitica el nombre del nuevo dato y luego pasarselo al proceso de crear
-  */
-  public agregarDato() {
-
-
-    const dialogRef = this.dialog.open(CreateDataConfigComponent, { data: 'Que ' + this.tipoActual + ' desea agregar' });
-
-    dialogRef.afterClosed().subscribe(respuesta => {
-      if (respuesta == undefined) {
-      } else {
-        if (respuesta == '') {
-          this.agregarDato();
-        }
-        else {
-          this.agregarDatoSolicitud(respuesta);
-        }
-      }
-    }
-    );
-  }
-
-
-  /*
-  *hace la solicitud al servicio para crear un dato usando la respuesta del modal de agregar dato.
-  *se usa la variable de tipo actual para saber en cual tabla se va a hacer el insert
-  *@ param respuesta - nombre del dato a agregarse
-  */
-  private agregarDatoSolicitud(respuesta: string) {
-    switch (this.tipoActual) {
-
-      case 'institucion':
-        this.imprimirMensaje(this.configurationTypesSerice.agregarInstitucion(respuesta));
-        break;
-      case 'horario':
-        this.imprimirMensaje(this.configurationTypesSerice.agregarhorario(respuesta));
-        break;
-
-      case 'talla':
-        this.imprimirMensaje(this.configurationTypesSerice.agregartalla(respuesta));
-        break;
-
-      case 'prenda':
-        this.imprimirMensaje(this.configurationTypesSerice.agregarprenda(respuesta));
-        break;
-
-      case 'genero':
-        this.imprimirMensaje(this.configurationTypesSerice.agregarGenero(respuesta));
-        break;
-    }
-  }
-
-
-
 
   /*
   *continuando con la busqueda, se llama al servicio para buscar el tipo de dato elegido por el usuario
@@ -208,6 +154,22 @@ export class ConfigurationTypesComponent implements OnInit {
   }
 
 
+  /*
+  * se encarga de abrir el modal que solitica el nombre del nuevo dato y luego pasarselo al proceso de crear
+  */
+  public agregarDato() {
+
+    const dialogRef = this.dialog.open(CreateDataConfigComponent, { 
+      data: {
+        mensaje: 'Que ' + this.tipoActual + ' desea agregar',
+        tipoDato: this.tipoActual
+      }
+    });
+    dialogRef.afterClosed().subscribe(respuesta => {
+      this.buscarTipoSeleccionado(); // Actualiza la tabla al cerrarse el modal
+    });
+  }
+    
   /*
   *Enviar una solicitud al servicio del servidor para eliminar un datos de configuracion
   *

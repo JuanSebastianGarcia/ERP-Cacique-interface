@@ -1,36 +1,27 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, HostListener } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MatSelectModule } from '@angular/material/select';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { ProductoDto } from '../../../core/models/producto-dto';
 import { ProductoService } from '../../../core/service/producto.service';
 import { RespuestaDto } from '../../../core/models/respuesta-dto';
 import { CommonModule } from '@angular/common';
-import { MatGridListModule } from '@angular/material/grid-list';
 import { ConfigurationTypesService } from '../../../core/service/configuration-types.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MensajeAlertaComponent } from '../../../shared/components/mensaje-alerta/mensaje-alerta.component';
 import { MensajeInformacionComponent } from '../../../shared/components/mensaje-informacion/mensaje-informacion.component';
-import { MatInputModule } from '@angular/material/input';
-import { MatOptionModule } from '@angular/material/core';
 
 
 @Component({
   selector: 'app-crear-producto',
   standalone: true,
   imports: [FormsModule,
-    MatSelectModule,
-    MatFormFieldModule,
-    CommonModule,
-    MatGridListModule,
-    MatInputModule, 
-    MatOptionModule, 
+    CommonModule
   ],
   templateUrl: './crear-producto.component.html',
   styleUrl: './crear-producto.component.css'
 })
 export class CrearProductoComponent implements OnInit {
+
 
   @Input() isModalMode: boolean = false; // Indica si se usa como modal
   @Output() productoCreado = new EventEmitter<void>(); // Evento que emite cuando se crea un producto
@@ -78,7 +69,8 @@ export class CrearProductoComponent implements OnInit {
   constructor(private router: Router, 
               private productoService: ProductoService,
               private configureTypesService: ConfigurationTypesService,
-              private dialog:MatDialog
+              private dialog:MatDialog,
+              private dialogRef: MatDialogRef<CrearProductoComponent>,
             ) { }
 
 
@@ -95,24 +87,21 @@ export class CrearProductoComponent implements OnInit {
   */
   public agregarProducto() {
 
-    //validacion de los datos
     if (this.validarDatosProducto() == true) {
-
-
       this.productoService.agregarProducto(this.productoData).subscribe({
-
         next: (data: RespuestaDto<string>) => {
-          if (this.isModalMode) {
-            // En modo modal, solo emitir el evento
-            this.productoCreado.emit();
-          } else {
-            // En modo normal, mostrar el mensaje
-            const dialogRef = this.dialog.open(MensajeInformacionComponent,{data:data.respuesta});
-          }
-          this.limpiarTabla();
+  
+          this.dialogRef.close({
+            error: false,
+            mensaje: data.respuesta
+          });
         },
         error: error => {
-          const dialogRef = this.dialog.open(MensajeAlertaComponent,{data:error.error.respuesta});
+  
+          this.dialogRef.close({
+            error: true,
+            mensaje: error.error.respuesta
+          });
         }
       });
 
@@ -127,6 +116,26 @@ export class CrearProductoComponent implements OnInit {
   cancelarCreacion() {
     this.limpiarTabla();
     this.cancelar.emit();
+    this.dialogRef.close();
+  }
+
+  /*
+  *método para cerrar el modal cuando se hace clic fuera del formulario
+  */
+  onOverlayClick(event: MouseEvent) {
+    if (this.isModalMode) {
+      this.cancelarCreacion();
+    }
+  }
+
+  /*
+  *método para cerrar el modal con la tecla Escape
+  */
+  @HostListener('document:keydown.escape', ['$event'])
+  onEscapeKey(event: KeyboardEvent) {
+    if (this.isModalMode) {
+      this.cancelarCreacion();
+    }
   }
 
 
@@ -291,6 +300,11 @@ export class CrearProductoComponent implements OnInit {
         }
       }
     )
+  }
+
+
+  public cerrarModal() {
+    this.dialogRef.close();
   }
 }
 

@@ -8,11 +8,16 @@
 </head>
 
 <body>
+
+    <button class="close-btn" (click)="cerrarModal()">×</button>
+    
     <!-- Modal para Agregar Producto -->
-    <div class="modal-overlay" [class.active]="isModalMode || !isModalMode">
-        <div class="form-container">
+    <div class="modal-overlay" [class.active]="isModalMode" (click)="onOverlayClick($event)">
+        <div class="form-container" (click)="$event.stopPropagation()">
             <!-- Close button -->
-            <button *ngIf="isModalMode" class="close-btn" (click)="cancelarCreacion()">×</button>
+            <button *ngIf="isModalMode" class="close-btn" (click)="cancelarCreacion()" 
+                    title="Cerrar modal" 
+                    aria-label="Cerrar modal">×</button>
 
             <!-- Form Header -->
             <div class="form-header">
@@ -27,38 +32,47 @@
                     <div class="form-column">
                         <div class="form-group">
                             <label class="form-label">Prendas</label>
-                            <mat-form-field appearance="outline" class="mat-form-field-custom">
-                                <mat-label>Selecciona una prenda</mat-label>
-                                <mat-select [(ngModel)]="productoData.prenda" name="prenda" required>
-                                    <mat-option *ngFor="let prenda of prendas" [value]="prenda.value">
-                                        {{prenda.viewValue}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
+                            <div class="mat-form-field-custom">
+                                <div class="mat-form-field-wrapper">
+                                    <select class="mat-select-trigger" [(ngModel)]="productoData.prenda" name="prenda" required>
+                                        <option value="" disabled>Selecciona una prenda</option>
+                                        <option *ngFor="let prenda of prendas" [value]="prenda.value">
+                                            {{prenda.viewValue}}
+                                        </option>
+                                    </select>
+                                    <span class="mat-select-arrow"></span>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="form-group">
                             <label class="form-label">Instituciones</label>
-                            <mat-form-field appearance="outline" class="mat-form-field-custom">
-                                <mat-label>Selecciona una institución</mat-label>
-                                <mat-select [(ngModel)]="productoData.institucion" name="institucion" required>
-                                    <mat-option *ngFor="let institucion of instituciones" [value]="institucion.value">
-                                        {{institucion.viewValue}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
+                            <div class="mat-form-field-custom">
+                                <div class="mat-form-field-wrapper">
+                                    <select class="mat-select-trigger" [(ngModel)]="productoData.institucion" name="institucion" required>
+                                        <option value="" disabled>Selecciona una institución</option>
+                                        <option *ngFor="let institucion of instituciones" [value]="institucion.value">
+                                            {{institucion.viewValue}}
+                                        </option>
+                                    </select>
+                                    <span class="mat-select-arrow"></span>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="form-group">
                             <label class="form-label">Tallas</label>
-                            <mat-form-field appearance="outline" class="mat-form-field-custom">
-                                <mat-label>Selecciona una talla</mat-label>
-                                <mat-select [(ngModel)]="productoData.talla" name="talla" required>
-                                    <mat-option *ngFor="let talla of tallas" [value]="talla.value">
-                                        {{talla.viewValue}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
+                            <div class="mat-form-field-custom">
+                                <div class="mat-form-field-wrapper">
+                                    <select class="mat-select-trigger" [(ngModel)]="productoData.talla" name="talla" required>
+                                        <option value="" disabled>Selecciona una talla</option>
+                                        <option *ngFor="let talla of tallas" [value]="talla.value">
+                                            {{talla.viewValue}}
+                                        </option>
+                                    </select>
+                                    <span class="mat-select-arrow"></span>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -66,96 +80,86 @@
                     <div class="form-column">
                         <div class="form-group">
                             <label class="form-label">Horarios</label>
-                            <mat-form-field appearance="outline" class="mat-form-field-custom">
-                                <mat-label>Selecciona un horario</mat-label>
-                                <mat-select [(ngModel)]="productoData.horario" name="horario" required>
-                                    <mat-option *ngFor="let horario of horarios" [value]="horario.value">
-                                        {{horario.viewValue}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
+                            <div class="mat-form-field-custom">
+                                <div class="mat-form-field-wrapper">
+                                    <select class="mat-select-trigger" [(ngModel)]="productoData.horario" name="horario" required>
+                                        <option value="" disabled>Selecciona un horario</option>
+                                        <option *ngFor="let horario of horarios" [value]="horario.value">
+                                            {{horario.viewValue}}
+                                        </option>
+                                    </select>
+                                    <span class="mat-select-arrow"></span>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="form-group">
                             <label class="form-label">Géneros</label>
-                            <mat-form-field appearance="outline" class="mat-form-field-custom">
-                                <mat-label>Selecciona un género</mat-label>
-                                <mat-select [(ngModel)]="productoData.genero" name="genero" required>
-                                    <mat-option *ngFor="let genero of generos" [value]="genero.value">
-                                        {{genero.viewValue}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
+                            <div class="mat-form-field-custom">
+                                <div class="mat-form-field-wrapper">
+                                    <select class="mat-select-trigger" [(ngModel)]="productoData.genero" name="genero" required>
+                                        <option value="" disabled>Selecciona un género</option>
+                                        <option *ngFor="let genero of generos" [value]="genero.value">
+                                            {{genero.viewValue}}
+                                        </option>
+                                    </select>
+                                    <span class="mat-select-arrow"></span>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="form-group">
                             <label class="form-label">Precio</label>
-                            <mat-form-field appearance="outline" class="mat-form-field-custom">
-                                <mat-label>Precio</mat-label>
-                                <input 
-                                    matInput
-                                    type="number" 
-                                    [(ngModel)]="productoData.precio" 
-                                    name="precio" 
-                                    placeholder="0"
-                                    min="0"
-                                    step="1000"
-                                    required
-                                >
-                                <span matPrefix>$&nbsp;</span>
-                            </mat-form-field>
+                            <div class="mat-form-field-custom">
+                                <div class="mat-form-field-wrapper">
+                                    <span class="mat-form-field-prefix">$</span>
+                                    <input 
+                                        class="mat-input-element"
+                                        type="number" 
+                                        [(ngModel)]="productoData.precio" 
+                                        name="precio" 
+                                        placeholder="0"
+                                        min="0"
+                                        step="1000"
+                                        required
+                                    >
+                                </div>
+                            </div>
                         </div>
 
                         <div class="form-group">
                             <label class="form-label">Cantidad</label>
-                            <mat-form-field appearance="outline" class="mat-form-field-custom">
-                                <mat-label>Cantidad</mat-label>
-                                <input 
-                                    matInput
-                                    type="number" 
-                                    [(ngModel)]="productoData.cantidad" 
-                                    name="cantidad" 
-                                    placeholder="0"
-                                    min="0"
-                                    step="1"
-                                    required
-                                >
-                                <span matPrefix>📦&nbsp;</span>
-                            </mat-form-field>
-                        </div>
-
-                        <!-- Preview Card -->
-                        <div class="preview-card">
-                            <h4 class="preview-title">Vista previa del producto</h4>
-                            <div id="productPreview">
-                                <p *ngIf="!productoData.prenda && !productoData.institucion && !productoData.talla && !productoData.horario && !productoData.genero && !productoData.precio && !productoData.cantidad; else showPreview">
-                                    Complete los campos para ver la vista previa...
-                                </p>
-                                <ng-template #showPreview>
-                                    <div class="preview-content">
-                                        <p><strong>Prenda:</strong> {{productoData.prenda || 'Sin especificar'}}</p>
-                                        <p><strong>Institución:</strong> {{productoData.institucion || 'Sin especificar'}}</p>
-                                        <p><strong>Talla:</strong> {{productoData.talla || 'Sin especificar'}}</p>
-                                        <p><strong>Horario:</strong> {{productoData.horario || 'Sin especificar'}}</p>
-                                        <p><strong>Género:</strong> {{productoData.genero || 'Sin especificar'}}</p>
-                                        <p><strong>Precio:</strong> ${{productoData.precio ? (productoData.precio | number:'1.0-0') : '0'}}</p>
-                                        <p><strong>Cantidad:</strong> {{productoData.cantidad || '0'}} unidades</p>
-                                    </div>
-                                </ng-template>
+                            <div class="mat-form-field-custom">
+                                <div class="mat-form-field-wrapper">
+                                    <span class="mat-form-field-prefix">📦</span>
+                                    <input 
+                                        class="mat-input-element"
+                                        type="number" 
+                                        [(ngModel)]="productoData.cantidad" 
+                                        name="cantidad" 
+                                        placeholder="0"
+                                        min="0"
+                                        step="1"
+                                        required
+                                    >
+                                </div>
                             </div>
                         </div>
+
+                        
                     </div>
                 </div>
 
                 <!-- Action Buttons -->
                 <div class="form-actions">
-                    <button type="button" class="btn btn-form-secondary" (click)="limpiarTabla()">
-                        Limpiar
-                    </button>
-                    <button *ngIf="isModalMode" type="button" class="btn btn-form-secondary" (click)="cancelarCreacion()">
+                    <button  type="button" class="btn btn-form-secondary btn-cancel" (click)="cancelarCreacion()">
                         Cancelar
                     </button>
-                    <button type="submit" class="btn btn-form-primary" [disabled]="!productForm.form.valid">
+                    <button 
+                        type="submit" 
+                        class="btn btn-form-primary" 
+                        (click)="agregarProducto()"
+                    >
                         Agregar producto
                     </button>
                 </div>
