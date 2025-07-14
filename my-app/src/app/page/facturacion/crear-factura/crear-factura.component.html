@@ -160,7 +160,7 @@
       <!-- Campo de valor a pagar -->
       <div class="form-group">
         <label class="form-label">Valor a pagar</label>
-        <input type="number" class="form-input" id="paymentAmount" placeholder="0" min="0" [(ngModel)]="valorPago" name="valorPago">
+        <input type="number" class="form-input" id="paymentAmount" placeholder="0" min="0" [(ngModel)]="valorPago" name="valorPago" (input)="valorPago = valorPago < 0 ? 0 : valorPago">
       </div>
     </div>
   </div>

@@ -28,7 +28,10 @@ export class VisualizarEmpleadosComponent implements OnInit{
   dataSource = new MatTableDataSource<EmpleadoDto>([]);//arreglo en donde se almacena la informacion de la tabla
 
 
-
+  // Toast notification variables
+  public showToast: boolean = false;
+  public toastMessage: string = '';
+  public toastType: 'success' | 'error' = 'success';
 
   constructor(private empleadoService:EmpleadoService,
               private router:Router,
@@ -82,7 +85,7 @@ export class VisualizarEmpleadosComponent implements OnInit{
   /*
   *se encarga de hacer una solicitud para imprimir la lista de empleados
   */
-  buscarEmpleados(){
+  public buscarEmpleados(){
     this.empleadoService.buscarEmpleados().subscribe({
       next: data =>{
         this.dataSource=new MatTableDataSource(data.respuesta);
@@ -98,6 +101,34 @@ export class VisualizarEmpleadosComponent implements OnInit{
   
   public agregarEmpleado(){
     const dialogRef = this.dialog.open(CrearEmpleadoComponent,{data:'Agregar empleado'}); 
+
+    dialogRef.afterClosed().subscribe(respuesta => {
+      if (!respuesta) {
+        // Usuario cerró sin hacer nada
+        return;
+      }
+
+      if (respuesta.error) {
+        this.showToastNotification(respuesta.mensaje || 'Error al agregar el empleado', 'error');
+      } else {
+        this.showToastNotification(respuesta.mensaje || 'Empleado agregado', 'success');
+        this.buscarEmpleados();
+      }
+
+    });
+  }
+
+    /*
+  *Mostrar notificación toast
+  */
+  private showToastNotification(message: string, type: 'success' | 'error') {
+    this.toastMessage = message;
+    this.toastType = type;
+    this.showToast = true;
+    
+    setTimeout(() => {
+      this.showToast = false;
+    }, 4000);
   }
   
 }

@@ -35,7 +35,10 @@ export class BuscarFacturaComponent {
   campoBusqueda: string = '';
 
 
-  
+  // Toast notification variables
+  public showToast: boolean = false;
+  public toastMessage: string = '';
+  public toastType: 'success' | 'error' = 'success';
 
   constructor(
     private facturaService: FacturaService,
@@ -45,19 +48,47 @@ export class BuscarFacturaComponent {
 
   // Ejecuta la búsqueda de facturas según el tipo seleccionado y el valor ingresado
   public buscarFactura(): void {
+
+    // Validar que el campo no esté vacío
+    if (this.campoBusqueda.trim() == "") {
+      this.showToastNotification('Por favor ingrese un valor para buscar', 'error');
+      return;
+    }
+
     const tipoBusqueda = (document.querySelector('input[name="tipoBusqueda"]:checked') as HTMLInputElement)?.value;
 
     this.facturaService.consultarFactura(Number(this.campoBusqueda), tipoBusqueda).subscribe({
       next: data => {
         if (data && data.respuesta && Array.isArray(data.respuesta)) {
           this.facturas = data.respuesta;
-          this.cargarTabla();
-        }
+          
+          // Verificar si se encontraron resultados
+          if (this.facturas.length > 0) {
+            this.cargarTabla();
+            this.showToastNotification(`Se encontraron ${this.facturas.length} factura(s)`, 'success');
+          } 
+        } 
       },
       error: error => {
-        alert("Error al buscar la factura: " + error.error.mensaje);
+        this.dataSource = new MatTableDataSource<any>([]);
+        this.showToastNotification('No se encontro la factura', 'error');
       }
     });
+  }
+
+
+
+  /*
+  *Mostrar notificación toast
+  */
+  private showToastNotification(message: string, type: 'success' | 'error') {
+    this.toastMessage = message;
+    this.toastType = type;
+    this.showToast = true;
+    
+    setTimeout(() => {
+      this.showToast = false;
+    }, 4000);
   }
 
 

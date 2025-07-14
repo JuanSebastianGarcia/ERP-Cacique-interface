@@ -38,6 +38,7 @@
                             name="cedula" 
                             placeholder="Ej: 1234567890"
                             required
+                            (input)="cedulaNoValidada = cedulaNoValidada < 0 ? 0 : cedulaNoValidada"
                         >
                     </div>
 
@@ -51,6 +52,7 @@
                             name="telefono" 
                             placeholder="Ej: 3001234567"
                             required
+                            (input)="telefonoNoValidado = telefonoNoValidado < 0 ? 0 : telefonoNoValidado"
                         >
                     </div>
                 </div>

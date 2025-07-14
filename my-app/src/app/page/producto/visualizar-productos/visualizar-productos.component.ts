@@ -98,7 +98,7 @@ export class VisualizarProductosComponent implements OnInit {
   /*
   *buscar lista de productos conectandose al servicio
   */
-  buscarProductos() {
+  public buscarProductos() {
     this.construirFiltro();//construccion del filtro
     
     this.productoService.buscarProductos(this.filtros).subscribe({
@@ -114,7 +114,7 @@ export class VisualizarProductosComponent implements OnInit {
   /*
   *limpiar el filtro de busqueda y restablecer la tabla
   */
-  limpiarBusqueda() {
+  public limpiarBusqueda() {
     this.limpiarListas();//limpiar vista
     this.buscarProductos();//restablecer tabla
   }
@@ -126,7 +126,7 @@ export class VisualizarProductosComponent implements OnInit {
   * @param id - id del producto que se desea eliminar
   *
   */
-  eliminarProductoConfirmar(id: number) {
+  public eliminarProductoConfirmar(id: number) {
     const dialogRef = this.dialog.open(MensajeConfirmacionComponent, { data: "¿Esta seguro de eliminar el producto?" })
 
     dialogRef.afterClosed().subscribe(respuesta => {

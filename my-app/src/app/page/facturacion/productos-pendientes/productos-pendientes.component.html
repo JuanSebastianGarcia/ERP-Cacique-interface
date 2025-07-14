@@ -1,118 +1,120 @@
-<div class="container">
-  <!-- Stats Cards -->
-  <div class="stats-container">
-    <div class="stat-card">
-      <div class="stat-icon">📦</div>
-      <div class="stat-value">{{ dataSource.data.length }}</div>
-      <div class="stat-label">Productos Pendientes</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon">🏢</div>
-      <div class="stat-value">{{ calcularInstitucionesConProductosPendientes() }}</div>
-      <div class="stat-label">Instituciones con pendientes</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon">📅</div>
-      <div class="stat-value">{{ calcularDiasAntiguedad() }}</div>
-      <div class="stat-label">Días del más antiguo</div>
-    </div>
-  </div>
-
-  <!-- Filter Section -->
-  <div class="filter-section">
-    <h2 class="page-title">
-      <span>⏳</span>
-      Productos pendientes
-    </h2>
-    
-    <div class="filter-grid">
-      <div class="filter-group">
-        <label class="filter-label">Prenda</label>
-        <select class="filter-select" [(ngModel)]="filtros.prenda">
-          <option value="">Todas las prendas</option>
-          <option *ngFor="let p of prendas" [value]="p">{{ p }}</option>
-        </select>
+<div class="main-container">
+  <div class="container">
+    <!-- Stats Cards -->
+    <div class="stats-container">
+      <div class="stat-card">
+        <div class="stat-icon">📦</div>
+        <div class="stat-value">{{ dataSource.data.length }}</div>
+        <div class="stat-label">Productos Pendientes</div>
       </div>
-
-      <div class="filter-group">
-        <label class="filter-label">Talla</label>
-        <select class="filter-select" [(ngModel)]="filtros.talla">
-          <option value="">Todas las tallas</option>
-          <option *ngFor="let t of tallas" [value]="t">{{ t }}</option>
-        </select>
+      <div class="stat-card">
+        <div class="stat-icon">🏢</div>
+        <div class="stat-value">{{ calcularInstitucionesConProductosPendientes() }}</div>
+        <div class="stat-label">Instituciones con pendientes</div>
       </div>
-
-      <div class="filter-group">
-        <label class="filter-label">Institución</label>
-        <select class="filter-select" [(ngModel)]="filtros.institucion">
-          <option value="">Todas las instituciones</option>
-          <option *ngFor="let i of instituciones" [value]="i">{{ i }}</option>
-        </select>
-      </div>
-
-      <div class="filter-group">
-        <label class="filter-label">Género</label>
-        <select class="filter-select" [(ngModel)]="filtros.genero">
-          <option value="">Todos los géneros</option>
-          <option *ngFor="let g of generos" [value]="g">{{ g }}</option>
-        </select>
-      </div>
-
-      <div class="filter-group">
-        <label class="filter-label">Horario</label>
-        <select class="filter-select" [(ngModel)]="filtros.horario">
-          <option value="">Todos los horarios</option>
-          <option *ngFor="let h of horarios" [value]="h">{{ h }}</option>
-        </select>
+      <div class="stat-card">
+        <div class="stat-icon">📅</div>
+        <div class="stat-value">{{ calcularDiasAntiguedad() }}</div>
+        <div class="stat-label">Días del más antiguo</div>
       </div>
     </div>
 
-    <div class="action-buttons">
-      <button class="btn btn-primary" (click)="buscar()">
-        Buscar
-      </button>
-      <button class="btn btn-secondary" (click)="limpiar()">
-        Limpiar
-      </button>
-    </div>
-  </div>
+    <!-- Filter Section -->
+    <div class="filter-section">
+      <h2 class="page-title">
+        <span>⏳</span>
+        Productos pendientes
+      </h2>
+      
+      <div class="filter-grid">
+        <div class="filter-group">
+          <label class="filter-label">Prenda</label>
+          <select class="filter-select" [(ngModel)]="filtros.prenda">
+            <option value="">Todas las prendas</option>
+            <option *ngFor="let p of prendas" [value]="p">{{ p }}</option>
+          </select>
+        </div>
 
-  <!-- Results Table -->
-  <div class="table-section">
-    <table class="data-table" *ngIf="dataSource.data.length > 0; else emptyState">
-      <thead>
-        <tr>
-          <th>Prenda</th>
-          <th>Institución</th>
-          <th>Talla</th>
-          <th>Horario</th>
-          <th>Género</th>
-          <th>Descripción</th>
-          <th>Fecha</th>
-          <th>Id factura</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let element of dataSource.data">
-          <td>{{ element.prenda }}</td>
-          <td>{{ element.institucion }}</td>
-          <td>{{ element.talla }}</td>
-          <td>{{ element.horario }}</td>
-          <td>{{ element.genero }}</td>
-          <td>{{ element.descripcion }}</td>
-          <td>{{ element.fecha }}</td>
-          <td>{{ element.idFactura }}</td>
-        </tr>
-      </tbody>
-    </table>
+        <div class="filter-group">
+          <label class="filter-label">Talla</label>
+          <select class="filter-select" [(ngModel)]="filtros.talla">
+            <option value="">Todas las tallas</option>
+            <option *ngFor="let t of tallas" [value]="t">{{ t }}</option>
+          </select>
+        </div>
 
-    <!-- Empty State -->
-    <ng-template #emptyState>
-      <div class="empty-state">
-        <div class="empty-icon">📋</div>
-        <h3 class="empty-title">No hay productos pendientes</h3>
-        <p>No se encontraron productos que coincidan con los filtros aplicados</p>
+        <div class="filter-group">
+          <label class="filter-label">Institución</label>
+          <select class="filter-select" [(ngModel)]="filtros.institucion">
+            <option value="">Todas las instituciones</option>
+            <option *ngFor="let i of instituciones" [value]="i">{{ i }}</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label">Género</label>
+          <select class="filter-select" [(ngModel)]="filtros.genero">
+            <option value="">Todos los géneros</option>
+            <option *ngFor="let g of generos" [value]="g">{{ g }}</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label">Horario</label>
+          <select class="filter-select" [(ngModel)]="filtros.horario">
+            <option value="">Todos los horarios</option>
+            <option *ngFor="let h of horarios" [value]="h">{{ h }}</option>
+          </select>
+        </div>
       </div>
-    </ng-template>
+
+      <div class="action-buttons">
+        <button class="btn btn-primary" (click)="buscar()">
+          Buscar
+        </button>
+        <button class="btn btn-secondary" (click)="limpiar()">
+          Limpiar
+        </button>
+      </div>
+    </div>
+
+    <!-- Results Table -->
+    <div class="table-section">
+      <table class="data-table" *ngIf="dataSource.data.length > 0; else emptyState">
+        <thead>
+          <tr>
+            <th>Prenda</th>
+            <th>Institución</th>
+            <th>Talla</th>
+            <th>Horario</th>
+            <th>Género</th>
+            <th>Descripción</th>
+            <th>Fecha</th>
+            <th>Id factura</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let element of dataSource.data">
+            <td>{{ element.prenda }}</td>
+            <td>{{ element.institucion }}</td>
+            <td>{{ element.talla }}</td>
+            <td>{{ element.horario }}</td>
+            <td>{{ element.genero }}</td>
+            <td>{{ element.descripcion }}</td>
+            <td>{{ element.fecha }}</td>
+            <td>{{ element.idFactura }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Empty State -->
+      <ng-template #emptyState>
+        <div class="empty-state">
+          <div class="empty-icon">📋</div>
+          <h3 class="empty-title">No hay productos pendientes</h3>
+          <p>No se encontraron productos que coincidan con los filtros aplicados</p>
+        </div>
+      </ng-template>
+    </div>
   </div>
 </div>

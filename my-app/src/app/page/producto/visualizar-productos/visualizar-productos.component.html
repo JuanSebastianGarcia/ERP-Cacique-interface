@@ -10,114 +10,112 @@
 <body>
 
     <!-- Header integrado en barra lateral -->
-    <div class="main-container">
-        <!-- Main Content -->
-        <main class="content">
-            <div class="content-header">
-                <h2 class="content-title">INVENTARIO</h2>
-                
-                <!-- Filters -->
-                <div class="filter-section">
-                    <div class="filter-group">
-                        <label class="filter-label">PRENDAS</label>
-                        <select class="filter-select" [(ngModel)]="prenda">
-                            <option value="">Todas las prendas</option>
-                            <option *ngFor="let prenda of prendas" [value]="prenda.value">
-                                {{prenda.viewValue}}
-                            </option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label class="filter-label">INSTITUCIONES</label>
-                        <select class="filter-select" [(ngModel)]="institucion">
-                            <option value="">Todas las instituciones</option>
-                            <option *ngFor="let institucion of instituciones" [value]="institucion.value">
-                                {{institucion.viewValue}}
-                            </option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label class="filter-label">TALLAS</label>
-                        <select class="filter-select" [(ngModel)]="talla">
-                            <option value="">Todas las tallas</option>
-                            <option *ngFor="let talla of tallas" [value]="talla.value">
-                                {{talla.viewValue}}
-                            </option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label class="filter-label">HORARIOS</label>
-                        <select class="filter-select" [(ngModel)]="horario">
-                            <option value="">Todos los horarios</option>
-                            <option *ngFor="let horario of horarios" [value]="horario.value">
-                                {{horario.viewValue}}
-                            </option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label class="filter-label">GÉNEROS</label>
-                        <select class="filter-select" [(ngModel)]="genero">
-                            <option value="">Todos los géneros</option>
-                            <option *ngFor="let genero of generos" [value]="genero.value">
-                                {{genero.viewValue}}
-                            </option>
-                        </select>
-                    </div>
+    <!-- Main Content -->
+    <main class="content">
+        <div class="content-header">
+            <h2 class="content-title">INVENTARIO</h2>
+            
+            <!-- Filters -->
+            <div class="filter-section">
+                <div class="filter-group">
+                    <label class="filter-label">PRENDAS</label>
+                    <select class="filter-select" [(ngModel)]="prenda">
+                        <option value="">Todas las prendas</option>
+                        <option *ngFor="let prenda of prendas" [value]="prenda.value">
+                            {{prenda.viewValue}}
+                        </option>
+                    </select>
                 </div>
-
-                <!-- Action Buttons -->
-                <div class="action-buttons">
-                    <button class="btn-secondary" type="button" (click)="limpiarBusqueda()">
-                        🗑️ LIMPIAR BÚSQUEDA
-                    </button>
-                    <button class="btn-primary" type="button" (click)="buscarProductos()">
-                        🔍 BUSCAR
-                    </button>
+                <div class="filter-group">
+                    <label class="filter-label">INSTITUCIONES</label>
+                    <select class="filter-select" [(ngModel)]="institucion">
+                        <option value="">Todas las instituciones</option>
+                        <option *ngFor="let institucion of instituciones" [value]="institucion.value">
+                            {{institucion.viewValue}}
+                        </option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">TALLAS</label>
+                    <select class="filter-select" [(ngModel)]="talla">
+                        <option value="">Todas las tallas</option>
+                        <option *ngFor="let talla of tallas" [value]="talla.value">
+                            {{talla.viewValue}}
+                        </option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">HORARIOS</label>
+                    <select class="filter-select" [(ngModel)]="horario">
+                        <option value="">Todos los horarios</option>
+                        <option *ngFor="let horario of horarios" [value]="horario.value">
+                            {{horario.viewValue}}
+                        </option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">GÉNEROS</label>
+                    <select class="filter-select" [(ngModel)]="genero">
+                        <option value="">Todos los géneros</option>
+                        <option *ngFor="let genero of generos" [value]="genero.value">
+                            {{genero.viewValue}}
+                        </option>
+                    </select>
                 </div>
             </div>
 
-            <!-- Table -->
-            <div class="table-container">
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>No.</th>
-                            <th>Prenda</th>
-                            <th>Institución</th>
-                            <th>Talla</th>
-                            <th>Horario</th>
-                            <th>Género</th>
-                            <th>Precio</th>
-                            <th>Cantidad</th>
-                            <th>Opción</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let element of dataSource.data" class="data-row">
-                            <td>{{element.id}}</td>
-                            <td>{{element.prenda}}</td>
-                            <td>{{element.institucion}}</td>
-                            <td>{{element.talla}}</td>
-                            <td>{{element.horario}}</td>
-                            <td>{{element.genero}}</td>
-                            <td>${{element.precio | number:'1.0-0'}}</td>
-                            <td>{{element.cantidad}}</td>
-                            <td>
-                                <div class="action-icons">
-                                    <div class="action-icon delete-icon" (click)="eliminarProductoConfirmar(element.id)">
-                                        🗑️
-                                    </div>
-                                    <div class="action-icon edit-icon" (click)="actualizarProducto(element)">
-                                        ✏️
-                                    </div>
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button class="btn-secondary" type="button" (click)="limpiarBusqueda()">
+                    🗑️ LIMPIAR BÚSQUEDA
+                </button>
+                <button class="btn-primary" type="button" (click)="buscarProductos()">
+                    🔍 BUSCAR
+                </button>
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Prenda</th>
+                        <th>Institución</th>
+                        <th>Talla</th>
+                        <th>Horario</th>
+                        <th>Género</th>
+                        <th>Precio</th>
+                        <th>Cantidad</th>
+                        <th>Opción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let element of dataSource.data" class="data-row">
+                        <td>{{element.id}}</td>
+                        <td>{{element.prenda}}</td>
+                        <td>{{element.institucion}}</td>
+                        <td>{{element.talla}}</td>
+                        <td>{{element.horario}}</td>
+                        <td>{{element.genero}}</td>
+                        <td>${{element.precio | number:'1.0-0'}}</td>
+                        <td>{{element.cantidad}}</td>
+                        <td>
+                            <div class="action-icons">
+                                <div class="action-icon delete-icon" (click)="eliminarProductoConfirmar(element.id)">
+                                    🗑️
                                 </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </main>
-    </div>
+                                <div class="action-icon edit-icon" (click)="actualizarProducto(element)">
+                                    ✏️
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
 
     <!-- Floating Action Button -->
     <button class="fab" (click)="agregarProducto()" title="Agregar Producto">+</button>

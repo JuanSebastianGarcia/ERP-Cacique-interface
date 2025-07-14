@@ -71,12 +71,16 @@ export class CrearEmpleadoComponent {
 
       this.empleadoService.agregarEmpleado(this.empleadoData).subscribe({
         next: data => {
-          const dialogRef = this.dialog.open(MensajeInformacionComponent, { data: 'Empleado agregado' });
-          this.dialogRef.close();
+          this.dialogRef.close({
+            error: false,
+            mensaje: 'Empleado agregado'
+          });
         },
         error: error => {
-          console.log(error.error)
-          const dialogRef = this.dialog.open(MensajeAlertaComponent, { data: error });
+          this.dialogRef.close({
+            error: true,
+            mensaje: error.error.respuesta
+          });
         }
 
       });

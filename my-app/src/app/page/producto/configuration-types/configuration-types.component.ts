@@ -39,6 +39,10 @@ export class ConfigurationTypesComponent implements OnInit {
 
   public tipoActual: string = '';//variable que almacena la opcion buscada 
 
+  // Toast notification variables
+  public showToast: boolean = false;
+  public toastMessage: string = '';
+  public toastType: 'success' | 'error' = 'success';
 
   constructor(private configurationTypesSerice: ConfigurationTypesService,
     public dialog: MatDialog) { }
@@ -165,9 +169,36 @@ export class ConfigurationTypesComponent implements OnInit {
         tipoDato: this.tipoActual
       }
     });
+
+
+
     dialogRef.afterClosed().subscribe(respuesta => {
-      this.buscarTipoSeleccionado(); // Actualiza la tabla al cerrarse el modal
+      if (!respuesta) {
+        // Usuario cerró sin hacer nada
+        return;
+      }
+  
+      if (respuesta.error) {
+        this.showToastNotification('El dato ya existe', 'error');
+      } else {
+        this.showToastNotification(respuesta.mensaje || 'Dato creado exitosamente', 'success');
+        this.buscarTipoSeleccionado();
+      }
     });
+  }
+
+
+  /*
+  *Mostrar notificación toast
+  */
+  private showToastNotification(message: string, type: 'success' | 'error') {
+    this.toastMessage = message;
+    this.toastType = type;
+    this.showToast = true;
+    
+    setTimeout(() => {
+      this.showToast = false;
+    }, 4000);
   }
     
   /*

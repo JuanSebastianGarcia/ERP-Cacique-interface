@@ -203,12 +203,16 @@ export class CreateDataConfigComponent implements OnInit {
   
     solicitud$.subscribe({
       next: data => {
-        this.dialog.open(MensajeInformacionComponent, { data: data.respuesta });
-        this.dialogRef.close(); 
+        this.dialogRef.close({
+          error: false,
+          mensaje: data.respuesta
+        });
       },
       error: error => {
-        this.dialog.open(MensajeInformacionComponent, { data: error.error.respuesta });
-        this.dialogRef.close(); 
+        this.dialogRef.close({
+          error: true,
+          mensaje: error.error.respuesta
+        });
       }
     });
     }

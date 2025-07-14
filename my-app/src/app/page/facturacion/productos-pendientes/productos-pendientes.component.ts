@@ -133,6 +133,7 @@ export class ProductosPendientesComponent implements OnInit {
       genero: producto.genero,
       descripcion: producto.descripcion,
       fecha: this.formatearFecha(producto.fecha),
+      fechaSinFormato: producto.fecha,
       idFactura: producto.idFactura
     }));
     
@@ -238,7 +239,7 @@ export class ProductosPendientesComponent implements OnInit {
       return 0;
     }
 
-    const fechas = this.dataSource.data.map(producto => new Date(producto.fecha));
+    const fechas = this.dataSource.data.map(producto => new Date(producto.fechaSinFormato));
     const fechaMasAntigua = new Date(Math.min(...fechas.map(fecha => fecha.getTime())));
     const fechaActual = new Date();
     
