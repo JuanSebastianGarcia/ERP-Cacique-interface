@@ -148,17 +148,28 @@ export class CrearProductoComponent implements OnInit {
 
     let respuesta: boolean = true;
 
+    //validar que todos los campos tengan datos
+    if (!(this.productoData.prenda && this.productoData.institucion && this.productoData.talla && this.productoData.horario && this.productoData.genero)) {
+      respuesta = false;
+      const dialogRef = this.dialog.open(MensajeAlertaComponent,{data:'no pueden haber campos vacios'});
+      return respuesta;
+    }
+
     //validar que sean enteros
-    if (!(Number.isInteger(this.productoData.cantidad) && Number.isInteger(this.productoData.precio))) {
+    if (!(Number.isInteger(this.productoData.cantidad) && Number.isInteger(this.productoData.precio) )) {
       respuesta = false;
       const dialogRef = this.dialog.open(MensajeAlertaComponent,{data:'el precio y las cantidades tienen que ser enteros'});
+      return respuesta;
     }
 
     //validar que sean mayores que cero
-    if (!(this.productoData.cantidad >= 0 && this.productoData.precio >= 0)) {
+    if (!(this.productoData.cantidad >= 0 && this.productoData.precio > 0)) {
       respuesta = false;
       const dialogRef = this.dialog.open(MensajeAlertaComponent,{data:'no pueden haber datos menores a cero'});
+      return respuesta;
     }
+
+
 
     return respuesta;
   }
