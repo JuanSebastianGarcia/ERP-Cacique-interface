@@ -79,7 +79,7 @@ export class AgregarProductoFacturaComponent implements OnInit {
 
     this.productoService.buscarProductos(filtroDto).subscribe({
       next: data => {
-        if (data.respuesta.length === 1) {
+        if (data.respuesta.length > 0) {
           this.dialogRef.close(data.respuesta[0]);
         } else {
           alert('No hay productos que coincidan con los criterios de búsqueda.');

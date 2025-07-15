@@ -21,8 +21,8 @@ export class CrearClienteComponent {
     nombre: '',
     cedula: '',
     telefono: '',
-    email: '',
-    direccion: ''
+    email: undefined,
+    direccion: undefined
   };
 
   constructor(

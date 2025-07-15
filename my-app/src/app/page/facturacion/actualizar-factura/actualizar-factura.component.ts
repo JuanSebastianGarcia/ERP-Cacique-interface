@@ -39,7 +39,7 @@ import { CommonModule } from '@angular/common';
 export class ActualizarFacturaComponent implements OnInit {
 
   /** Column definitions for the products table */
-  public displayedColumns: string[] = ['id','Descripcion', 'Estado', 'Precio', 'acciones'];
+  public displayedColumns: string[] = ['id','Descripcion', 'DescripcionExtra', 'Estado', 'Precio', 'acciones'];
 
   /** Data source for the Angular Material products table */
   public listaProductos = new MatTableDataSource<any>([]);
@@ -64,6 +64,10 @@ export class ActualizarFacturaComponent implements OnInit {
 
   /** Product list (maintained separately from the table data source) */
   public productos: any[] = [];
+
+  /** Description modal state management */
+  public showDescriptionModal: boolean = false;
+  public selectedDescription: string = '';
 
   /** Client information linked to this invoice */
   public cliente: ClienteDto = {
@@ -115,6 +119,7 @@ export class ActualizarFacturaComponent implements OnInit {
     const tablaProductos = this.factura!.listaProductos.map(producto => ({
       id: producto.idRelacion,
       Descripcion: producto.prenda + "-" + producto.talla + "-" + producto.horario + "-" + producto.genero + "-" + producto.institucion,
+      DescripcionExtra: producto.descripcion || '',
       Estado: producto.estado,
       Precio: producto.precio,
     }));
@@ -163,6 +168,24 @@ export class ActualizarFacturaComponent implements OnInit {
     this.cliente.telefono = cliente.telefono;
     this.cliente.email = cliente.email;
     this.cliente.direccion = cliente.direccion;
+  }
+
+  /**
+   * Opens the description modal to display the full product description
+   * @param productId - ID of the product
+   * @param description - Description text to display
+   */
+  public verDescripcion(productId: number, description: string): void {
+    this.selectedDescription = description || '';
+    this.showDescriptionModal = true;
+  }
+
+  /**
+   * Closes the description modal and resets state
+   */
+  public cerrarModalDescripcion(): void {
+    this.showDescriptionModal = false;
+    this.selectedDescription = '';
   }
 
   /**

@@ -81,6 +81,7 @@
               <th class="th-categoria">Institucion</th>
               <th class="th-estado">Estado</th>
               <th class="th-precio">Precio</th>
+              <th class="th-descripcion">Descripción</th>
               <th class="th-accion">Acción</th>
             </tr>
           </thead>
@@ -106,6 +107,19 @@
                 </select>
               </td>
               <td class="td-precio">${{element.Precio.toLocaleString()}}</td>
+              <td class="td-descripcion">
+                <button 
+                  class="descripcion-btn" 
+                  (click)="agregarDescripcion(element.id)"
+                  [title]="element.descripcionExtra ? 'Editar descripción' : 'Agregar descripción'">
+                  💬 {{element.descripcionExtra ? 'Editar' : 'Agregar'}}
+                </button>
+                <div *ngIf="element.descripcionExtra" 
+                     class="descripcion-preview" 
+                     [title]="element.descripcionExtra">
+                  {{element.descripcionExtra}}
+                </div>
+              </td>
               <td class="td-accion">
                 <button class="delete-btn" (click)="eliminarProducto(element.id)">
                   🗑️
@@ -171,5 +185,39 @@
       <span>📄</span>
       <span>Generar factura</span>
     </button>
+  </div>
+
+  <!-- ========================= MODAL DE DESCRIPCIÓN ========================= -->
+  <div *ngIf="showDescriptionDialog" class="description-modal-overlay">
+    <div class="description-modal">
+      <div class="modal-header">
+        <h3 class="modal-title">
+          {{selectedProductDescription ? 'Editar descripción' : 'Agregar descripción'}}
+        </h3>
+        <button class="modal-close-btn" (click)="handleCancelDescription()">
+          ✕
+        </button>
+      </div>
+      
+      <div class="modal-body">
+        <label class="modal-label">Descripción del producto</label>
+        <textarea 
+          [(ngModel)]="tempDescription"
+          name="tempDescription"
+          class="modal-textarea"
+          rows="4"
+          placeholder="Ingrese una descripción para el producto...">
+        </textarea>
+      </div>
+      
+      <div class="modal-footer">
+        <button class="btn-modal-cancel" (click)="handleCancelDescription()">
+          Cancelar
+        </button>
+        <button class="btn-modal-save" (click)="handleSaveDescription()">
+          Guardar
+        </button>
+      </div>
+    </div>
   </div>
 </main>

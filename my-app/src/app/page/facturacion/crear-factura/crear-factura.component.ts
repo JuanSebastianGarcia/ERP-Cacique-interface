@@ -38,6 +38,7 @@ import { FacturaDto } from '../../../core/models/factura-dto';
 })
 export class CrearFacturaComponent {
 
+
   /** Table datasource for displaying product list */
   public listaProductos = new MatTableDataSource<any>([]);
 
@@ -68,7 +69,11 @@ export class CrearFacturaComponent {
   /** Available payment method options */
   public opcionesPago: string[] = ["EFECTIVO","BANCOLOMBIA","DAVIVIENDA"];
 
-
+  /** Description modal state management */
+  public showDescriptionDialog: boolean = false;
+  public selectedProductId: number | null = null;
+  public selectedProductDescription: string = '';
+  public tempDescription: string = '';
 
   /** Client detail object */
   public cliente = {
@@ -89,7 +94,7 @@ export class CrearFacturaComponent {
    */
   private renderizarCliente(cliente: ClienteDto): void {
     this.cliente.telefono = cliente.telefono;
-    this.cliente.correo = cliente.email;
+    this.cliente.correo = cliente.email || '';
     this.cliente.nombre = cliente.nombre;
   }
 
@@ -160,7 +165,59 @@ export class CrearFacturaComponent {
     });
   }
 
+  /**
+   * Opens the description modal for adding or editing a product description
+   * @param productId - ID of the product to add/edit description
+   */
+  public agregarDescripcion(productId: number): void {
+    // Find the product in the displayed list
+    const product = this.listaProductos.data.find(p => p.id === productId);
+    if (!product) {
+      console.error('Product not found');
+      return;
+    }
 
+    // Set modal state
+    this.selectedProductId = productId;
+    this.selectedProductDescription = product.descripcionExtra || '';
+    this.tempDescription = product.descripcionExtra || '';
+    this.showDescriptionDialog = true;
+  }
+
+  /**
+   * Saves the description for the selected product
+   */
+  public handleSaveDescription(): void {
+    if (this.selectedProductId === null) {
+      return;
+    }
+
+    // Update the product in the displayed list
+    const productIndex = this.listaProductos.data.findIndex(p => p.id === this.selectedProductId);
+    if (productIndex !== -1) {
+      this.listaProductos.data[productIndex].descripcionExtra = this.tempDescription;
+      this.listaProductos._updateChangeSubscription();
+    }
+
+    // Update the product in the cart
+    const carritoProduct = this.carrito.find(p => p.idRelacion === this.selectedProductId);
+    if (carritoProduct) {
+      carritoProduct.descripcion = this.tempDescription;
+    }
+
+    // Close modal and reset state
+    this.handleCancelDescription();
+  }
+
+  /**
+   * Cancels the description editing and closes the modal
+   */
+  public handleCancelDescription(): void {
+    this.showDescriptionDialog = false;
+    this.selectedProductId = null;
+    this.selectedProductDescription = '';
+    this.tempDescription = '';
+  }
 
   /**
    * Removes product from the invoice and cart by ID
@@ -278,7 +335,8 @@ export class CrearFacturaComponent {
       Genero: producto.genero,
       Institucion: producto.institucion,
       Estado: 'ENTREGADO',
-      Precio: producto.precio
+      Precio: producto.precio,
+      descripcionExtra: ''
     };
 
     this.listaProductos.data.push(nuevoProducto);
