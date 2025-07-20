@@ -220,4 +220,17 @@
       </div>
     </div>
   </div>
+
+  <!-- ========================= TOAST NOTIFICATION ========================= -->
+  <div *ngIf="showToast" class="toast-container" [ngClass]="['show', toastType]">
+    <div class="toast-content">
+      <div class="toast-icon">
+        <span *ngIf="toastType === 'success'">✅</span>
+        <span *ngIf="toastType === 'error'">❌</span>
+      </div>
+      <div class="toast-message">
+        {{ toastMessage }}
+      </div>
+    </div>
+  </div>
 </main>

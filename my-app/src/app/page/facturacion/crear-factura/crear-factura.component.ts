@@ -82,6 +82,12 @@ export class CrearFacturaComponent {
     correo: ''
   };
 
+  // Toast notification variables
+  public showToast: boolean = false;
+  public toastMessage: string = '';
+  public toastType: 'success' | 'error' = 'success';
+
+
   constructor(
     private clienteService: ClienteService,
     private dialog: MatDialog,
@@ -141,13 +147,13 @@ export class CrearFacturaComponent {
       next: Data => {
         if (Data.error === false) {
           this.renderizarCliente(Data.respuesta);
+          this.showToastNotification('Cliente encontrado correctamente', 'success');
         } else {
-          console.error('Client not found');
+          this.showToastNotification('Cliente no encontrado', 'error');
         }
       },
       error: error => {
-        console.error('Error fetching client:', error);
-        alert('Error fetching client');
+        this.showToastNotification('Cliente no encontrado', 'error');
       }
     });
   }
@@ -241,19 +247,18 @@ export class CrearFacturaComponent {
         this.facturaService.generarFactura(facturaDto).subscribe({
           next: (respuesta) => {
             if (respuesta.error === false) {
-              alert('Invoice generated successfully');
               this.carrito = [];
               this.listaProductos.data = [];
               this.valorTotalFactura = 0;
               this.cedulaCliente = undefined;
+              this.showToastNotification('Factura generada correctamente', 'success');
             } else {
-              console.error('Error generating invoice:', respuesta.respuesta);
-              alert('Error generating invoice');
+              this.showToastNotification('Error al generar la factura '+respuesta.respuesta, 'error');
+
             }
           },
           error: (error) => {
-            console.error('Error generating invoice:', error);
-            alert('Error generating invoice');
+            this.showToastNotification('Error al generar la factura '+error.error.respuesta, 'error');
           }
         });
       }
@@ -300,6 +305,7 @@ export class CrearFacturaComponent {
         alert('Invalid payment amount');
         return false;
       }
+
   
       return true;
     }
@@ -372,5 +378,34 @@ export class CrearFacturaComponent {
       this.valorTotalFactura += precio;
     }
   
- 
+   /**
+   * Muestra una notificación toast con mensaje y tipo especificado
+   * @param message - Mensaje a mostrar en el toast
+   * @param type - Tipo de notificación ('success' o 'error')
+   */
+  private showToastNotification(message: string, type: 'success' | 'error'): void {
+    this.toastMessage = message;
+    this.toastType = type;
+    this.showToast = true;
+    
+    // Auto hide toast after 4 seconds
+    setTimeout(() => {
+      this.hideToast();
+    }, 4000);
+  }
+
+  /**
+   * Oculta el toast con animación suave
+   */
+  public hideToast(): void {
+    const toastElement = document.querySelector('.toast-container');
+    if (toastElement) {
+      toastElement.classList.add('toast-hiding');
+      setTimeout(() => {
+        this.showToast = false;
+      }, 300);
+    } else {
+      this.showToast = false;
+    }
+  }
 }
