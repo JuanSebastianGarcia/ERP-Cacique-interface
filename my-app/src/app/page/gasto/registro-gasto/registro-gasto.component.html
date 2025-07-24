@@ -1,0 +1,194 @@
+<main>
+    <!-- ========================= ENCABEZADO DE LA PÁGINA ========================= -->
+    <div class="page-header">
+        <h2 class="page-title">
+            <span class="page-title-icon">💰</span>
+            Registro de Gastos
+        </h2>
+    </div>
+
+    <!-- ========================= SECCIÓN DE ESTADÍSTICAS ========================= -->
+    <div class="section-card">
+        <h3 class="section-title">
+            <span>📊</span>
+            Estadísticas de Gastos
+        </h3>
+        
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-value">{{ formatearMoneda(estadisticas.totalGastosHoy) }}</div>
+                <div class="stat-label">Total Gastos Hoy</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">{{ formatearMoneda(estadisticas.totalGastosMes) }}</div>
+                <div class="stat-label">Total Gastos Mes</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">{{ estadisticas.gastosRegistrados }}</div>
+                <div class="stat-label">Gastos Registrados</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================= SECCIÓN DE REGISTRO ========================= -->
+    <div class="section-card">
+        <h3 class="section-title">
+            <span>➕</span>
+            Nuevo Gasto
+        </h3>
+        
+        <form (ngSubmit)="registrarGasto()" #gastoForm="ngForm">
+                <div class="filter-section">
+                    <div class="filter-group">
+                        <label class="filter-label">VALOR</label>
+                        <input 
+                            type="number" 
+                            class="form-input" 
+                            placeholder="0.00" 
+                            step="0.01"
+                            [(ngModel)]="gastoFormData.valor"
+                            name="valor"
+                            required>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">TIPO</label>
+                        <select 
+                            class="filter-select"
+                            [(ngModel)]="gastoFormData.tipo"
+                            name="tipo"
+                            required>
+                            <option value="">Seleccionar tipo</option>
+                            <option 
+                                *ngFor="let tipo of tiposGasto" 
+                                [value]="tipo.value">
+                                {{ tipo.label }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">FECHA</label>
+                        <input 
+                            type="date" 
+                            class="form-input" 
+                            [(ngModel)]="gastoFormData.fecha"
+                            name="fecha"
+                            required>
+                    </div>
+                </div>
+                
+                <div class="filter-section">
+                    <div class="filter-group">
+                        <label class="filter-label">DESCRIPCIÓN</label>
+                        <textarea 
+                            class="form-textarea" 
+                            placeholder="Describe el gasto detalladamente..."
+                            [(ngModel)]="gastoFormData.descripcion"
+                            name="descripcion"
+                            required>
+                        </textarea>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button 
+                        type="submit" 
+                        class="btn-primary"
+                        [disabled]="!gastoForm.valid || isLoading">
+                        💾 {{ isLoading ? 'REGISTRANDO...' : 'REGISTRAR' }}
+                    </button>
+                </div>
+            </form>
+    </div>
+
+    <!-- ========================= SECCIÓN DE TABLA DE GASTOS ========================= -->
+    <div class="section-card">
+        <h3 class="section-title">
+            <span>📋</span>
+            Lista de Gastos del Día
+        </h3>
+        
+        <!-- Filtros -->
+        <div class="table-header">
+            <div class="filters-container">
+                <div class="filter-container-group">
+                    <label class="filter-label">TIPO GASTO</label>
+                    <select 
+                        class="filter-select"
+                        [(ngModel)]="filtrosTabla.tipoGasto"
+                        (change)="aplicarFiltros()">
+                        <option value="">Todos los tipos</option>
+                        <option 
+                            *ngFor="let tipo of tiposGasto" 
+                            [value]="tipo.value">
+                            {{ tipo.label }}
+                        </option>
+                    </select>
+                </div>
+                <div class="filter-container-group">
+                    <label class="filter-label">FECHA</label>
+                    <input 
+                        type="date" 
+                        class="form-input" 
+                        [(ngModel)]="filtrosTabla.fechaFiltro"
+                        (change)="aplicarFiltros()">
+                </div>
+                <button 
+                    class="btn-primary" 
+                    (click)="buscarGastos()">
+                    🔍 BUSCAR
+                </button>
+            </div>
+        </div>
+
+        <!-- Tabla -->
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Tipo Gasto</th>
+                        <th>Descripción</th>
+                        <th>Valor</th>
+                        <th>Opción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let gasto of gastosDelDia; let i = index">
+                        <td>{{ gasto.fecha }}</td>
+                        <td>{{ gasto.tipoGasto }}</td>
+                        <td>{{ gasto.descripcion }}</td>
+                        <td>{{ formatearMoneda(gasto.valor) }}</td>
+                        <td>
+                            <div class="action-icons">
+                                <div 
+                                    class="action-icon delete-icon" 
+                                    (click)="eliminarGasto(gasto)"
+                                    title="Eliminar gasto">
+                                    🗑️
+                                </div>
+                                <div 
+                                    class="action-icon edit-icon" 
+                                    (click)="editarGasto(gasto)"
+                                    title="Editar gasto">
+                                    ✏️
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr *ngIf="gastosDelDia.length === 0">
+                        <td colspan="5" style="text-align: center; padding: 2rem; color: #666;">
+                            No hay gastos registrados para mostrar
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+<button 
+    class="fab" 
+    (click)="agregarGastoRapido()" 
+    title="Agregar Gasto Rápido">
+    +
+</button>

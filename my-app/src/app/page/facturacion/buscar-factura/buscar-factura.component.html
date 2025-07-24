@@ -1,9 +1,20 @@
 <div class="main-container">
     <!-- Main Content -->
-    <main class="content">
-        <!-- Search Section -->
-        <div class="search-section">
-            <h2 class="page-title">Consultar factura</h2>
+    <main>
+        <!-- ========================= ENCABEZADO DE LA PÁGINA ========================= -->
+        <div class="page-header">
+            <h2 class="page-title">
+                <span class="page-title-icon">🔍</span>
+                Consultar Factura
+            </h2>
+        </div>
+
+        <!-- ========================= SECCIÓN DE BÚSQUEDA ========================= -->
+        <div class="section-card">
+            <h3 class="section-title">
+                <span>📋</span>
+                Búsqueda de Facturas
+            </h3>
             
             <div class="search-form">
                 <div class="search-options">
@@ -37,9 +48,12 @@
             </div>
         </div>
 
-        <!-- Results Section -->
-        <div class="results-section">
-            <h3 style="color: #2c3e50; font-size: 20px; margin-bottom: 20px;">Resultados de búsqueda</h3>
+        <!-- ========================= SECCIÓN DE RESULTADOS ========================= -->
+        <div class="section-card">
+            <h3 class="section-title">
+                <span>📊</span>
+                Resultados de Búsqueda
+            </h3>
             
             <!-- Angular Material Table -->
             <table mat-table [dataSource]="dataSource" class="results-table mat-elevation-z8">

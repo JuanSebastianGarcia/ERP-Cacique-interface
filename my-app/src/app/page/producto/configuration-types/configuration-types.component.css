@@ -4,20 +4,15 @@
     box-sizing: border-box;
 }
 
-body {
+:host {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #1e8449 100%);
-    min-height: 100vh;
-    background-attachment: fixed;
-}
-
-/* Content Area */
-.content {
+    display: block;
     padding: 30px;
-    min-height: 100vh;
+    min-height: calc(100vh - 60px);
+    overflow-y: visible;
 }
 
-.content-header {
+.page-header {
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(20px);
     border-radius: 20px;
@@ -32,12 +27,50 @@ body {
     font-size: 32px;
     font-weight: 700;
     margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.page-title-icon {
+    font-size: 36px;
 }
 
 .page-subtitle {
     color: #7f8c8d;
     font-size: 16px;
     margin-bottom: 25px;
+}
+
+/* Section Cards */
+.section-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 25px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    animation: fadeInUp 0.6s ease;
+    animation-delay: 0.1s;
+    animation-fill-mode: both;
+}
+
+.section-title {
+    color: #2c3e50;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.section-title::after {
+    content: '';
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(90deg, #27ae60 0%, transparent 100%);
+    margin-left: 10px;
 }
 
 /* Category Tabs */

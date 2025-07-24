@@ -11,9 +11,9 @@
 :host {
     display: block;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #1e8449 100%);
-    min-height: 100vh;
-    background-attachment: fixed;
+    padding: 30px;
+    min-height: calc(100vh - 60px);
+    overflow-y: visible;
 }
 
 /* Header */
@@ -88,19 +88,11 @@
     min-height: calc(100vh - 73px);
 }
 
-/* Content Area */
-.content {
-    width: 100%;
-    padding: 30px;
-    overflow-y: auto;
-}
-
-/* Search Section */
-.search-section {
+.page-header {
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(20px);
     border-radius: 20px;
-    padding: 40px;
+    padding: 30px;
     margin-bottom: 30px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     animation: fadeInUp 0.6s ease;
@@ -110,13 +102,49 @@
     color: #2c3e50;
     font-size: 32px;
     font-weight: 700;
-    margin-bottom: 30px;
-    text-align: center;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.page-title-icon {
+    font-size: 36px;
+}
+
+/* Section Cards */
+.section-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 25px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    animation: fadeInUp 0.6s ease;
+    animation-delay: 0.1s;
+    animation-fill-mode: both;
+}
+
+.section-title {
+    color: #2c3e50;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.section-title::after {
+    content: '';
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(90deg, #27ae60 0%, transparent 100%);
+    margin-left: 10px;
 }
 
 .search-form {
-    max-width: 600px;
-    margin: 0 auto;
+    max-width: 100%;
 }
 
 .search-options {
@@ -189,7 +217,7 @@
 
 .search-button {
     width: 100%;
-    padding: 16px;
+    padding: 12px 20px;
     background: linear-gradient(135deg, #3498db, #2980b9);
     color: white;
     border: none;
@@ -209,17 +237,7 @@
     box-shadow: 0 8px 25px rgba(52, 152, 219, 0.3);
 }
 
-/* Results Section */
-.results-section {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(20px);
-    border-radius: 20px;
-    padding: 25px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    animation: fadeInUp 0.8s ease;
-    animation-delay: 0.2s;
-    animation-fill-mode: both;
-}
+
 
 /* Angular Material Table Overrides */
 .results-table {
@@ -372,12 +390,21 @@
 
 /* Responsive */
 @media (max-width: 768px) {
-    .content {
+    :host {
         padding: 20px;
     }
     
-    .search-section {
-        padding: 30px 20px;
+    .page-header,
+    .section-card {
+        padding: 20px;
+    }
+
+    .page-title {
+        font-size: 28px;
+    }
+
+    .section-title {
+        font-size: 18px;
     }
 
     .radio-group {

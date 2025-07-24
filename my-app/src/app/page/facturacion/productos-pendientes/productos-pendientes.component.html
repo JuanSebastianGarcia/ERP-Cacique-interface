@@ -1,30 +1,46 @@
 <div class="main-container">
-  <div class="container">
-    <!-- Stats Cards -->
-    <div class="stats-container">
-      <div class="stat-card">
-        <div class="stat-icon">📦</div>
-        <div class="stat-value">{{ dataSource.data.length }}</div>
-        <div class="stat-label">Productos Pendientes</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon">🏢</div>
-        <div class="stat-value">{{ calcularInstitucionesConProductosPendientes() }}</div>
-        <div class="stat-label">Instituciones con pendientes</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon">📅</div>
-        <div class="stat-value">{{ calcularDiasAntiguedad() }}</div>
-        <div class="stat-label">Días del más antiguo</div>
+  <!-- Main Content -->
+  <main>
+    <!-- ========================= ENCABEZADO DE LA PÁGINA ========================= -->
+    <div class="page-header">
+      <h2 class="page-title">
+        <span class="page-title-icon">⏳</span>
+        Productos pendientes
+      </h2>
+    </div>
+
+    <!-- ========================= ESTADÍSTICAS ========================= -->
+    <div class="section-card">
+      <h3 class="section-title">
+        <span>📊</span>
+        Estadísticas Generales
+      </h3>
+      
+      <div class="stats-container">
+        <div class="stat-card">
+          <div class="stat-icon">📦</div>
+          <div class="stat-value">{{ dataSource.data.length }}</div>
+          <div class="stat-label">Productos Pendientes</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🏢</div>
+          <div class="stat-value">{{ calcularInstitucionesConProductosPendientes() }}</div>
+          <div class="stat-label">Instituciones con pendientes</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">📅</div>
+          <div class="stat-value">{{ calcularDiasAntiguedad() }}</div>
+          <div class="stat-label">Días del más antiguo</div>
+        </div>
       </div>
     </div>
 
-    <!-- Filter Section -->
-    <div class="filter-section">
-      <h2 class="page-title">
-        <span>⏳</span>
-        Productos pendientes
-      </h2>
+    <!-- ========================= FILTROS ========================= -->
+    <div class="section-card">
+      <h3 class="section-title">
+        <span>🔍</span>
+        Filtros de Búsqueda
+      </h3>
       
       <div class="filter-grid">
         <div class="filter-group">
@@ -78,43 +94,50 @@
       </div>
     </div>
 
-    <!-- Results Table -->
-    <div class="table-section">
-      <table class="data-table" *ngIf="dataSource.data.length > 0; else emptyState">
-        <thead>
-          <tr>
-            <th>Prenda</th>
-            <th>Institución</th>
-            <th>Talla</th>
-            <th>Horario</th>
-            <th>Género</th>
-            <th>Descripción</th>
-            <th>Fecha</th>
-            <th>Id factura</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let element of dataSource.data">
-            <td>{{ element.prenda }}</td>
-            <td>{{ element.institucion }}</td>
-            <td>{{ element.talla }}</td>
-            <td>{{ element.horario }}</td>
-            <td>{{ element.genero }}</td>
-            <td>{{ element.descripcion }}</td>
-            <td>{{ element.fecha }}</td>
-            <td>{{ element.idFactura }}</td>
-          </tr>
-        </tbody>
-      </table>
+    <!-- ========================= RESULTADOS ========================= -->
+    <div class="section-card">
+      <h3 class="section-title">
+        <span>📋</span>
+        Lista de Productos Pendientes
+      </h3>
+      
+      <div class="table-container">
+        <table class="data-table" *ngIf="dataSource.data.length > 0; else emptyState">
+          <thead>
+            <tr>
+              <th>Prenda</th>
+              <th>Institución</th>
+              <th>Talla</th>
+              <th>Horario</th>
+              <th>Género</th>
+              <th>Descripción</th>
+              <th>Fecha</th>
+              <th>Id factura</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let element of dataSource.data">
+              <td>{{ element.prenda }}</td>
+              <td>{{ element.institucion }}</td>
+              <td>{{ element.talla }}</td>
+              <td>{{ element.horario }}</td>
+              <td>{{ element.genero }}</td>
+              <td>{{ element.descripcion }}</td>
+              <td>{{ element.fecha }}</td>
+              <td>{{ element.idFactura }}</td>
+            </tr>
+          </tbody>
+        </table>
 
-      <!-- Empty State -->
-      <ng-template #emptyState>
-        <div class="empty-state">
-          <div class="empty-icon">📋</div>
-          <h3 class="empty-title">No hay productos pendientes</h3>
-          <p>No se encontraron productos que coincidan con los filtros aplicados</p>
-        </div>
-      </ng-template>
+        <!-- Empty State -->
+        <ng-template #emptyState>
+          <div class="empty-state">
+            <div class="empty-icon">📋</div>
+            <h3 class="empty-title">No hay productos pendientes</h3>
+            <p>No se encontraron productos que coincidan con los filtros aplicados</p>
+          </div>
+        </ng-template>
+      </div>
     </div>
-  </div>
+  </main>
 </div>

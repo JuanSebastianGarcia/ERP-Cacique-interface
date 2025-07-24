@@ -1,21 +1,22 @@
-<!DOCTYPE html>
-<html lang="es">
+<main>
+    <!-- ========================= ENCABEZADO DE LA PÁGINA ========================= -->
+    <div class="page-header">
+        <h2 class="page-title">
+            <span class="page-title-icon">⚙️</span>
+            Configuración de Datos
+        </h2>
+        
+    </div>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cacique ERP - Editar Datos</title>
-</head>
-
-<body>
-    <!-- Main Content -->
-    <main class="content">
-        <div class="content-header">
-            <h2 class="page-title">Editar datos</h2>
-            <p class="page-subtitle">Selecciona una categoría para editar los datos maestros del sistema</p>
-            
-            <!-- Category Tabs -->
-            <div class="category-tabs">
+    <!-- ========================= SECCIÓN DE CATEGORÍAS ========================= -->
+    <div class="section-card">
+        <h3 class="section-title">
+            <span>📂</span>
+            Categorías de Datos
+        </h3>
+        
+        <!-- Category Tabs -->
+        <div class="category-tabs">
                 <button class="category-tab" [class.active]="tipoActual === 'institucion'" (click)="buscar('institucion')">
                     🏫 Instituciones
                 </button>
@@ -31,9 +32,16 @@
                 <button class="category-tab" [class.active]="tipoActual === 'genero'" (click)="buscar('genero')">
                     👥 Géneros
                 </button>
-            </div>
         </div>
+    </div>
 
+    <!-- ========================= SECCIÓN DE GESTIÓN ========================= -->
+    <div class="section-card">
+        <h3 class="section-title">
+            <span>🛠️</span>
+            Gestión de Datos
+        </h3>
+        
         <!-- Add Button -->
         <button class="add-btn" (click)="agregarDato()">
             <span>➕</span>
@@ -72,16 +80,13 @@
                 <p>Haz clic en "Agregar" para crear el primer registro</p>
             </div>
         </div>
-    </main>
-
-    <!-- Toast Notification -->
-    <div class="toast-container" [class.show]="showToast" [class.success]="toastType === 'success'" [class.error]="toastType === 'error'">
-        <div class="toast-content">
-            <span class="toast-icon">{{toastType === 'success' ? '✅' : '❌'}}</span>
-            <span class="toast-message">{{toastMessage}}</span>
-        </div>
     </div>
+</main>
 
-</body>
-
-</html>
+<!-- Toast Notification -->
+<div class="toast-container" [class.show]="showToast" [class.success]="toastType === 'success'" [class.error]="toastType === 'error'">
+    <div class="toast-content">
+        <span class="toast-icon">{{toastType === 'success' ? '✅' : '❌'}}</span>
+        <span class="toast-message">{{toastMessage}}</span>
+    </div>
+</div>
