@@ -3,6 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { RespuestaDto } from "../models/respuesta-dto";
 import { GastoDto } from "../models/gasto-dto";
+import { TipoGastoDto } from "../models/tipo-gasto-dto";
 
 /**
  * Servicio para la gestión de gastos del sistema
@@ -15,6 +16,8 @@ export class GastoService{
 
     /** URL base para los endpoints de gastos */
     private gastoUrl:string='http://localhost:9090/api/gasto';
+    private tipoGastoUrl:string='http://localhost:9090/api/tipo-gasto';
+
 
     /**
      * @param http Cliente HTTP para peticiones al backend
@@ -36,7 +39,7 @@ export class GastoService{
      * @param tipoGastoID ID del tipo de gasto
      * @returns Observable con array de gastos
      */
-    public obtenerGastos(fecha:string,tipoGastoID:number):Observable<RespuestaDto<GastoDto[]>>{
+    public obtenerGastos(fecha:string,tipoGastoID:number|null):Observable<RespuestaDto<GastoDto[]>>{
         return this.http.get<RespuestaDto<GastoDto[]>>(`${this.gastoUrl}?fecha=${fecha}&tipoGastoID=${tipoGastoID}`);
     }
 
@@ -58,4 +61,11 @@ export class GastoService{
         return this.http.put<RespuestaDto<string>>(`${this.gastoUrl}/${gasto.id}`,gasto);
     }
     
+    /**
+     * Obtener todos los tipos de gasto disponibles
+     * @returns Observable con array de tipos de gasto
+     */
+    public obtenerTiposGasto():Observable<RespuestaDto<TipoGastoDto[]>>{
+        return this.http.get<RespuestaDto<TipoGastoDto[]>>(`${this.tipoGastoUrl}`);
+    }
 }

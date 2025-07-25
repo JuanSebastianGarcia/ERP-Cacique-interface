@@ -184,6 +184,23 @@
             </table>
         </div>
     </div>
+
+    <!-- ========================= TOAST NOTIFICATION ========================= -->
+    <div 
+        class="toast-container" 
+        [class.show]="showToast" 
+        [class.toast-success]="toastType === 'success'" 
+        [class.toast-error]="toastType === 'error'"
+        *ngIf="showToast">
+        <div class="toast-content">
+            <div class="toast-icon">
+                <span *ngIf="toastType === 'success'">✅</span>
+                <span *ngIf="toastType === 'error'">❌</span>
+            </div>
+            <div class="toast-message">{{ toastMessage }}</div>
+            <button class="toast-close" (click)="hideToast()">×</button>
+        </div>
+    </div>
 </main>
 
 <button 
