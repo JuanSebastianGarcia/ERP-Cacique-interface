@@ -16,6 +16,8 @@ import { MensajeAlertaComponent } from '../../../shared/components/mensaje-alert
 import { MensajeConfirmacionComponent } from '../../../shared/components/mensaje-confirmacion/mensaje-confirmacion.component';
 import { MensajeInformacionComponent } from '../../../shared/components/mensaje-informacion/mensaje-informacion.component';
 import { CrearProductoComponent } from '../crear-producto/crear-producto.component';
+import { ToastNotificationComponent } from '../../../shared/components/toast-notification/toast-notification.component';
+import { ToastService } from '../../../shared/services/toast.service';
 
 @Component({
   selector: 'app-visualizar-productos',
@@ -26,7 +28,8 @@ import { CrearProductoComponent } from '../crear-producto/crear-producto.compone
     MatSelectModule,
     CommonModule,
     FormsModule,
-    MatButtonModule
+    MatButtonModule,
+    ToastNotificationComponent
   ],
   templateUrl: './visualizar-productos.component.html',
   styleUrl: './visualizar-productos.component.css'
@@ -80,15 +83,11 @@ export class VisualizarProductosComponent implements OnInit {
   public isModalOpen: boolean = false;
   public showSuccessMessage: boolean = false;
 
-  // Toast notification variables
-  public showToast: boolean = false;
-  public toastMessage: string = '';
-  public toastType: 'success' | 'error' = 'success';
-
   constructor(private productoService: ProductoService,
     private router: Router,
     private configureTypesService: ConfigurationTypesService,
-    private dialog: MatDialog) { };
+    private dialog: MatDialog,
+    private toastService: ToastService) { };
 
   ngOnInit(): void {
     this.cargarListas();//cargar los datos para las listas desplegables
@@ -169,9 +168,9 @@ export class VisualizarProductosComponent implements OnInit {
       }
   
       if (respuesta.error) {
-        this.showToastNotification(respuesta.mensaje || 'Error al crear el producto', 'error');
+        this.toastService.showError('Error al crear el producto');
       } else {
-        this.showToastNotification(respuesta.mensaje || 'Producto creado exitosamente', 'success');
+        this.toastService.showSuccess('Producto creado exitosamente');
         this.buscarProductos(); // Recargar la tabla
       }
     });
@@ -206,18 +205,7 @@ export class VisualizarProductosComponent implements OnInit {
     this.buscarProductos(); // Recargar la tabla
   }
 
-  /*
-  *Mostrar notificación toast
-  */
-  private showToastNotification(message: string, type: 'success' | 'error') {
-    this.toastMessage = message;
-    this.toastType = type;
-    this.showToast = true;
-    
-    setTimeout(() => {
-      this.showToast = false;
-    }, 4000);
-  }
+
 
   /*
   *restablecer las listas a un valor vacio

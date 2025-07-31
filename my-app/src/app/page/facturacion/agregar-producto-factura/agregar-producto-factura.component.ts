@@ -82,7 +82,7 @@ export class AgregarProductoFacturaComponent implements OnInit {
         if (data.respuesta.length > 0) {
           this.dialogRef.close(data.respuesta[0]);
         } else {
-          alert('No hay productos que coincidan con los criterios de búsqueda.');
+          this.dialogRef.close(null);
         }
       },
       error: () => {

@@ -1,0 +1,10 @@
+<!-- Toast Notification -->
+<div class="toast-container" 
+     [class.show]="showToast" 
+     [class.success]="type === 'success'" 
+     [class.error]="type === 'error'">
+    <div class="toast-content">
+        <span class="toast-icon">{{type === 'success' ? '✅' : '❌'}}</span>
+        <span class="toast-message">{{message}}</span>
+    </div>
+</div> 

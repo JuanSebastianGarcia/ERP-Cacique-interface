@@ -8,11 +8,13 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MensajeAlertaComponent } from '../../../shared/components/mensaje-alerta/mensaje-alerta.component';
 import { MensajeInformacionComponent } from '../../../shared/components/mensaje-informacion/mensaje-informacion.component';
 import { CommonModule, DecimalPipe } from '@angular/common';
+import { ToastNotificationComponent } from '../../../shared/components/toast-notification/toast-notification.component';
+import { ToastService } from '../../../shared/services/toast.service';
 
 @Component({
   selector: 'app-editar-producto',
   standalone: true,
-  imports: [MatCardModule, FormsModule, DecimalPipe,CommonModule ],
+  imports: [MatCardModule, FormsModule, DecimalPipe, CommonModule, ToastNotificationComponent],
   templateUrl: './editar-producto.component.html',
   styleUrl: './editar-producto.component.css'
 })
@@ -51,12 +53,12 @@ export class EditarProductoComponent implements OnInit {
 
   // Variables para el estado de la interfaz
   public isLoading: boolean = false;
-  public showSuccessMessage: boolean = false;
 
 
   constructor(private router: Router,
               private productoService: ProductoService,
-              private dialog:MatDialog ) { 
+              private dialog: MatDialog,
+              private toastService: ToastService) { 
               
   }
 
@@ -109,14 +111,7 @@ export class EditarProductoComponent implements OnInit {
       {
         next: data => {
           this.isLoading = false;
-          this.showSuccessMessage = true;
-          
-          // Ocultar mensaje después de 3 segundos
-          setTimeout(() => {
-            this.showSuccessMessage = false;
-          }, 3000);
-          
-          const dialogRef = this.dialog.open(MensajeInformacionComponent, {data: 'Producto actualizado'});
+          this.toastService.showSuccess('¡Producto actualizado exitosamente!');
           
           // Navegar después de un breve delay para mostrar el mensaje
           setTimeout(() => {
@@ -125,8 +120,10 @@ export class EditarProductoComponent implements OnInit {
         },
         error: error => {
           this.isLoading = false;
-          const dialogRef = this.dialog.open(MensajeAlertaComponent, {data: 'Ocurrió un error en la actualización del producto'});
-          this.router.navigate(['productos']);
+          this.toastService.showError('Ocurrió un error en la actualización del producto');
+          setTimeout(() => {
+            this.router.navigate(['productos']);
+          }, 2000);
         }
       }
     );
@@ -168,10 +165,10 @@ export class EditarProductoComponent implements OnInit {
       if (this.productoData.precio > 0) {
         respuesta = true;
       } else {
-        const dialogRef = this.dialog.open(MensajeAlertaComponent,{data:'el precio debe de ser mayor a cero'});
+        this.toastService.showError('El precio debe ser mayor a cero');
       }
     } else {
-        const dialoRef = this.dialog.open(MensajeAlertaComponent,{data:'verifique las cantidades que entran o salen'})
+        this.toastService.showError('Verifique las cantidades que entran o salen');
     }
 
     return respuesta;

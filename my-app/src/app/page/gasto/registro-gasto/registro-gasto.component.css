@@ -627,3 +627,123 @@
     }
 }
 
+/* MODAL DIALOG STYLES */
+::ng-deep .custom-dialog-container {
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+
+::ng-deep .custom-dialog-container .mat-mdc-dialog-container {
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+
+/* Modal overlay for dialog */
+::ng-deep .cdk-overlay-pane {
+    background: rgba(0, 0, 0, 0.6) !important;
+    backdrop-filter: blur(8px) !important;
+}
+
+/* ANGULAR MATERIAL DATEPICKER STYLES */
+.full-width {
+    width: 100%;
+}
+
+.filter-field {
+    width: 100%;
+    min-width: 150px;
+}
+
+/* Styling mat-form-field to match existing design */
+::ng-deep .mat-mdc-form-field {
+    width: 100%;
+}
+
+::ng-deep .mat-mdc-form-field .mat-mdc-text-field-wrapper {
+    background: #fafbfc;
+    border-radius: 12px;
+    border: 2px solid #ecf0f1;
+    transition: all 0.3s ease;
+}
+
+::ng-deep .mat-mdc-form-field.mat-focused .mat-mdc-text-field-wrapper {
+    border-color: #27ae60;
+    background-color: white;
+    box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
+}
+
+::ng-deep .mat-mdc-form-field .mat-mdc-floating-label {
+    color: #2c3e50;
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+::ng-deep .mat-mdc-form-field.mat-focused .mat-mdc-floating-label {
+    color: #27ae60;
+}
+
+::ng-deep .mat-mdc-form-field .mat-mdc-input-element {
+    padding: 15px 20px;
+    font-size: 16px;
+    color: #2c3e50;
+}
+
+::ng-deep .mat-mdc-form-field .mat-mdc-form-field-hint-wrapper {
+    color: #7f8c8d;
+    font-size: 12px;
+}
+
+::ng-deep .mat-mdc-form-field .mat-datepicker-toggle {
+    color: #27ae60;
+}
+
+::ng-deep .mat-mdc-form-field .mat-datepicker-toggle:hover {
+    color: #229954;
+}
+
+/* Datepicker panel styling */
+::ng-deep .mat-datepicker-content {
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+}
+
+::ng-deep .mat-calendar {
+    font-family: inherit;
+}
+
+::ng-deep .mat-calendar-header {
+    background: linear-gradient(135deg, #27ae60, #2ecc71);
+    color: white;
+    padding: 20px 15px;
+}
+
+::ng-deep .mat-calendar-body-selected {
+    background-color: #27ae60;
+    color: white;
+}
+
+::ng-deep .mat-calendar-body-today.mat-calendar-body-selected {
+    box-shadow: inset 0 0 0 1px #27ae60;
+}
+
+::ng-deep .mat-calendar-body-cell:not(.mat-calendar-body-disabled):hover > .mat-calendar-body-cell-content:not(.mat-calendar-body-selected) {
+    background-color: rgba(39, 174, 96, 0.1);
+}
+
+/* Responsive adjustments for datepicker */
+@media (max-width: 768px) {
+    .filter-field {
+        min-width: 120px;
+    }
+    
+    ::ng-deep .mat-mdc-form-field .mat-mdc-input-element {
+        padding: 12px 16px;
+        font-size: 14px;
+    }
+}
+

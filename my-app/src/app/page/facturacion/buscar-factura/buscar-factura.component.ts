@@ -7,6 +7,10 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { FacturaService } from '../../../core/service/factura.service';
 import { FacturaDto } from '../../../core/models/factura-dto';
 import { Router } from '@angular/router';
+import { ClienteService } from '../../../core/service/cliente.service';
+import { ClienteDto } from '../../../core/models/cliente-dto';
+import { ToastService } from '../../../shared/services/toast.service';
+import { ToastNotificationComponent } from '../../../shared/components/toast-notification/toast-notification.component';
 
 @Component({
   selector: 'app-buscar-factura',
@@ -15,7 +19,8 @@ import { Router } from '@angular/router';
     CommonModule,
     MatIconModule,
     MatTableModule,
-    FormsModule
+    FormsModule,
+    ToastNotificationComponent
   ],
   templateUrl: './buscar-factura.component.html',
   styleUrls: ['./buscar-factura.component.css']
@@ -35,14 +40,13 @@ export class BuscarFacturaComponent {
   campoBusqueda: string = '';
 
 
-  // Toast notification variables
-  public showToast: boolean = false;
-  public toastMessage: string = '';
-  public toastType: 'success' | 'error' = 'success';
+  // Toast notification variables - REMOVED (now handled by ToastService)
 
   constructor(
     private facturaService: FacturaService,
-    private router: Router
+    private router: Router,
+    private clienteService: ClienteService,
+    private toastService: ToastService
   ) {}
 
 
@@ -51,7 +55,7 @@ export class BuscarFacturaComponent {
 
     // Validar que el campo no esté vacío
     if (this.campoBusqueda.trim() == "") {
-      this.showToastNotification('Por favor ingrese un valor para buscar', 'error');
+      this.toastService.showError('Por favor ingrese un valor para buscar');
       return;
     }
 
@@ -60,36 +64,27 @@ export class BuscarFacturaComponent {
     this.facturaService.consultarFactura(Number(this.campoBusqueda), tipoBusqueda).subscribe({
       next: data => {
         if (data && data.respuesta && Array.isArray(data.respuesta)) {
+
           this.facturas = data.respuesta;
           
           // Verificar si se encontraron resultados
           if (this.facturas.length > 0) {
             this.cargarTabla();
-            this.showToastNotification(`Se encontraron ${this.facturas.length} factura(s)`, 'success');
+            this.toastService.showSuccess(`Se encontraron ${this.facturas.length} factura(s)`);
           } 
         } 
       },
       error: error => {
         this.dataSource = new MatTableDataSource<any>([]);
-        this.showToastNotification('No se encontro la factura', 'error');
+        this.toastService.showError('No se encontro la factura');
       }
     });
   }
 
 
 
-  /*
-  *Mostrar notificación toast
-  */
-  private showToastNotification(message: string, type: 'success' | 'error') {
-    this.toastMessage = message;
-    this.toastType = type;
-    this.showToast = true;
-    
-    setTimeout(() => {
-      this.showToast = false;
-    }, 4000);
-  }
+
+  // Toast methods removed - now handled by centralized ToastService
 
 
   // Carga los datos recibidos en el formato necesario para la tabla
@@ -97,7 +92,7 @@ export class BuscarFacturaComponent {
     const tabla = this.facturas.map(factura => ({
       id: factura.idFactura,
       fecha: this.formatearFecha(factura.fechaFactura),
-      cliente: factura.cedulaCliente,
+      cliente:factura.cedulaCliente,
       estado: factura.estadoFactura
     }))
     .sort((a, b) => {

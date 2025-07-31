@@ -11,6 +11,8 @@ import { MensajeInformacionComponent } from '../../../shared/components/mensaje-
 import { MensajeConfirmacionComponent } from '../../../shared/components/mensaje-confirmacion/mensaje-confirmacion.component';
 import { MensajeAlertaComponent } from '../../../shared/components/mensaje-alerta/mensaje-alerta.component';
 import { CommonModule } from '@angular/common';
+import { ToastNotificationComponent } from '../../../shared/components/toast-notification/toast-notification.component';
+import { ToastService } from '../../../shared/services/toast.service';
 
 export interface Elements {
   name: string;
@@ -23,7 +25,8 @@ export interface Elements {
   standalone: true,
   imports: [MatGridListModule,
     MatTableModule,
-    CommonModule
+    CommonModule,
+    ToastNotificationComponent
   ],
   templateUrl: './configuration-types.component.html',
   styleUrl: './configuration-types.component.css'
@@ -39,13 +42,9 @@ export class ConfigurationTypesComponent implements OnInit {
 
   public tipoActual: string = '';//variable que almacena la opcion buscada 
 
-  // Toast notification variables
-  public showToast: boolean = false;
-  public toastMessage: string = '';
-  public toastType: 'success' | 'error' = 'success';
-
   constructor(private configurationTypesSerice: ConfigurationTypesService,
-    public dialog: MatDialog) { }
+    public dialog: MatDialog,
+    private toastService: ToastService) { }
 
 
 
@@ -135,7 +134,7 @@ export class ConfigurationTypesComponent implements OnInit {
           this.dataSource = new MatTableDataSource(data.respuesta);
         },
         error: error => {
-          alert('error al cargar los datos');
+          this.toastService.showError('Error al cargar los datos');
         }
       }
     );
@@ -148,11 +147,11 @@ export class ConfigurationTypesComponent implements OnInit {
   private imprimirMensaje(respuesta: Observable<RespuestaDto<string>>) {
     respuesta.subscribe({
       next: data => {
-        const dialogRef = this.dialog.open(MensajeInformacionComponent, { data: data.respuesta });
+        this.toastService.showSuccess(data.respuesta);
         this.buscarTipoSeleccionado();//refrescar la tabla  
       },
       error: error => {
-        const dialogRef = this.dialog.open(MensajeInformacionComponent, { data: 'Ocurrio un error' });
+        this.toastService.showError('Ocurrió un error al procesar la solicitud');
       }
     });
   }
@@ -179,27 +178,16 @@ export class ConfigurationTypesComponent implements OnInit {
       }
   
       if (respuesta.error) {
-        this.showToastNotification('El dato ya existe', 'error');
+        this.toastService.showError('El dato ya existe');
       } else {
-        this.showToastNotification(respuesta.mensaje || 'Dato creado exitosamente', 'success');
+        this.toastService.showSuccess(respuesta.mensaje || 'Dato creado exitosamente');
         this.buscarTipoSeleccionado();
       }
     });
   }
 
 
-  /*
-  *Mostrar notificación toast
-  */
-  private showToastNotification(message: string, type: 'success' | 'error') {
-    this.toastMessage = message;
-    this.toastType = type;
-    this.showToast = true;
-    
-    setTimeout(() => {
-      this.showToast = false;
-    }, 4000);
-  }
+
     
   /*
   *Enviar una solicitud al servicio del servidor para eliminar un datos de configuracion

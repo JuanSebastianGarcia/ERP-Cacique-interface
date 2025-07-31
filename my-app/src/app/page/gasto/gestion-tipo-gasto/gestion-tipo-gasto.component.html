@@ -1,0 +1,123 @@
+<main>
+  <!-- ========================= ENCABEZADO DE LA PÁGINA ========================= -->
+  <div class="page-header">
+    <h2 class="page-title">
+      <span class="page-title-icon">🏷️</span>
+      Gestión de Tipos de Gastos
+    </h2>
+  </div>
+
+  <!-- ========================= SECCIÓN DE NUEVO TIPO ========================= -->
+  <div class="section-card">
+    <h3 class="section-title">
+      <span>➕</span>
+      Agregar Nuevo Tipo
+    </h3>
+    
+    <div class="filter-section">
+      <div class="filter-group">
+        <label class="filter-label">NOMBRE DEL TIPO</label>
+        <input 
+          type="text" 
+          class="form-input" 
+          placeholder="Ej: Materiales de oficina"
+          [(ngModel)]="nuevoTipoNombre"
+          (keydown.enter)="onEnterNuevoTipo()"
+          [disabled]="cargando">
+      </div>
+    </div>
+
+    <div class="action-buttons">
+      <button 
+        class="btn-primary" 
+        (click)="agregarTipo()"
+        [disabled]="cargando">
+        💾 {{ cargando ? 'AGREGANDO...' : 'AGREGAR TIPO' }}
+      </button>
+    </div>
+  </div>
+
+  <!-- ========================= SECCIÓN DE LISTA DE TIPOS ========================= -->
+  <div class="section-card">
+    <h3 class="section-title">
+      <span>📋</span>
+      Lista de Tipos de Gastos
+    </h3>
+
+    <div *ngIf="cargando" class="loading-state">
+      <div class="loading-spinner">⏳</div>
+      <div class="loading-text">Cargando tipos de gastos...</div>
+    </div>
+
+    <div *ngIf="!cargando && tiposGastoFiltrados.length === 0" class="empty-state">
+      <div class="empty-state-icon">📂</div>
+      <div class="empty-state-text">No hay tipos de gasto registrados</div>
+      <div class="empty-state-subtext">Agrega un nuevo tipo para comenzar</div>
+    </div>
+
+    <div class="table-container" *ngIf="!cargando && tiposGastoFiltrados.length > 0">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Nombre del Tipo</th>
+            <th>Opciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let tipo of tiposGastoFiltrados; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ tipo.nombreTipoGasto }}</td>
+            <td>
+              <div class="action-icons">
+                <div 
+                  class="action-icon edit-icon" 
+                  (click)="editarTipo(tipo)"
+                  title="Editar tipo">
+                  ✏️
+                </div>
+                <div 
+                  class="action-icon delete-icon" 
+                  (click)="eliminarTipo(tipo)"
+                  title="Eliminar tipo">
+                  🗑️
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Toast Notification Component -->
+  <app-toast-notification></app-toast-notification>
+</main>
+
+<!-- ========================= MODAL PARA EDITAR/AGREGAR ========================= -->
+<div class="modal-overlay" [class.active]="mostrarModal" (click)="cerrarModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()" (keydown)="onEscape($event)">
+    <button class="modal-close" (click)="cerrarModal()">×</button>
+    <div class="modal-title">{{ tituloModal }}</div>
+    
+    <div class="filter-group" style="margin-bottom: 20px;">
+      <label class="filter-label">NOMBRE</label>
+      <input 
+        type="text" 
+        class="form-input" 
+        placeholder="Nombre del tipo"
+        [(ngModel)]="modalNombre"
+        (keydown.enter)="onEnterModal()"
+        [disabled]="cargando">
+    </div>
+
+    <div class="action-buttons">
+      <button 
+        class="btn-primary" 
+        (click)="guardarTipo()"
+        [disabled]="cargando">
+        💾 {{ cargando ? 'GUARDANDO...' : 'GUARDAR' }}
+      </button>
+    </div>
+  </div>
+</div>

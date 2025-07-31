@@ -44,7 +44,14 @@ export class FacturaService {
    * @returns invoice DTO or undefined if not found
    */
   public getFacturaActualizar(): FacturaDto | undefined {
-    return this.facturasCargadas.find(f => f.idFactura === this.idFacturaActualizando);
+    
+    const factura = this.facturasCargadas.find(f => f.idFactura === this.idFacturaActualizando);
+
+    factura?.listaProductos.forEach(producto => {
+      producto.estadoCerrado = producto.estado === 'ENTREGADO';
+    });
+
+    return factura;
   }
 
   /**

@@ -1,16 +1,21 @@
+/* Custom MatDialog styles */
+:host {
+    display: block;
+}
+
 /* Alert Container */
 .alert-container {
     background: rgba(255, 255, 255, 0.98);
     backdrop-filter: blur(20px);
     border-radius: 20px;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    width: 95%;
-    max-width: 600px;
-    min-width: 400px;
+    width: 100%;
+    max-width: 500px;
+    min-width: 350px;
     overflow: hidden;
     animation: slideUp 0.4s ease;
     position: relative;
-    margin: 20px;
+    margin: 0;
 }
 
 /* Alert Header */
@@ -180,21 +185,44 @@
 @keyframes slideUp {
     from {
         opacity: 0;
-        transform: translateY(30px);
+        transform: translateY(30px) scale(0.9);
     }
     to {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateY(0) scale(1);
     }
 }
 
 /* Responsive */
+@media (max-width: 768px) {
+    .alert-container {
+        min-width: 300px;
+    }
+    
+    .alert-body {
+        padding: 30px 25px;
+    }
+    
+    .alert-header {
+        padding: 20px 25px;
+        font-size: 20px;
+    }
+    
+    .alert-description {
+        font-size: 15px;
+        margin-bottom: 30px;
+    }
+    
+    .alert-btn {
+        padding: 14px 30px;
+        font-size: 16px;
+        min-width: 110px;
+    }
+}
+
 @media (max-width: 480px) {
     .alert-container {
-        margin: 10px;
-        max-width: calc(100% - 20px);
-        min-width: 300px;
-        width: 90%;
+        min-width: 280px;
     }
     
     .alert-body {
@@ -207,12 +235,12 @@
     }
     
     .alert-description {
-        font-size: 15px;
+        font-size: 14px;
     }
     
     .alert-btn {
         padding: 14px 25px;
-        font-size: 16px;
+        font-size: 15px;
         min-width: 100px;
     }
     
@@ -220,6 +248,39 @@
         flex-direction: column;
         gap: 10px;
     }
+    
+    .alert-icon {
+        font-size: 60px;
+    }
+}
+
+/* Global styles for MatDialog customization - should be in styles.css */
+::ng-deep .custom-backdrop {
+    background: rgba(0, 0, 0, 0.6) !important;
+    backdrop-filter: blur(8px) !important;
+}
+
+::ng-deep .custom-dialog-panel {
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    overflow: visible !important;
+}
+
+::ng-deep .custom-dialog-panel .mat-mdc-dialog-container {
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+}
+
+::ng-deep .cdk-overlay-pane {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
 }
 
 

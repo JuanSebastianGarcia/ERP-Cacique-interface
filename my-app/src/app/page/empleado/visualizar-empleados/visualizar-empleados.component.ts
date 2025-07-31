@@ -10,6 +10,8 @@ import { MensajeInformacionComponent } from '../../../shared/components/mensaje-
 import { MensajeAlertaComponent } from '../../../shared/components/mensaje-alerta/mensaje-alerta.component';
 import { MensajeConfirmacionComponent } from '../../../shared/components/mensaje-confirmacion/mensaje-confirmacion.component';
 import { CrearEmpleadoComponent } from '../crear-empleado/crear-empleado.component';
+import { ToastNotificationComponent } from '../../../shared/components/toast-notification/toast-notification.component';
+import { ToastService } from '../../../shared/services/toast.service';
 
 @Component({
   selector: 'app-visualizar-empleados',
@@ -17,7 +19,8 @@ import { CrearEmpleadoComponent } from '../crear-empleado/crear-empleado.compone
   imports: [MatCardModule,
             MatTableModule,
             CommonModule,
-            MatDialogModule
+            MatDialogModule,
+            ToastNotificationComponent
   ],
   templateUrl: './visualizar-empleados.component.html',
   styleUrl: './visualizar-empleados.component.css'
@@ -27,15 +30,10 @@ export class VisualizarEmpleadosComponent implements OnInit{
   displayedColumns: string[] = ['id', 'nombre', 'cedula', 'telefono', 'email' , 'tipoEmpleado','boton'];
   dataSource = new MatTableDataSource<EmpleadoDto>([]);//arreglo en donde se almacena la informacion de la tabla
 
-
-  // Toast notification variables
-  public showToast: boolean = false;
-  public toastMessage: string = '';
-  public toastType: 'success' | 'error' = 'success';
-
   constructor(private empleadoService:EmpleadoService,
               private router:Router,
-              private dialog:MatDialog){};
+              private dialog:MatDialog,
+              private toastService: ToastService){};
 
   ngOnInit(): void {
     this.buscarEmpleados();
@@ -69,11 +67,11 @@ export class VisualizarEmpleadosComponent implements OnInit{
 
     this.empleadoService.eliminarEmpleado(cedula).subscribe({
       next:data =>{
-        const dialogRef = this.dialog.open(MensajeInformacionComponent,{data:data.respuesta});
+        this.toastService.showSuccess(data.respuesta);
         this.buscarEmpleados();
       },
       error:error=>{
-        const dialogRef = this.dialog.open(MensajeInformacionComponent,{data:"ocurrio un error"});
+        this.toastService.showError("Ocurrió un error al eliminar el empleado");
       }
     });
   }
@@ -91,7 +89,7 @@ export class VisualizarEmpleadosComponent implements OnInit{
         this.dataSource=new MatTableDataSource(data.respuesta);
       },
       error:error =>{
-        const dialogRef = this.dialog.open(MensajeAlertaComponent,{data:'Ocurrio un error'});
+        this.toastService.showError('Ocurrió un error al cargar los empleados');
       }
     });
 
@@ -109,26 +107,15 @@ export class VisualizarEmpleadosComponent implements OnInit{
       }
 
       if (respuesta.error) {
-        this.showToastNotification(respuesta.mensaje || 'Error al agregar el empleado', 'error');
+        this.toastService.showError(respuesta.mensaje || 'Error al agregar el empleado');
       } else {
-        this.showToastNotification(respuesta.mensaje || 'Empleado agregado', 'success');
+        this.toastService.showSuccess(respuesta.mensaje || 'Empleado agregado exitosamente');
         this.buscarEmpleados();
       }
 
     });
   }
 
-    /*
-  *Mostrar notificación toast
-  */
-  private showToastNotification(message: string, type: 'success' | 'error') {
-    this.toastMessage = message;
-    this.toastType = type;
-    this.showToast = true;
-    
-    setTimeout(() => {
-      this.showToast = false;
-    }, 4000);
-  }
+
   
 }

@@ -66,13 +66,19 @@
                         </select>
                     </div>
                     <div class="filter-group">
-                        <label class="filter-label">FECHA</label>
-                        <input 
-                            type="date" 
-                            class="form-input" 
-                            [(ngModel)]="gastoFormData.fecha"
-                            name="fecha"
-                            required>
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>FECHA</mat-label>
+                            <input 
+                                matInput 
+                                [matDatepicker]="formDatePicker"
+                                [(ngModel)]="gastoFormData.fecha"
+                                name="fecha"
+                                required
+                                readonly>
+                            <mat-hint>Selecciona la fecha del gasto</mat-hint>
+                            <mat-datepicker-toggle matIconSuffix [for]="formDatePicker"></mat-datepicker-toggle>
+                            <mat-datepicker #formDatePicker></mat-datepicker>
+                        </mat-form-field>
                     </div>
                 </div>
                 
@@ -125,12 +131,18 @@
                     </select>
                 </div>
                 <div class="filter-container-group">
-                    <label class="filter-label">FECHA</label>
-                    <input 
-                        type="date" 
-                        class="form-input" 
-                        [(ngModel)]="filtrosTabla.fechaFiltro"
-                        (change)="aplicarFiltros()">
+                    <mat-form-field appearance="outline" class="filter-field">
+                        <mat-label>FECHA</mat-label>
+                        <input 
+                            matInput 
+                            [matDatepicker]="filterDatePicker"
+                            [(ngModel)]="filtrosTabla.fechaFiltro"
+                            (dateChange)="aplicarFiltros()"
+                            name="fechaFiltro"
+                            readonly>
+                        <mat-datepicker-toggle matIconSuffix [for]="filterDatePicker"></mat-datepicker-toggle>
+                        <mat-datepicker #filterDatePicker></mat-datepicker>
+                    </mat-form-field>
                 </div>
                 <button 
                     class="btn-primary" 
@@ -155,20 +167,20 @@
                 <tbody>
                     <tr *ngFor="let gasto of gastosDelDia; let i = index">
                         <td>{{ gasto.fecha }}</td>
-                        <td>{{ gasto.tipoGasto }}</td>
+                        <td>{{ obtenerNombreTipoGasto(gasto.tipoGasto) }}</td>
                         <td>{{ gasto.descripcion }}</td>
                         <td>{{ formatearMoneda(gasto.valor) }}</td>
                         <td>
                             <div class="action-icons">
                                 <div 
                                     class="action-icon delete-icon" 
-                                    (click)="eliminarGasto(gasto)"
+                                    (click)="eliminarGasto(gasto.id)"
                                     title="Eliminar gasto">
                                     🗑️
                                 </div>
                                 <div 
                                     class="action-icon edit-icon" 
-                                    (click)="editarGasto(gasto)"
+                                    (click)="editarGasto(gasto.id)"
                                     title="Editar gasto">
                                     ✏️
                                 </div>
@@ -185,27 +197,7 @@
         </div>
     </div>
 
-    <!-- ========================= TOAST NOTIFICATION ========================= -->
-    <div 
-        class="toast-container" 
-        [class.show]="showToast" 
-        [class.toast-success]="toastType === 'success'" 
-        [class.toast-error]="toastType === 'error'"
-        *ngIf="showToast">
-        <div class="toast-content">
-            <div class="toast-icon">
-                <span *ngIf="toastType === 'success'">✅</span>
-                <span *ngIf="toastType === 'error'">❌</span>
-            </div>
-            <div class="toast-message">{{ toastMessage }}</div>
-            <button class="toast-close" (click)="hideToast()">×</button>
-        </div>
-    </div>
+    <!-- Toast Notification Component -->
+    <app-toast-notification></app-toast-notification>
 </main>
 
-<button 
-    class="fab" 
-    (click)="agregarGastoRapido()" 
-    title="Agregar Gasto Rápido">
-    +
-</button>

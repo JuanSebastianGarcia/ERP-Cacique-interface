@@ -1,16 +1,34 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
 import { GastoService } from '../../../core/service/gasto.service';
 import { GastoDto } from '../../../core/models/gasto-dto';
 import { TipoGastoDto } from '../../../core/models/tipo-gasto-dto';
 import { RespuestaDto } from '../../../core/models/respuesta-dto';
 import { DatePipe } from '@angular/common';
+import { EstadisticasDto } from '../../../core/models/estadisticas-gastos-dto';
+import { MensajeConfirmacionComponent } from '../../../shared/components/mensaje-confirmacion/mensaje-confirmacion.component';
+import { ToastService } from '../../../shared/services/toast.service';
+import { ToastNotificationComponent } from '../../../shared/components/toast-notification/toast-notification.component';
+import { ActualizarGastoComponent } from '../actualizar-gasto/actualizar-gasto.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @Component({
   selector: 'app-registro-gasto',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [
+    FormsModule, 
+    CommonModule, 
+    ToastNotificationComponent,
+    MatDatepickerModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatNativeDateModule
+  ],
   providers: [DatePipe],
   templateUrl: './registro-gasto.component.html',
   styleUrl: './registro-gasto.component.css'
@@ -30,16 +48,16 @@ export class RegistroGastoComponent implements OnInit {
     tipoGasto: number | null;
     fechaFiltro: string; // o Date si usas objetos fecha
   } = {
-    tipoGasto: null,
+    tipoGasto:null,
     fechaFiltro: this.obtenerFechaActual()
   };
   
 
   // Statistics data
   public estadisticas = {
-    totalGastosHoy: 2450.00,
-    totalGastosMes: 15280.00,
-    gastosRegistrados: 12
+    totalGastosHoy: 0,
+    totalGastosMes: 0,
+    gastosRegistrados: 0
   };
 
   // Dropdown options
@@ -48,26 +66,26 @@ export class RegistroGastoComponent implements OnInit {
 
 
   // Sample expense data for the table
-  public gastosDelDia: {fecha:string | null,tipoGasto:number,descripcion:string,valor:number}[] = [];
+  public gastosDelDia: {id:number,fecha:string | null,tipoGasto:number,descripcion:string,valor:number}[] = [];
 
   // UI state properties
   public isLoading = false;
   public showMensajeExito = false;
 
 
-    // Toast notification variables
-    public showToast: boolean = false;
-    public toastMessage: string = '';
-    public toastType: 'success' | 'error' = 'success';
+  // Toast notification variables - REMOVED (now handled by ToastService)
 
   constructor(
     private gastoService:GastoService,
-    private datePipe:DatePipe
+    private datePipe:DatePipe,
+    private dialog: MatDialog,
+    private toastService: ToastService
   ) { }
 
   ngOnInit(): void {
     this.inicializarComponente();
     this.buscarGastos();
+    this.obtenerEstadisticas();
   }
 
   // Initialization methods
@@ -109,7 +127,7 @@ export class RegistroGastoComponent implements OnInit {
    */
   public registrarGasto(): void {
     if (!this.validarFormulario()) {
-      this.showToastNotification('Por favor complete todos los campos requeridos', 'error');
+              this.toastService.showError('Por favor complete todos los campos requeridos');
       return;
     }
 
@@ -118,13 +136,14 @@ export class RegistroGastoComponent implements OnInit {
 
     this.gastoService.crearGasto(gastoDto).subscribe({
       next: (respuesta:RespuestaDto<string>)=>{
-        this.showToastNotification(respuesta.respuesta, 'success');
+                    this.toastService.showSuccess(respuesta.respuesta);
         this.limpiarFormulario();
         this.buscarGastos(); // Actualizar la tabla
         this.isLoading = false;
+        this.obtenerEstadisticas();
       },
       error: (error:any)=>{
-          this.showToastNotification('Ocurrió un error al registrar el gasto', 'error');
+          this.toastService.showError('Ocurrió un error al registrar el gasto');
           this.isLoading = false;
       }
     });
@@ -158,6 +177,8 @@ export class RegistroGastoComponent implements OnInit {
     };
   }
 
+
+
   /**
    * Valida que todos los campos requeridos del formulario estén completos
    * @returns true si el formulario es válido, false en caso contrario
@@ -177,28 +198,50 @@ export class RegistroGastoComponent implements OnInit {
   public buscarGastos(): void {
     
 
-    this.gastoService.obtenerGastos(this.filtrosTabla.fechaFiltro,this.filtrosTabla.tipoGasto).subscribe({
-      next: (respuesta:RespuestaDto<GastoDto[]>)=>{
-        this.mapearGastos(respuesta.respuesta);
-      },
-      error: (error:any)=>{
-        console.log(error);
+    // Si no se ha seleccionado un tipo de gasto, se buscan todos los gastos
+    if (this.filtrosTabla.tipoGasto == null){  
+    
+        this.gastoService.obtenerGastos(this.filtrosTabla.fechaFiltro).subscribe({
+          next: (respuesta:RespuestaDto<GastoDto[]>)=>{
+            this.mapearGastos(respuesta.respuesta);
+          },
+          error: (error:any)=>{
+            console.log(error);
+          }
+        });
       }
-    });
+
+
+      // Si se ha seleccionado un tipo de gasto, se buscan los gastos de ese tipo
+      else{
+        this.gastoService.obtenerGastosByTipo(this.filtrosTabla.fechaFiltro,this.filtrosTabla.tipoGasto).subscribe({
+          next: (respuesta:RespuestaDto<GastoDto[]>)=>{
+            this.mapearGastos(respuesta.respuesta);
+          },
+          error: (error:any)=>{
+            console.log(error);
+          }
+        });
+      }
   }
 
+
+  
   /**
    * Mapea los gastos recibidos del servicio al formato utilizado en la tabla
    * @param gastos Array de gastos en formato GastoDto
    */
   private mapearGastos(gastos:GastoDto[]):void{
     this.gastosDelDia = gastos.map(gasto=>({
+      id: gasto.id,
       fecha: this.formatearFecha(gasto.fecha),
       tipoGasto:gasto.tipoGastoId,
       descripcion:gasto.descripcion,
       valor:gasto.valor
     }));
   }
+
+
 
   private formatearFecha(fechaISO: string): string {
     if (!fechaISO) return 'Sin fecha';
@@ -231,43 +274,69 @@ export class RegistroGastoComponent implements OnInit {
     // Logic to apply filters
   }
 
-  public exportarGastos(): void {
-    // Logic to export expenses
+
+  private obtenerEstadisticas(): void {
+    this.gastoService.obtenerEstadisticas().subscribe({
+      next: (respuesta:RespuestaDto<EstadisticasDto>)=>{
+        this.mapearEstadisticas(respuesta.respuesta);
+      }
+    });
   }
 
-  // CRUD operations for expense table
-  public editarGasto(gasto: any): void {
-    // Logic to edit expense
+
+  private mapearEstadisticas(estadisticas:EstadisticasDto):void{
+    this.estadisticas.gastosRegistrados = estadisticas.totalNumeroGastos;
+    this.estadisticas.totalGastosHoy = estadisticas.totalGastosHoy;
+    this.estadisticas.totalGastosMes = estadisticas.TotalGastosMes;
   }
 
-  public eliminarGasto(gasto: any): void {
-    // Logic to delete expense
+  public eliminarGasto(id: number): void {
+    // Buscar el gasto para obtener información adicional para el mensaje
+    const gasto = this.gastosDelDia.find(g => g.id === id);
+    const tipoGastoNombre = this.tiposGasto.find(t => t.value === gasto?.tipoGasto)?.label || 'este gasto';
+    
+    const dialogRef = this.dialog.open(MensajeConfirmacionComponent, {
+      data: `¿Está seguro de eliminar el gasto "${tipoGastoNombre}" por valor de ${this.formatearMoneda(gasto?.valor || 0)}?`,
+      disableClose: false,
+      hasBackdrop: true,
+      backdropClass: 'custom-backdrop',
+      panelClass: 'custom-dialog-panel',
+      autoFocus: true,
+      restoreFocus: true,
+      maxWidth: '500px',
+      width: '90%',
+      position: {
+        top: '50%',
+        left: '50%'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.gastoService.eliminarGasto(id).subscribe({
+          next: (respuesta:RespuestaDto<string>)=>{
+            this.toastService.showSuccess(respuesta.respuesta);
+            this.buscarGastos();
+            this.obtenerEstadisticas();
+          },
+          error: (error:any)=>{
+            this.toastService.showError('Ocurrió un error al eliminar el gasto');
+          }
+        });
+      }
+    });
   }
 
-  public confirmarEliminacion(gasto: any): void {
-    // Logic to confirm deletion
+  /**
+   * Obtiene el nombre del tipo de gasto a partir de su ID
+   * @param tipoGastoId ID del tipo de gasto
+   * @returns Nombre del tipo de gasto o 'Sin tipo' si no se encuentra
+   */
+  public obtenerNombreTipoGasto(tipoGastoId: number): string {
+    const tipo = this.tiposGasto.find(t => t.value === tipoGastoId);
+    return tipo ? tipo.label : 'Sin tipo';
   }
 
-  // Quick actions
-  public agregarGastoRapido(): void {
-    // Logic for quick expense addition (FAB button)
-  }
-
-  // Navigation methods
-  public navegarAGestion(): void {
-    // Logic to navigate to expense management
-  }
-
-  public navegarATiposGasto(): void {
-    // Logic to navigate to expense types
-  }
-
-  public cerrarSesion(): void {
-    // Logic to logout
-  }
-
-  // Utility methods
-  
   /**
    * Formatea un valor numérico a formato de moneda colombiana
    * @param valor Valor numérico a formatear
@@ -277,47 +346,50 @@ export class RegistroGastoComponent implements OnInit {
     return `$${valor.toLocaleString('es-CO', { minimumFractionDigits: 2 })}`;
   }
 
-  public obtenerColorTipoGasto(tipo: string): string {
-    // Return color based on expense type
-    return '';
-  }
 
-  public calcularTotalGastos(): number {
-    // Calculate total expenses
-    return 0;
-  }
-
-
-     /**
-   * Muestra una notificación toast con mensaje y tipo especificado
-   * @param message - Mensaje a mostrar en el toast
-   * @param type - Tipo de notificación ('success' o 'error')
-   */
-     private showToastNotification(message: string, type: 'success' | 'error'): void {
-      this.toastMessage = message;
-      this.toastType = type;
-      this.showToast = true;
-      
-      // Auto hide toast after 4 seconds
-      setTimeout(() => {
-        this.hideToast();
-      }, 4000);
-    }
-
+  // Toast methods removed - now handled by centralized ToastService
 
   /**
-   * Oculta el toast con animación suave
+   * Abre el modal para editar un gasto específico
+   * @param gastoId - ID del gasto a editar
    */
-  public hideToast(): void {
-    const toastElement = document.querySelector('.toast-container');
-    if (toastElement) {
-      toastElement.classList.add('toast-hiding');
-      setTimeout(() => {
-        this.showToast = false;
-      }, 300);
-    } else {
-      this.showToast = false;
+  public editarGasto(gastoId: number): void {
+    // Buscar el gasto en la lista
+    const gastoAEditar = this.gastosDelDia.find(gasto => gasto.id === gastoId);
+    
+    if (!gastoAEditar) {
+      this.toastService.showError('Gasto no encontrado');
+      return;
     }
+
+    // Abrir el modal de edición
+    const dialogRef = this.dialog.open(ActualizarGastoComponent, {
+      width: '700px',
+      maxWidth: '90vw',
+      maxHeight: '90vh',
+      disableClose: true,
+      panelClass: 'custom-dialog-container',
+      data: {
+        gasto: gastoAEditar
+      }
+    });
+
+    // Manejar el resultado del modal
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        if (result.updated) {
+          // Gasto actualizado - recargar la lista
+          this.buscarGastos();
+          this.obtenerEstadisticas();
+          console.log('Gasto actualizado exitosamente');
+        } else if (result.deleted) {
+          // Gasto eliminado - recargar la lista
+          this.buscarGastos();
+          this.obtenerEstadisticas();
+          console.log('Gasto eliminado exitosamente');
+        }
+      }
+    });
   }
 
 }

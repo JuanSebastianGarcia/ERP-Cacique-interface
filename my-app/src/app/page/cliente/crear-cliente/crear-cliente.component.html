@@ -41,13 +41,15 @@
                         <div class="form-group">
                             <label class="form-label">Número de cédula</label>
                             <input 
-                                type="text" 
+                                type="number" 
                                 class="form-input" 
                                 id="cedula" 
                                 [(ngModel)]="cliente.cedula" 
                                 name="cedula" 
                                 placeholder="Ej: 1234567890"
                                 required
+                                min="0"
+                                oninput="this.value = this.value.replace(/[^0-9]/g, '')"
                             >
                         </div>
                     </div>
@@ -57,7 +59,7 @@
                         <div class="form-group">
                             <label class="form-label">Número de teléfono</label>
                             <input 
-                                type="tel" 
+                                type="number" 
                                 class="form-input" 
                                 id="telefono" 
                                 [(ngModel)]="cliente.telefono" 
@@ -110,6 +112,8 @@
             </form>
         </div>
     </div>
+
+
 </body>
 
 </html>

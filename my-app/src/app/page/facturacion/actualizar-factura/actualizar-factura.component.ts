@@ -20,6 +20,8 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
+import { ToastNotificationComponent } from '../../../shared/components/toast-notification/toast-notification.component';
+import { ToastService } from '../../../shared/services/toast.service';
 
 @Component({
   selector: 'app-actualizar-factura',
@@ -31,7 +33,8 @@ import { CommonModule } from '@angular/common';
     MatSelectModule,
     MatFormFieldModule,
     MatInputModule,
-    CommonModule
+    CommonModule,
+    ToastNotificationComponent
   ],
   templateUrl: './actualizar-factura.component.html',
   styleUrl: './actualizar-factura.component.css'
@@ -89,7 +92,8 @@ export class ActualizarFacturaComponent implements OnInit {
    */
   constructor(
     private facturaService: FacturaService,
-    private clienteService: ClienteService
+    private clienteService: ClienteService,
+    private toastService: ToastService
   ) {}
 
   /**
@@ -121,8 +125,10 @@ export class ActualizarFacturaComponent implements OnInit {
       Descripcion: producto.prenda + "-" + producto.talla + "-" + producto.horario + "-" + producto.genero + "-" + producto.institucion,
       DescripcionExtra: producto.descripcion || '',
       Estado: producto.estado,
-      Precio: producto.precio,
+      Precio: producto.precio
     }));
+
+
 
     this.listaProductos.data = tablaProductos;
   }
@@ -202,7 +208,7 @@ export class ActualizarFacturaComponent implements OnInit {
       this.factura!.listaProductos = this.factura!.listaProductos.filter(producto => producto.idRelacion !== idProducto);
       this.renderizarProductos(); // Refresh the products table
     } else {
-      alert("No se puede eliminar el producto porque ya fue entregado.");
+      this.toastService.showError("No se puede eliminar el producto porque ya fue entregado");
     }
   }
 
@@ -217,12 +223,14 @@ export class ActualizarFacturaComponent implements OnInit {
     // Find the product in the invoice's product list
     const producto = this.factura!.listaProductos.find(producto => producto.idRelacion === idProducto);
 
+    console.log(producto);
+
     // Update product status if it hasn't been delivered yet
-    if (producto!.estado !== 'ENTREGADO') {
+    if (!producto!.estadoCerrado) {
       producto!.estado = nuevoEstado;
       this.renderizarProductos(); // Refresh the products table
     } else {
-      alert("No se puede cambiar el estado del producto.");
+      this.toastService.showError("No se puede cambiar el estado del producto");
       this.renderizarProductos(); // Refresh the products table
     }
   }
@@ -241,10 +249,10 @@ export class ActualizarFacturaComponent implements OnInit {
     // Send updated invoice to the backend
     this.facturaService.actualizarFactura(this.factura!).subscribe({
       next: data => {
-        alert(data.respuesta);
+        this.toastService.showSuccess("Factura actualizada correctamente");
       },
       error: error => {
-        alert(error.error.respuesta);
+        this.toastService.showError("Error al actualizar factura");
       }
     });
   }

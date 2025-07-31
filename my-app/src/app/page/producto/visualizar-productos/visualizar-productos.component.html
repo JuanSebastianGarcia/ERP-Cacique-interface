@@ -127,10 +127,5 @@
 <!-- Floating Action Button -->
 <button class="fab" (click)="agregarProducto()" title="Agregar Producto">+</button>
 
-<!-- Toast Notification -->
-<div class="toast-container" [class.show]="showToast" [class.success]="toastType === 'success'" [class.error]="toastType === 'error'">
-    <div class="toast-content">
-        <span class="toast-icon">{{toastType === 'success' ? '✅' : '❌'}}</span>
-        <span class="toast-message">{{toastMessage}}</span>
-    </div>
-</div>
+<!-- Toast Notification Component -->
+<app-toast-notification></app-toast-notification>

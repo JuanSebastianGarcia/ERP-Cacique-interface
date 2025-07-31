@@ -7,5 +7,6 @@ export interface ProductoFacturaDto {
     genero:string,
     precio:number,
     estado:string,
-    descripcion:string
+    descripcion:string,
+    estadoCerrado?:boolean
 }
