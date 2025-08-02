@@ -40,33 +40,38 @@
         <form (ngSubmit)="registrarGasto()" #gastoForm="ngForm">
                 <div class="filter-section">
                     <div class="filter-group">
-                        <label class="filter-label">VALOR</label>
-                        <input 
-                            type="number" 
-                            class="form-input" 
-                            placeholder="0.00" 
-                            step="0.01"
-                            [(ngModel)]="gastoFormData.valor"
-                            name="valor"
-                            required>
+                        <mat-form-field class="full-width">
+                            <mat-label>VALOR</mat-label>
+                            <input 
+                                matInput
+                                type="number" 
+                                placeholder="0.00" 
+                                step="0.01"
+                                [(ngModel)]="gastoFormData.valor"
+                                name="valor"
+                                required>
+                            <mat-hint>Ingresa el valor en pesos colombianos</mat-hint>
+                        </mat-form-field>
                     </div>
                     <div class="filter-group">
-                        <label class="filter-label">TIPO</label>
-                        <select 
-                            class="filter-select"
-                            [(ngModel)]="gastoFormData.tipo"
-                            name="tipo"
-                            required>
-                            <option value="">Seleccionar tipo</option>
-                            <option 
-                                *ngFor="let tipo of tiposGasto" 
-                                [value]="tipo.value">
-                                {{ tipo.label }}
-                            </option>
-                        </select>
+                        <mat-form-field class="full-width">
+                            <mat-label>TIPO</mat-label>
+                            <mat-select 
+                                [(ngModel)]="gastoFormData.tipo"
+                                name="tipo"
+                                required>
+                                <mat-option value="">Seleccionar tipo</mat-option>
+                                <mat-option 
+                                    *ngFor="let tipo of tiposGasto" 
+                                    [value]="tipo.value">
+                                    {{ tipo.label }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-hint>Selecciona la categoría del gasto</mat-hint>
+                        </mat-form-field>
                     </div>
                     <div class="filter-group">
-                        <mat-form-field appearance="outline" class="full-width">
+                        <mat-form-field class="full-width">
                             <mat-label>FECHA</mat-label>
                             <input 
                                 matInput 
@@ -84,14 +89,18 @@
                 
                 <div class="filter-section">
                     <div class="filter-group">
-                        <label class="filter-label">DESCRIPCIÓN</label>
-                        <textarea 
-                            class="form-textarea" 
-                            placeholder="Describe el gasto detalladamente..."
-                            [(ngModel)]="gastoFormData.descripcion"
-                            name="descripcion"
-                            required>
-                        </textarea>
+                        <mat-form-field class="full-width">
+                            <mat-label>DESCRIPCIÓN</mat-label>
+                            <textarea 
+                                matInput
+                                placeholder="Describe el gasto detalladamente..."
+                                [(ngModel)]="gastoFormData.descripcion"
+                                name="descripcion"
+                                rows="4"
+                                required>
+                            </textarea>
+                            <mat-hint>Proporciona detalles sobre el gasto realizado</mat-hint>
+                        </mat-form-field>
                     </div>
                 </div>
 
@@ -117,21 +126,23 @@
         <div class="table-header">
             <div class="filters-container">
                 <div class="filter-container-group">
-                    <label class="filter-label">TIPO GASTO</label>
-                    <select 
-                        class="filter-select"
-                        [(ngModel)]="filtrosTabla.tipoGasto"
-                        (change)="aplicarFiltros()">
-                        <option value="">Todos los tipos</option>
-                        <option 
-                            *ngFor="let tipo of tiposGasto" 
-                            [value]="tipo.value">
-                            {{ tipo.label }}
-                        </option>
-                    </select>
+                    <mat-form-field class="filter-field">
+                        <mat-label>TIPO GASTO</mat-label>
+                        <mat-select 
+                            [(ngModel)]="filtrosTabla.tipoGasto"
+                            (selectionChange)="aplicarFiltros()"
+                            name="tipoGastoFiltro">
+                            <mat-option value="">Todos los tipos</mat-option>
+                            <mat-option 
+                                *ngFor="let tipo of tiposGasto" 
+                                [value]="tipo.value">
+                                {{ tipo.label }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
                 <div class="filter-container-group">
-                    <mat-form-field appearance="outline" class="filter-field">
+                    <mat-form-field class="filter-field">
                         <mat-label>FECHA</mat-label>
                         <input 
                             matInput 
