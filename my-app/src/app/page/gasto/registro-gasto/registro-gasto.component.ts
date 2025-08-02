@@ -9,29 +9,14 @@ import { RespuestaDto } from '../../../core/models/respuesta-dto';
 import { DatePipe } from '@angular/common';
 import { EstadisticasDto } from '../../../core/models/estadisticas-gastos-dto';
 import { MensajeConfirmacionComponent } from '../../../shared/components/mensaje-confirmacion/mensaje-confirmacion.component';
-import { ToastService } from '../../../shared/services/toast.service';
-import { ToastNotificationComponent } from '../../../shared/components/toast-notification/toast-notification.component';
 import { ActualizarGastoComponent } from '../actualizar-gasto/actualizar-gasto.component';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MatSelectModule } from '@angular/material/select';
-import { MatOptionModule } from '@angular/material/core';
 
 @Component({
   selector: 'app-registro-gasto',
   standalone: true,
   imports: [
     FormsModule, 
-    CommonModule, 
-    ToastNotificationComponent,
-    MatDatepickerModule,
-    MatInputModule,
-    MatFormFieldModule,
-    MatNativeDateModule,
-    MatSelectModule,
-    MatOptionModule
+    CommonModule
   ],
   providers: [DatePipe],
   templateUrl: './registro-gasto.component.html',
@@ -76,14 +61,15 @@ export class RegistroGastoComponent implements OnInit {
   public isLoading = false;
   public showMensajeExito = false;
 
-
-  // Toast notification variables - REMOVED (now handled by ToastService)
+  // Toast notification variables
+  public showToast: boolean = false;
+  public toastMessage: string = '';
+  public toastType: 'success' | 'error' = 'success';
 
   constructor(
     private gastoService:GastoService,
     private datePipe:DatePipe,
-    private dialog: MatDialog,
-    private toastService: ToastService
+    private dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -131,7 +117,7 @@ export class RegistroGastoComponent implements OnInit {
    */
   public registrarGasto(): void {
     if (!this.validarFormulario()) {
-              this.toastService.showError('Por favor complete todos los campos requeridos');
+      this.showToastNotification('Por favor complete todos los campos requeridos', 'error');
       return;
     }
 
@@ -140,14 +126,14 @@ export class RegistroGastoComponent implements OnInit {
 
     this.gastoService.crearGasto(gastoDto).subscribe({
       next: (respuesta:RespuestaDto<string>)=>{
-                    this.toastService.showSuccess(respuesta.respuesta);
+        this.showToastNotification(respuesta.respuesta, 'success');
         this.limpiarFormulario();
         this.buscarGastos(); // Actualizar la tabla
         this.isLoading = false;
         this.obtenerEstadisticas();
       },
       error: (error:any)=>{
-          this.toastService.showError('Ocurrió un error al registrar el gasto');
+          this.showToastNotification('Ocurrió un error al registrar el gasto', 'error');
           this.isLoading = false;
       }
     });
@@ -319,12 +305,12 @@ export class RegistroGastoComponent implements OnInit {
       if (result) {
         this.gastoService.eliminarGasto(id).subscribe({
           next: (respuesta:RespuestaDto<string>)=>{
-            this.toastService.showSuccess(respuesta.respuesta);
+            this.showToastNotification(respuesta.respuesta, 'success');
             this.buscarGastos();
             this.obtenerEstadisticas();
           },
           error: (error:any)=>{
-            this.toastService.showError('Ocurrió un error al eliminar el gasto');
+            this.showToastNotification('Ocurrió un error al eliminar el gasto', 'error');
           }
         });
       }
@@ -362,7 +348,7 @@ export class RegistroGastoComponent implements OnInit {
     const gastoAEditar = this.gastosDelDia.find(gasto => gasto.id === gastoId);
     
     if (!gastoAEditar) {
-      this.toastService.showError('Gasto no encontrado');
+      this.showToastNotification('Gasto no encontrado', 'error');
       return;
     }
 
@@ -394,6 +380,37 @@ export class RegistroGastoComponent implements OnInit {
         }
       }
     });
+  }
+
+  /**
+   * Muestra una notificación toast con mensaje y tipo especificado
+   * @param message - Mensaje a mostrar en el toast
+   * @param type - Tipo de notificación ('success' o 'error')
+   */
+  private showToastNotification(message: string, type: 'success' | 'error'): void {
+    this.toastMessage = message;
+    this.toastType = type;
+    this.showToast = true;
+    
+    // Auto hide toast after 4 seconds
+    setTimeout(() => {
+      this.hideToast();
+    }, 4000);
+  }
+
+  /**
+   * Oculta el toast con animación suave
+   */
+  public hideToast(): void {
+    const toastElement = document.querySelector('.toast-container');
+    if (toastElement) {
+      toastElement.classList.add('toast-hiding');
+      setTimeout(() => {
+        this.showToast = false;
+      }, 300);
+    } else {
+      this.showToast = false;
+    }
   }
 
 }

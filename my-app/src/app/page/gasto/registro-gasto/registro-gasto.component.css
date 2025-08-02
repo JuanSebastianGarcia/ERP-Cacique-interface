@@ -169,6 +169,8 @@
     display: flex;
     align-items: center;
     gap: 8px;
+    min-height: 56px;
+    height: 56px;
 }
 
 .btn-primary:hover:not(:disabled) {
@@ -371,7 +373,7 @@
     display: flex;
     gap: 20px;
     flex-wrap: wrap;
-    align-items: end;
+    align-items: flex-end;
 }
 
 .filter-container-group {
@@ -422,6 +424,34 @@
     background: white;
     box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
     transform: translateY(-1px);
+}
+
+/* Button styling within filter container */
+.filter-container-group .btn-primary {
+    margin-top: auto;
+    align-self: flex-end;
+}
+
+/* Specific alignment for filter elements */
+.filter-container-group .mat-mdc-form-field {
+    margin-bottom: 0;
+}
+
+.filter-container-group .filter-field {
+    align-self: flex-end;
+}
+
+/* Ensure consistent height for filter form fields */
+.filters-container .filter-container-group .mat-mdc-form-field .mat-mdc-text-field-wrapper {
+    min-height: 56px;
+    display: flex;
+    align-items: center;
+}
+
+.filters-container .filter-container-group .mat-mdc-select-trigger {
+    min-height: 56px;
+    display: flex;
+    align-items: center;
 }
 
 @keyframes fadeInUp {
@@ -483,11 +513,18 @@
         flex-direction: column;
         width: 100%;
         gap: 15px;
+        align-items: stretch;
     }
 
     .filter-container-group .filter-select,
     .filter-container-group .form-input {
         width: 100%;
+    }
+
+    .filter-container-group .btn-primary {
+        width: 100%;
+        margin-top: 0;
+        align-self: stretch;
     }
 }
 
