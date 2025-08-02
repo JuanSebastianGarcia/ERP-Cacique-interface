@@ -6,6 +6,7 @@ import { ProductoDto } from '../../../core/models/producto-dto';
 import { ProductoService } from '../../../core/service/producto.service';
 import { FiltroListaProductoDto } from '../../../core/models/filtro-lista-producto-dto';
 import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -26,6 +27,7 @@ import { ToastService } from '../../../shared/services/toast.service';
     MatTableModule,
     MatPaginatorModule,
     MatSelectModule,
+    MatFormFieldModule,
     CommonModule,
     FormsModule,
     MatButtonModule,

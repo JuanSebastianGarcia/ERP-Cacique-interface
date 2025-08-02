@@ -30,6 +30,7 @@
         </div>
     </div>
 
+
     <!-- ========================= SECCIÓN DE REGISTRO ========================= -->
     <div class="section-card">
         <h3 class="section-title">
@@ -65,15 +66,35 @@
                             </option>
                         </select>
                     </div>
+
                     <div class="filter-group">
                         <label class="filter-label">FECHA</label>
+                        <div class="fecha-input-container">
+                            <input 
+                                type="text"
+                                class="form-input fecha-display"
+                                [value]="obtenerFechaFormateada(gastoFormData.fecha)"
+                                readonly
+                                placeholder="Seleccionar fecha"
+                                (click)="abrirCalendarioFormulario()"
+                                name="fechaDisplay"
+                                required>
+                            <button 
+                                type="button"
+                                class="btn-calendario"
+                                (click)="abrirCalendarioFormulario()"
+                                title="Abrir calendario">
+                                📅
+                            </button>
+                        </div>
+                        <!-- Hidden input para mantener validación del formulario -->
                         <input 
-                            type="date"
-                            class="form-input"
+                            type="hidden"
                             [(ngModel)]="gastoFormData.fecha"
                             name="fecha"
                             required>
                     </div>
+                    
                 </div>
                 
                 <div class="filter-section">
@@ -128,11 +149,27 @@
                 </div>
                 <div class="filter-container-group">
                     <label class="filter-label">FECHA</label>
+                    <div class="fecha-input-container">
+                        <input 
+                            type="text"
+                            class="form-input fecha-display"
+                            [value]="obtenerFechaFormateada(filtrosTabla.fechaFiltro)"
+                            readonly
+                            placeholder="Filtrar por fecha"
+                            (click)="abrirCalendarioFiltro()"
+                            name="fechaFiltroDisplay">
+                        <button 
+                            type="button"
+                            class="btn-calendario"
+                            (click)="abrirCalendarioFiltro()"
+                            title="Abrir calendario de filtro">
+                            📅
+                        </button>
+                    </div>
+                    <!-- Hidden input para mantener el valor del filtro -->
                     <input 
-                        type="date"
-                        class="form-input"
+                        type="hidden"
                         [(ngModel)]="filtrosTabla.fechaFiltro"
-                        (change)="aplicarFiltros()"
                         name="fechaFiltro">
                 </div>
                 <div class="filter-container-group">
@@ -206,5 +243,21 @@
             <button class="toast-close" (click)="hideToast()">×</button>
         </div>
     </div>
+
+    <!-- ========================= CALENDARIO FORMULARIO ========================= -->
+    <app-calendario
+        [isVisible]="mostrarCalendarioFormulario"
+        [selectedDate]="fechaSeleccionadaFormulario"
+        (dateSelected)="onFechaSeleccionadaFormulario($event)"
+        (calendarClosed)="onCalendarioFormularioCerrado()">
+    </app-calendario>
+
+    <!-- ========================= CALENDARIO FILTRO ========================= -->
+    <app-calendario
+        [isVisible]="mostrarCalendarioFiltro"
+        [selectedDate]="fechaSeleccionadaFiltro"
+        (dateSelected)="onFechaSeleccionadaFiltro($event)"
+        (calendarClosed)="onCalendarioFiltroCerrado()">
+    </app-calendario>
 </main>
 

@@ -529,6 +529,139 @@
   }
 }
 
+/* ========================= ESTILOS ANGULAR MATERIAL ========================= */
+
+/* Estilos personalizados para mat-form-field */
+.custom-mat-form-field {
+    width: 100%;
+    margin-bottom: 0;
+}
+
+/* Personalización del mat-select */
+.custom-mat-form-field .mat-mdc-select {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+/* Personalización del mat-form-field fill */
+.custom-mat-form-field.mat-mdc-form-field {
+    background: transparent;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.custom-mat-form-field.mat-mdc-form-field:hover {
+    background: transparent;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Personalización del fondo del fill */
+.custom-mat-form-field .mdc-text-field--filled .mdc-text-field__input {
+    background: #fafbfc;
+    border-radius: 8px 8px 0 0;
+}
+
+.custom-mat-form-field .mdc-text-field--filled:hover .mdc-text-field__input {
+    background: #f1f5f9;
+}
+
+/* Personalización de la etiqueta */
+.custom-mat-form-field .mat-mdc-form-field-label-wrapper .mat-mdc-form-field-label {
+    color: #27ae60;
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Personalización del borde bottom para fill appearance */
+.custom-mat-form-field.mat-mdc-form-field.mat-focused .mdc-line-ripple::after {
+    border-bottom-color: #27ae60;
+    border-bottom-width: 2px;
+}
+
+.custom-mat-form-field .mdc-line-ripple::before {
+    border-bottom-color: #e2e8f0;
+    border-bottom-width: 1px;
+}
+
+/* Personalización del dropdown arrow */
+.custom-mat-form-field .mat-mdc-select-arrow {
+    color: #27ae60;
+}
+
+/* Personalización de las opciones en el dropdown */
+.mat-mdc-option {
+    font-size: 16px;
+    font-weight: 500;
+    padding: 12px 16px;
+    transition: all 0.2s ease;
+}
+
+.mat-mdc-option:hover {
+    background: rgba(39, 174, 96, 0.1) !important;
+    color: #27ae60;
+}
+
+.mat-mdc-option.mdc-list-item--selected {
+    background: rgba(39, 174, 96, 0.2) !important;
+    color: #27ae60;
+    font-weight: 600;
+}
+
+/* Personalización del panel del dropdown */
+.mat-mdc-select-panel {
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    background: #ffffff;
+    max-height: 300px;
+    border: 1px solid #e2e8f0;
+}
+
+/* Personalización del contenido del select */
+.custom-mat-form-field .mat-mdc-select-value {
+    color: #2d3748;
+    font-weight: 500;
+}
+
+.custom-mat-form-field .mat-mdc-select-placeholder {
+    color: #64748b;
+    font-style: italic;
+}
+
+/* Animación suave al abrir/cerrar el dropdown */
+.mat-mdc-select-panel-wrap {
+    animation: dropdownFadeIn 0.2s ease-out;
+}
+
+@keyframes dropdownFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive para mat-select */
+@media (max-width: 768px) {
+    .custom-mat-form-field .mat-mdc-select {
+        font-size: 14px;
+    }
+
+    .mat-mdc-option {
+        font-size: 14px;
+        padding: 10px 14px;
+    }
+
+    .custom-mat-form-field .mat-mdc-form-field-label-wrapper .mat-mdc-form-field-label {
+        font-size: 12px;
+    }
+}
+
 
 
 

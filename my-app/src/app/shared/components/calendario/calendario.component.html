@@ -1,0 +1,46 @@
+<!-- Calendar backdrop -->
+<div *ngIf="isVisible" class="calendar-backdrop" (click)="onBackdropClick()"></div>
+
+<!-- Calendar widget -->
+<div *ngIf="isVisible" class="calendar-widget">
+  <!-- Calendar header -->
+  <div class="calendar-header">
+    <button class="calendar-nav-btn" (click)="prevMonth()">‹</button>
+    <div class="calendar-month-year">
+      <span>📅</span>
+      {{ currentMonthName }} {{ currentYear }}
+    </div>
+    <button class="calendar-nav-btn" (click)="nextMonth()">›</button>
+  </div>
+
+  <!-- Calendar grid -->
+  <div class="calendar-grid">
+    <!-- Days of week headers -->
+    <div *ngFor="let dayName of daysOfWeek" class="calendar-day-header">
+      {{ dayName }}
+    </div>
+
+    <!-- Calendar days -->
+    <button 
+      *ngFor="let day of calendarDays" 
+      class="calendar-day"
+      [ngClass]="{
+        'today': day.isToday,
+        'selected': day.isSelected,
+        'other-month': !day.isCurrentMonth
+      }"
+      (click)="selectDate(day)">
+      {{ day.day }}
+    </button>
+  </div>
+
+  <!-- Calendar actions -->
+  <div class="calendar-actions">
+    <button class="calendar-btn calendar-btn-cancel" (click)="cancelSelection()">
+      Cancelar
+    </button>
+    <button class="calendar-btn calendar-btn-confirm" (click)="confirmSelection()">
+      Confirmar
+    </button>
+  </div>
+</div>

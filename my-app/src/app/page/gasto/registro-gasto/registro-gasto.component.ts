@@ -10,13 +10,23 @@ import { DatePipe } from '@angular/common';
 import { EstadisticasDto } from '../../../core/models/estadisticas-gastos-dto';
 import { MensajeConfirmacionComponent } from '../../../shared/components/mensaje-confirmacion/mensaje-confirmacion.component';
 import { ActualizarGastoComponent } from '../actualizar-gasto/actualizar-gasto.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatNativeDateModule } from '@angular/material/core';
+import { CalendarioComponent } from '../../../shared/components/calendario/calendario.component';
 
 @Component({
   selector: 'app-registro-gasto',
   standalone: true,
   imports: [
     FormsModule, 
-    CommonModule
+    CommonModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatNativeDateModule,
+    CalendarioComponent
   ],
   providers: [DatePipe],
   templateUrl: './registro-gasto.component.html',
@@ -65,6 +75,12 @@ export class RegistroGastoComponent implements OnInit {
   public showToast: boolean = false;
   public toastMessage: string = '';
   public toastType: 'success' | 'error' = 'success';
+
+  // Calendar control properties
+  public mostrarCalendarioFormulario: boolean = false;
+  public mostrarCalendarioFiltro: boolean = false;
+  public fechaSeleccionadaFormulario: Date | null = null;
+  public fechaSeleccionadaFiltro: Date | null = null;
 
   constructor(
     private gastoService:GastoService,
@@ -411,6 +427,95 @@ export class RegistroGastoComponent implements OnInit {
     } else {
       this.showToast = false;
     }
+  }
+
+  // ========================= MÉTODOS PARA CALENDARIO =========================
+
+  /**
+   * Abre el calendario para el formulario de registro
+   */
+  public abrirCalendarioFormulario(): void {
+    // Si ya hay una fecha en el formulario, usarla como fecha inicial
+    if (this.gastoFormData.fecha) {
+      this.fechaSeleccionadaFormulario = new Date(this.gastoFormData.fecha);
+    } else {
+      this.fechaSeleccionadaFormulario = new Date();
+    }
+    this.mostrarCalendarioFormulario = true;
+  }
+
+  /**
+   * Abre el calendario para el filtro de la tabla
+   */
+  public abrirCalendarioFiltro(): void {
+    // Si ya hay una fecha en el filtro, usarla como fecha inicial
+    if (this.filtrosTabla.fechaFiltro) {
+      this.fechaSeleccionadaFiltro = new Date(this.filtrosTabla.fechaFiltro);
+    } else {
+      this.fechaSeleccionadaFiltro = new Date();
+    }
+    this.mostrarCalendarioFiltro = true;
+  }
+
+  /**
+   * Maneja la selección de fecha del calendario del formulario
+   */
+  public onFechaSeleccionadaFormulario(fecha: Date): void {
+    this.fechaSeleccionadaFormulario = fecha;
+    // Convertir a formato string para el modelo del formulario (YYYY-MM-DD)
+    const year = fecha.getFullYear();
+    const month = String(fecha.getMonth() + 1).padStart(2, '0');
+    const day = String(fecha.getDate()).padStart(2, '0');
+    this.gastoFormData.fecha = `${year}-${month}-${day}`;
+    
+    console.log('Fecha seleccionada para formulario:', this.gastoFormData.fecha);
+    this.showToastNotification(`Fecha seleccionada: ${day}/${month}/${year}`, 'success');
+  }
+
+  /**
+   * Maneja la selección de fecha del calendario del filtro
+   */
+  public onFechaSeleccionadaFiltro(fecha: Date): void {
+    this.fechaSeleccionadaFiltro = fecha;
+    // Convertir a formato string para el filtro (YYYY-MM-DD)
+    const year = fecha.getFullYear();
+    const month = String(fecha.getMonth() + 1).padStart(2, '0');
+    const day = String(fecha.getDate()).padStart(2, '0');
+    this.filtrosTabla.fechaFiltro = `${year}-${month}-${day}`;
+    
+    console.log('Fecha seleccionada para filtro:', this.filtrosTabla.fechaFiltro);
+    this.showToastNotification(`Filtro de fecha: ${day}/${month}/${year}`, 'success');
+    
+    // Aplicar filtros automáticamente cuando se selecciona una fecha
+    this.aplicarFiltros();
+  }
+
+  /**
+   * Cierra el calendario del formulario
+   */
+  public onCalendarioFormularioCerrado(): void {
+    this.mostrarCalendarioFormulario = false;
+  }
+
+  /**
+   * Cierra el calendario del filtro
+   */
+  public onCalendarioFiltroCerrado(): void {
+    this.mostrarCalendarioFiltro = false;
+  }
+
+  /**
+   * Obtiene la fecha formateada para mostrar en la UI
+   */
+  public obtenerFechaFormateada(fechaString: string): string {
+    if (!fechaString) return 'Seleccionar fecha';
+    
+    const fecha = new Date(fechaString);
+    const day = String(fecha.getDate()).padStart(2, '0');
+    const month = String(fecha.getMonth() + 1).padStart(2, '0');
+    const year = fecha.getFullYear();
+    
+    return `${day}/${month}/${year}`;
   }
 
 }

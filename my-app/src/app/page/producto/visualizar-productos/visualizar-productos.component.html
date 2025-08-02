@@ -17,49 +17,59 @@
         <!-- Filters -->
         <div class="filter-section">
             <div class="filter-group">
-                <label class="filter-label">PRENDAS</label>
-                <select class="filter-select" [(ngModel)]="prenda">
-                    <option value="">Todas las prendas</option>
-                    <option *ngFor="let prenda of prendas" [value]="prenda.value">
-                        {{prenda.viewValue}}
-                    </option>
-                </select>
+                <mat-form-field appearance="fill" class="custom-mat-form-field">
+                    <mat-label>Prendas</mat-label>
+                    <mat-select [(ngModel)]="prenda">
+                        <mat-option value="">Todas las prendas</mat-option>
+                        <mat-option *ngFor="let prenda of prendas" [value]="prenda.value">
+                            {{prenda.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
             </div>
             <div class="filter-group">
-                <label class="filter-label">INSTITUCIONES</label>
-                <select class="filter-select" [(ngModel)]="institucion">
-                    <option value="">Todas las instituciones</option>
-                    <option *ngFor="let institucion of instituciones" [value]="institucion.value">
-                        {{institucion.viewValue}}
-                    </option>
-                </select>
+                <mat-form-field appearance="fill" class="custom-mat-form-field">
+                    <mat-label>Instituciones</mat-label>
+                    <mat-select [(ngModel)]="institucion">
+                        <mat-option value="">Todas las instituciones</mat-option>
+                        <mat-option *ngFor="let institucion of instituciones" [value]="institucion.value">
+                            {{institucion.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
             </div>
             <div class="filter-group">
-                <label class="filter-label">TALLAS</label>
-                <select class="filter-select" [(ngModel)]="talla">
-                    <option value="">Todas las tallas</option>
-                    <option *ngFor="let talla of tallas" [value]="talla.value">
-                        {{talla.viewValue}}
-                    </option>
-                </select>
+                <mat-form-field appearance="fill" class="custom-mat-form-field">
+                    <mat-label>Tallas</mat-label>
+                    <mat-select [(ngModel)]="talla">
+                        <mat-option value="">Todas las tallas</mat-option>
+                        <mat-option *ngFor="let talla of tallas" [value]="talla.value">
+                            {{talla.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
             </div>
             <div class="filter-group">
-                <label class="filter-label">HORARIOS</label>
-                <select class="filter-select" [(ngModel)]="horario">
-                    <option value="">Todos los horarios</option>
-                    <option *ngFor="let horario of horarios" [value]="horario.value">
-                        {{horario.viewValue}}
-                    </option>
-                </select>
+                <mat-form-field appearance="fill" class="custom-mat-form-field">
+                    <mat-label>Horarios</mat-label>
+                    <mat-select [(ngModel)]="horario">
+                        <mat-option value="">Todos los horarios</mat-option>
+                        <mat-option *ngFor="let horario of horarios" [value]="horario.value">
+                            {{horario.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
             </div>
             <div class="filter-group">
-                <label class="filter-label">GÉNEROS</label>
-                <select class="filter-select" [(ngModel)]="genero">
-                    <option value="">Todos los géneros</option>
-                    <option *ngFor="let genero of generos" [value]="genero.value">
-                        {{genero.viewValue}}
-                    </option>
-                </select>
+                <mat-form-field appearance="fill" class="custom-mat-form-field">
+                    <mat-label>Géneros</mat-label>
+                    <mat-select [(ngModel)]="genero">
+                        <mat-option value="">Todos los géneros</mat-option>
+                        <mat-option *ngFor="let genero of generos" [value]="genero.value">
+                            {{genero.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
             </div>
         </div>
 
