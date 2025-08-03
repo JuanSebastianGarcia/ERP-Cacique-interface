@@ -193,6 +193,7 @@ export class CrearFacturaComponent {
     dialogRef.afterClosed().subscribe(respuesta => {
       if (respuesta) {
         this.renderizarProducto(respuesta);
+        this.toastService.showSuccess('Producto agregado');
       }else{
         this.toastService.showError('Producto no encontrado');
       }
@@ -447,6 +448,7 @@ export class CrearFacturaComponent {
       };
   
       this.carrito.push(productoNuevo);
+      
     }
   
     /**

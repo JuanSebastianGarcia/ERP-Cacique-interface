@@ -1,21 +1,52 @@
 <!-- Main Content -->
 <div class="main-content">
     <div class="page-header">
-        <h1 class="page-title">Configuración de Datos</h1>
-        <p class="page-subtitle">Gestiona y configura los tipos de datos del sistema</p>
+        <h1 class="page-title">
+            ⚙️ Configuración de Datos
+        </h1>
+        <p class="page-subtitle">Gestiona las categorías y opciones de tu sistema</p>
+    </div>
+
+    <!-- Statistics -->
+    <div class="stats-grid">
+        <div class="stat-card" (click)="buscar('institucion')">
+            <div class="stat-icon">🏢</div>
+            <div class="stat-number">{{ getStatsCount('institucion') }}</div>
+            <div class="stat-label">Instituciones</div>
+        </div>
+        <div class="stat-card" (click)="buscar('horario')">
+            <div class="stat-icon">⏰</div>
+            <div class="stat-number">{{ getStatsCount('horario') }}</div>
+            <div class="stat-label">Horarios</div>
+        </div>
+        <div class="stat-card" (click)="buscar('talla')">
+            <div class="stat-icon">📏</div>
+            <div class="stat-number">{{ getStatsCount('talla') }}</div>
+            <div class="stat-label">Tallas</div>
+        </div>
+        <div class="stat-card" (click)="buscar('prenda')">
+            <div class="stat-icon">👕</div>
+            <div class="stat-number">{{ getStatsCount('prenda') }}</div>
+            <div class="stat-label">Prendas</div>
+        </div>
+        <div class="stat-card" (click)="buscar('genero')">
+            <div class="stat-icon">👤</div>
+            <div class="stat-number">{{ getStatsCount('genero') }}</div>
+            <div class="stat-label">Géneros</div>
+        </div>
     </div>
 
     <!-- Categories Section -->
     <div class="categories-section">
         <h3 class="section-title">
-            📂 Categorías de Datos
+            📁 Categorías de Datos
         </h3>
         <div class="category-tabs">
             <button class="category-tab" [class.active]="tipoActual === 'institucion'" (click)="buscar('institucion')">
-                🏫 Instituciones
+                🏢 Instituciones
             </button>
             <button class="category-tab" [class.active]="tipoActual === 'horario'" (click)="buscar('horario')">
-                🕐 Horarios
+                ⏰ Horarios
             </button>
             <button class="category-tab" [class.active]="tipoActual === 'talla'" (click)="buscar('talla')">
                 📏 Tallas
@@ -24,51 +55,51 @@
                 👕 Prendas
             </button>
             <button class="category-tab" [class.active]="tipoActual === 'genero'" (click)="buscar('genero')">
-                👥 Géneros
+                👤 Géneros
             </button>
         </div>
     </div>
 
-    <!-- Data Management Section -->
+    <!-- Data Section -->
     <div class="data-section">
         <div class="data-header">
-            <h3 class="section-title">Gestión de Datos</h3>
-            <button class="btn btn-primary" (click)="agregarDato()">
-                ➕ Agregar Nuevo
+            <h3 class="data-title">
+                🔧 Gestión de Datos
+            </h3>
+            <button class="add-btn" (click)="agregarDato()">
+                ➕ Agregar
             </button>
         </div>
 
         <!-- Data Table -->
-        <div class="data-table-container">
-            <table class="data-table" *ngIf="dataSource.data.length > 0">
-                <thead>
-                    <tr>
-                        <th>No.</th>
-                        <th>Nombre</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let element of dataSource.data; let i = index">
-                        <td>{{ element.idTipo }}</td>
-                        <td>{{ element.nombreTipo }}</td>
-                        <td>
-                            <div class="action-buttons">
-                                <button class="action-btn btn-delete" (click)="eliminarDatoConfirmacion(element.nombreTipo)">
-                                    🗑️
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+        <table class="data-table" *ngIf="dataSource.data.length > 0">
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Nombre</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let element of dataSource.data; let i = index">
+                    <td class="data-number">{{ element.idTipo }}</td>
+                    <td class="data-name">{{ element.nombreTipo }}</td>
+                    <td>
+                        <div class="data-actions">
+                            <button class="action-btn btn-delete" (click)="eliminarDatoConfirmacion(element.nombreTipo)" title="Eliminar">
+                                🗑️
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
-            <!-- Empty State -->
-            <div class="empty-state" *ngIf="dataSource.data.length === 0">
-                <div class="empty-icon">📋</div>
-                <h3 class="empty-title">No hay datos registrados</h3>
-                <p class="empty-subtitle">Haz clic en "Agregar Nuevo" para crear el primer registro</p>
-            </div>
+        <!-- Empty State -->
+        <div class="empty-state" *ngIf="dataSource.data.length === 0">
+            <div class="empty-icon">📭</div>
+            <div class="empty-text">No hay elementos</div>
+            <div class="empty-subtext">Agrega el primer elemento para esta categoría</div>
         </div>
     </div>
 </div>

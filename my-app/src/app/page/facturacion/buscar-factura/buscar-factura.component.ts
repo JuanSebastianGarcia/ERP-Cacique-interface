@@ -49,6 +49,15 @@ export class BuscarFacturaComponent {
     private toastService: ToastService
   ) {}
 
+  ngOnInit(): void {
+    this.cargarBusqueda();
+  }
+
+  private cargarBusqueda(): void {
+    const codigoFactura = localStorage.getItem('codigoFactura');
+
+    this.campoBusqueda = codigoFactura || '';
+  }
 
   // Ejecuta la búsqueda de facturas según el tipo seleccionado y el valor ingresado
   public buscarFactura(): void {
@@ -59,8 +68,14 @@ export class BuscarFacturaComponent {
       return;
     }
 
-    const tipoBusqueda = (document.querySelector('input[name="tipoBusqueda"]:checked') as HTMLInputElement)?.value;
 
+    
+    const tipoBusqueda = (document.querySelector('input[name="tipoBusqueda"]:checked') as HTMLInputElement)?.value;
+    
+    //guardar el codigo de la factura en el localStorage
+    localStorage.setItem('codigoFactura', this.campoBusqueda);
+
+    // Consultar las facturas según el tipo de búsqueda y el valor ingresado
     this.facturaService.consultarFactura(Number(this.campoBusqueda), tipoBusqueda).subscribe({
       next: data => {
         if (data && data.respuesta && Array.isArray(data.respuesta)) {
@@ -70,6 +85,7 @@ export class BuscarFacturaComponent {
           // Verificar si se encontraron resultados
           if (this.facturas.length > 0) {
             this.cargarTabla();
+            
             this.toastService.showSuccess(`Se encontraron ${this.facturas.length} factura(s)`);
           } 
         } 

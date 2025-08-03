@@ -219,6 +219,19 @@ export class ConfigurationTypesComponent implements OnInit {
     }
   }
 
+  /*
+  * Get statistics count for each category
+  */
+  public getStatsCount(tipo: string): number {
+    // If it's the current active type, return current data count
+    if (tipo === this.tipoActual) {
+      return this.dataSource.data.length;
+    }
+    
+    // For other types, return 0 for now (could be enhanced to fetch actual counts)
+    return 0;
+  }
+
 
 
 
