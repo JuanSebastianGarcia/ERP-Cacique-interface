@@ -1,167 +1,123 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-
-<body>
-    <div class="main-container">
-        <!-- Main Content -->
-        <main class="content">
-            <!-- Header -->
-            <div class="content-header">
-                <h2 class="content-title">EDITAR PRODUCTO</h2>
-                <p class="content-subtitle">Información del producto y campos de edición</p>
-            </div>
-
-            <!-- Product Information Section -->
-            <div class="info-container">
-                <div class="info-header">
-                    <h3 class="info-title">📦 INFORMACIÓN ACTUAL DEL PRODUCTO</h3>
-                </div>
-
-                <div class="info-grid">
-                    <div class="info-card">
-                        <div class="info-label">ID</div>
-                        <div class="info-value">{{productoData.id}}</div>
-                    </div>
-                    <div class="info-card">
-                        <div class="info-label">PRENDA</div>
-                        <div class="info-value">{{productoData.prenda}}</div>
-                    </div>
-                    <div class="info-card">
-                        <div class="info-label">INSTITUCIÓN</div>
-                        <div class="info-value">{{productoData.institucion}}</div>
-                    </div>
-                    <div class="info-card">
-                        <div class="info-label">TALLA</div>
-                        <div class="info-value">{{productoData.talla}}</div>
-                    </div>
-                    <div class="info-card">
-                        <div class="info-label">HORARIO</div>
-                        <div class="info-value">{{productoData.horario}}</div>
-                    </div>
-                    <div class="info-card">
-                        <div class="info-label">GÉNERO</div>
-                        <div class="info-value">{{productoData.genero}}</div>
-                    </div>
-                    <div class="info-card highlight">
-                        <div class="info-label">PRECIO ACTUAL</div>
-                        <div class="info-value price">${{productoData.precio | number:'1.0-0'}}</div>
-                    </div>
-                    <div class="info-card highlight">
-                        <div class="info-label">CANTIDAD ACTUAL</div>
-                        <div class="info-value quantity">{{productoData.cantidad}}</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Edit Form Section -->
-            <div class="form-container">
-                <div class="form-header">
-                    <h3 class="form-title">✏️ EDITAR INFORMACIÓN</h3>
-                    <p class="form-subtitle">Actualice el precio y ajuste la cantidad del producto</p>
-                </div>
-
-                <form (ngSubmit)="actualizarProducto()" #editForm="ngForm">
-                    <div class="form-grid">
-                        <!-- Left Column -->
-                        <div class="form-column">
-                            <div class="form-group">
-                                <label class="form-label">💰 NUEVO PRECIO</label>
-                                <div class="input-with-icon">
-                                    <span class="input-icon">$</span>
-                                    <input 
-                                        type="number" 
-                                        class="form-input" 
-                                        [(ngModel)]="productoData.precio"
-                                        name="precio"
-                                        placeholder="Ingrese el nuevo precio" 
-                                        min="0" 
-                                        step="1000"
-                                        required
-                                    >
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">📈 AGREGAR CANTIDAD</label>
-                                <div class="input-with-icon">
-                                    <span class="input-icon">+</span>
-                                    <input 
-                                        type="number" 
-                                        class="form-input" 
-                                        [(ngModel)]="cantidadAgregar"
-                                        name="cantidadAgregar"
-                                        placeholder="Cantidad a agregar" 
-                                        min="0" 
-                                        step="1"
-                                        value="0"
-                                    >
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Right Column -->
-                        <div class="form-column">
-                            <div class="form-group">
-                                <label class="form-label">📉 DESCONTAR CANTIDAD</label>
-                                <div class="input-with-icon">
-                                    <span class="input-icon">-</span>
-                                    <input 
-                                        type="number" 
-                                        class="form-input" 
-                                        [(ngModel)]="cantidadDescontar"
-                                        name="cantidadDescontar"
-                                        placeholder="Cantidad a descontar" 
-                                        min="0" 
-                                        step="1"
-                                        value="0"
-                                    >
-                                </div>
-                            </div>
-
-                            <!-- Preview Card -->
-                            <div class="preview-card">
-                                <h4 class="preview-title">📊 Vista previa de cambios</h4>
-                                <div class="preview-content">
-                                    <div class="preview-item">
-                                        <span class="preview-label">Cantidad final:</span>
-                                        <span class="preview-value">{{productoData.cantidad + (cantidadAgregar || 0) - (cantidadDescontar || 0)}}</span>
-                                    </div>
-                                    <div class="preview-item">
-                                        <span class="preview-label">Agregar:</span>
-                                        <span class="preview-value positive">+{{cantidadAgregar || 0}}</span>
-                                    </div>
-                                    <div class="preview-item">
-                                        <span class="preview-label">Descontar:</span>
-                                        <span class="preview-value negative">-{{cantidadDescontar || 0}}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Action Buttons -->
-                    <div class="form-actions">
-                        <button type="button" class="btn btn-form-secondary" (click)="volver()">
-                            🔙 Volver
-                        </button>
-                        <button type="submit" class="btn btn-form-primary" [class.loading]="isLoading" [disabled]="isLoading">
-                            <span *ngIf="!isLoading">💾 Guardar Cambios</span>
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </main>
+<!-- Edit Modal -->
+<div class="modal-container">
+    <div class="modal-header">
+        <h2 class="modal-title">
+            ✏️ Editar Producto
+        </h2>
+        <p class="modal-subtitle">Actualiza el precio y ajusta el inventario</p>
     </div>
+    
+    <div class="modal-body">
+        <!-- Product Info -->
+        <div class="product-info-modal">
+            <div class="product-image-modal">
+                <div class="product-placeholder">👕</div>
+            </div>
+            <div class="product-details-modal">
+                <div class="product-name-modal">{{productoData.prenda}} - {{productoData.institucion}}</div>
+                <div class="product-meta-modal">{{productoData.talla}} • {{productoData.horario}} • {{productoData.genero}}</div>
+            </div>
+        </div>
 
-    <!-- Toast Notification Component -->
-    <app-toast-notification></app-toast-notification>
+        <!-- Price Section -->
+        <div class="form-section">
+            <div class="section-title">
+                💰 Precio
+            </div>
+            <div class="form-group">
+                <label class="form-label">Nuevo precio</label>
+                <div class="input-group">
+                    <span class="input-addon">$</span>
+                    <input 
+                        type="number" 
+                        class="form-input" 
+                        [(ngModel)]="productoData.precio"
+                        name="precio"
+                        min="0"
+                        placeholder="Ingrese el nuevo precio"
+                    >
+                </div>
+            </div>
+        </div>
 
-</body>
+        <!-- Stock Section -->
+        <div class="form-section">
+            <div class="section-title">
+                📦 Inventario
+            </div>
+            <div class="form-group">
+                <label class="form-label">Ajustar cantidad</label>
+                <div class="quantity-controls">
+                    <button 
+                        type="button"
+                        class="qty-btn remove" 
+                        (click)="ajustarCantidad(-1)"
+                        [disabled]="getStockFinal() <= 0"
+                    >−</button>
+                    <div class="qty-display">{{cantidadAjuste}}</div>
+                    <button 
+                        type="button"
+                        class="qty-btn add" 
+                        (click)="ajustarCantidad(1)"
+                    >+</button>
+                </div>
+            </div>
+        </div>
 
-</html>
+        <!-- Summary -->
+        <div class="summary-box">
+            <div class="summary-title">📋 Resumen de cambios</div>
+            <div class="summary-row">
+                <span class="summary-label">Precio actual:</span>
+                <span class="summary-value">${{data.precio | number:'1.0-0'}}</span>
+            </div>
+            <div class="summary-row">
+                <span class="summary-label">Nuevo precio:</span>
+                <span class="summary-value">${{productoData.precio | number:'1.0-0'}}</span>
+            </div>
+            <div class="summary-row">
+                <span class="summary-label">Stock actual:</span>
+                <span class="summary-value">{{data.cantidad}}</span>
+            </div>
+            <div class="summary-row">
+                <span class="summary-label">Ajuste:</span>
+                <span class="summary-value" 
+                      [ngClass]="{
+                        'positive': cantidadAjuste > 0,
+                        'negative': cantidadAjuste < 0
+                      }">
+                    {{cantidadAjuste > 0 ? '+' + cantidadAjuste : cantidadAjuste}}
+                </span>
+            </div>
+            <div class="summary-row">
+                <span class="summary-label">Stock final:</span>
+                <span class="summary-value">{{getStockFinal()}}</span>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="modal-actions">
+            <button 
+                type="button"
+                class="btn btn-cancel" 
+                (click)="cerrarDialog()"
+                [disabled]="isLoading"
+            >
+                ❌ Cancelar
+            </button>
+            <button 
+                type="button"
+                class="btn btn-save" 
+                (click)="actualizarProducto()"
+                [disabled]="isLoading"
+                [class.loading]="isLoading"
+            >
+                <span *ngIf="!isLoading">💾 Guardar cambios</span>
+                <span *ngIf="isLoading">⏳ Guardando...</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Toast Notification Component -->
+<app-toast-notification></app-toast-notification>

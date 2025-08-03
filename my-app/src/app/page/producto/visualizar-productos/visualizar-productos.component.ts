@@ -17,6 +17,7 @@ import { MensajeAlertaComponent } from '../../../shared/components/mensaje-alert
 import { MensajeConfirmacionComponent } from '../../../shared/components/mensaje-confirmacion/mensaje-confirmacion.component';
 import { MensajeInformacionComponent } from '../../../shared/components/mensaje-informacion/mensaje-informacion.component';
 import { CrearProductoComponent } from '../crear-producto/crear-producto.component';
+import { EditarProductoComponent } from '../editar-producto/editar-producto.component';
 import { ToastNotificationComponent } from '../../../shared/components/toast-notification/toast-notification.component';
 import { ToastService } from '../../../shared/services/toast.service';
 
@@ -182,12 +183,29 @@ export class VisualizarProductosComponent implements OnInit {
   }
 
   /*
-  *registra la informacion del producto seleccionado para editar y la almacena para posteriormente enviarla 
-  *con la informacion actualizada al back
+  *abre el dialog modal para editar el producto seleccionado
   */
   actualizarProducto(producto: any) {
-    this.productoService.agregarProductoActualizando(producto);
-    this.router.navigate(["productos/editar-producto"]);
+    const dialogRef = this.dialog.open(EditarProductoComponent, {
+      width: '500px',
+      maxWidth: '95vw',
+      data: producto,
+      disableClose: true
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && result.success) {
+        // Actualizar el producto en la lista local
+        const index = this.dataSource.data.findIndex(p => p.id === result.producto.id);
+        if (index !== -1) {
+          this.dataSource.data[index] = { ...result.producto };
+          this.dataSource._updateChangeSubscription();
+        }
+        
+        // Recargar los datos para asegurar sincronización
+        this.buscarProductos();
+      }
+    });
   }
 
 

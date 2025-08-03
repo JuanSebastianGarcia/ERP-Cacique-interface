@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { ProductoDto } from '../../../core/models/producto-dto';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
 import { ProductoService } from '../../../core/service/producto.service';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MensajeAlertaComponent } from '../../../shared/components/mensaje-alerta/mensaje-alerta.component';
 import { MensajeInformacionComponent } from '../../../shared/components/mensaje-informacion/mensaje-informacion.component';
 import { CommonModule, DecimalPipe } from '@angular/common';
@@ -12,14 +11,14 @@ import { ToastNotificationComponent } from '../../../shared/components/toast-not
 import { ToastService } from '../../../shared/services/toast.service';
 
 @Component({
-  selector: 'app-editar-producto',
+  selector: 'app-editar-producto-dialog',
   standalone: true,
   imports: [MatCardModule, FormsModule, DecimalPipe, CommonModule, ToastNotificationComponent],
   templateUrl: './editar-producto.component.html',
   styleUrl: './editar-producto.component.css'
 })
 /*
-*Este componente esta hecho para realizar la edicion de un producto
+*Este componente está hecho para realizar la edición de un producto como dialog modal
 */
 export class EditarProductoComponent implements OnInit {
 
@@ -55,19 +54,21 @@ export class EditarProductoComponent implements OnInit {
   // Variables para el estado de la interfaz
   public isLoading: boolean = false;
 
+  // Variable para ajuste de cantidad (como en el modal del ejemplo)
+  public cantidadAjuste: number = 0;
 
-  constructor(private router: Router,
-              private productoService: ProductoService,
-              private dialog: MatDialog,
-              private toastService: ToastService) { 
-              
+
+  constructor(
+    public dialogRef: MatDialogRef<EditarProductoComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: ProductoDto,
+    private productoService: ProductoService,
+    private dialog: MatDialog,
+    private toastService: ToastService
+  ) { 
+    this.productoData = { ...data }; // Crear copia del producto
   }
 
-
-
   ngOnInit(): void {
-    this.productoData = this.productoService.getProductoDto();
-
     //invocacion
     this.cargarDatos();
   }
@@ -87,7 +88,7 @@ export class EditarProductoComponent implements OnInit {
     //se validan las restas
     if (datosValidados) {
       this.isLoading = true;
-      this.productoData.cantidad += this.cantidadAgregar - this.cantidadDescontar;
+      this.productoData.cantidad = this.getStockFinal();
 
       this.enviarSolicitudActualizar();
     }
@@ -97,10 +98,30 @@ export class EditarProductoComponent implements OnInit {
 
 
   /*
-  *volver a la pagina anterior
+  *cerrar el dialog
   */
-  volver() {
-    this.router.navigate(['productos']);
+  cerrarDialog() {
+    this.dialogRef.close({ success: false });
+  }
+
+  /*
+  * Ajustar cantidad con controles + y - (nuevo método del modal)
+  */
+  public ajustarCantidad(cambio: number) {
+    this.cantidadAjuste += cambio;
+    const stockFinal = this.productoData.cantidad + this.cantidadAjuste;
+    
+    // Prevenir stock negativo
+    if (stockFinal < 0) {
+      this.cantidadAjuste = -this.productoData.cantidad;
+    }
+  }
+
+  /*
+  * Obtener el stock final calculado
+  */
+  public getStockFinal(): number {
+    return this.productoData.cantidad + this.cantidadAjuste;
   }
 
 
@@ -114,16 +135,22 @@ export class EditarProductoComponent implements OnInit {
           this.isLoading = false;
           this.toastService.showSuccess('¡Producto actualizado exitosamente!');
           
-          // Navegar después de un breve delay para mostrar el mensaje
+          // Cerrar el dialog y devolver el producto actualizado
           setTimeout(() => {
-            this.router.navigate(['productos']);
+            this.dialogRef.close({
+              success: true,
+              producto: this.productoData
+            });
           }, 1500);
         },
         error: error => {
           this.isLoading = false;
           this.toastService.showError('Ocurrió un error en la actualización del producto');
           setTimeout(() => {
-            this.router.navigate(['productos']);
+            this.dialogRef.close({
+              success: false,
+              error: error
+            });
           }, 2000);
         }
       }
@@ -151,25 +178,21 @@ export class EditarProductoComponent implements OnInit {
   *validar la integridad y coherencia de los datos ingresados
   *validaciones:
   *   -el precio nuevo sea mayor a cero
-  *   -las nuevas cantidades deben de ser numeros enteros y mayores a cero
-  *   -verificacion de la suma, la  cantidad actual + cantidad a agregar >= cantidad a descontar 
+  *   -el stock final no sea negativo
   */
   private validarDatos(): boolean {
-
     let respuesta: boolean = false;
 
+    const stockFinal = this.getStockFinal();
 
-    if (this.productoData.cantidad + this.cantidadAgregar >= this.cantidadDescontar &&
-      (Number.isInteger(this.cantidadDescontar) && Number.isInteger(this.cantidadAgregar)) &&
-      this.cantidadAgregar>=0 && this.cantidadDescontar>=0) {
-
+    if (stockFinal >= 0) {
       if (this.productoData.precio > 0) {
         respuesta = true;
       } else {
         this.toastService.showError('El precio debe ser mayor a cero');
       }
     } else {
-        this.toastService.showError('Verifique las cantidades que entran o salen');
+      this.toastService.showError('La cantidad final no puede ser negativa');
     }
 
     return respuesta;
