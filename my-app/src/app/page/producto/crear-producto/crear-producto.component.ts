@@ -62,7 +62,8 @@ export class CrearProductoComponent implements OnInit {
     horario: '',
     genero: '',
     precio: 0,
-    cantidad: 0
+    cantidad: 0,
+    descripcion: ''
   }
 
 
@@ -190,6 +191,7 @@ export class CrearProductoComponent implements OnInit {
       genero: '',
       precio: 0,
       cantidad: 0,
+      descripcion: ''
     };
   }
 

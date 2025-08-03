@@ -92,6 +92,60 @@ export class CrearFacturaComponent {
     private toastService: ToastService
   ) {}
 
+
+  /**
+   * Método del ciclo de vida de Angular que se ejecuta al inicializar el componente.
+   * Carga la información del cliente y los productos previamente seleccionados (carrito) desde el localStorage.
+   */
+  ngOnInit(): void {
+    this.cargarCliente();
+    this.cargarCarrito();
+  }
+
+  /**
+   * Recupera el carrito de productos almacenado en localStorage (si existe),
+   * convierte cada producto guardado (ProductoFacturaDto) a un objeto ProductoDto,
+   * y los agrega a la tabla y al carrito visual llamando a renderizarProducto.
+   */
+  private cargarCarrito(): void {
+    const carrito = localStorage.getItem('carrito');
+    if (carrito) {
+      // Parsear el arreglo de productos guardados en el localStorage
+      const productosDtoCarrito: ProductoFacturaDto[] = JSON.parse(carrito);
+      for (const producto of productosDtoCarrito) {
+        // Convertir ProductoFacturaDto a ProductoDto para su uso en la UI
+        const productoDto: ProductoDto = {
+          id: producto.idRelacion, // Se usa idRelacion como identificador temporal
+          prenda: producto.prenda,
+          institucion: producto.institucion,
+          talla: producto.talla,
+          horario: producto.horario,
+          genero: producto.genero,
+          precio: producto.precio,
+          cantidad: 0, // La cantidad no se utiliza en la factura, se inicializa en 0
+          descripcion: producto.descripcion
+        };
+
+        // Agregar el producto a la tabla y al carrito visual
+        this.renderizarProducto(productoDto);
+      }
+    }
+  }
+
+  /**
+   * Recupera la información del cliente almacenada en localStorage (si existe)
+   * y la asigna al estado local del componente usando renderizarCliente.
+   */
+  private cargarCliente(): void {
+    // Obtener información del cliente del localStorage
+    const cliente = localStorage.getItem('cliente');
+    if (cliente) {
+      // Asignar los datos del cliente al estado local
+      this.renderizarCliente(JSON.parse(cliente));
+    }
+  }
+
+
   /**
    * Assigns retrieved client data to local state
    * @param cliente - client DTO from backend
@@ -100,6 +154,10 @@ export class CrearFacturaComponent {
     this.cliente.telefono = cliente.telefono;
     this.cliente.correo = cliente.email || '';
     this.cliente.nombre = cliente.nombre;
+    this.cedulaCliente = Number(cliente.cedula);
+
+    //guardar informacion del cliente en el localStorage
+    localStorage.setItem('cliente', JSON.stringify(cliente));
   }
 
   /**
@@ -259,9 +317,9 @@ export class CrearFacturaComponent {
               this.valorTotalFactura = 0;
               this.cedulaCliente = undefined;
               this.toastService.showSuccess('Factura creada');
+              this.limpiarLocalStorage();
             } else {
               this.toastService.showError('Error al crear factura');
-
             }
           },
           error: (error) => {
@@ -349,12 +407,26 @@ export class CrearFacturaComponent {
       Institucion: producto.institucion,
       Estado: 'ENTREGADO',
       Precio: producto.precio,
-      descripcionExtra: ''
+      descripcionExtra: producto.descripcion
     };
 
     this.listaProductos.data.push(nuevoProducto);
     this.listaProductos._updateChangeSubscription();
     this.actualizarValorTotalFactura(producto.precio);
+
+    const productosDtoCarrito: ProductoFacturaDto[] = this.carrito.map(producto => ({
+      idRelacion: producto.idRelacion,
+      prenda: producto.prenda,
+      institucion: producto.institucion,
+      talla: producto.talla,
+      horario: producto.horario,
+      genero: producto.genero,
+      precio: producto.precio,
+      estado: 'ENTREGADO',
+      descripcion: ''
+    }));
+
+    localStorage.setItem('carrito', JSON.stringify(productosDtoCarrito));
   }
   
     /**
@@ -384,6 +456,13 @@ export class CrearFacturaComponent {
     private actualizarValorTotalFactura(precio: number): void {
       this.valorTotalFactura += precio;
     }
-  
+
+    /**
+     * Clears all local storage data
+     */
+    private limpiarLocalStorage(): void {
+      localStorage.removeItem('cliente');
+      localStorage.removeItem('carrito');
+    }
 
 }

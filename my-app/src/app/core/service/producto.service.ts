@@ -29,7 +29,7 @@ export class ProductoService {
     genero:'',
     precio:0,
     cantidad:0,   
-
+    descripcion:''
   };
 
   constructor(private http: HttpClient) { 

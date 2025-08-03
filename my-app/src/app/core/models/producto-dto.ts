@@ -11,5 +11,5 @@ export interface ProductoDto {
     genero:string,
     precio:number,
     cantidad:number,
-
+    descripcion:string
 }

@@ -1,99 +1,112 @@
-<main>
-    <!-- ========================= ENCABEZADO DE LA PÁGINA ========================= -->
+<!-- Main Content -->
+<div class="main-content">
     <div class="page-header">
-        <h2 class="page-title">
-            <span class="page-title-icon">📦</span>
-            Inventario de Productos
-        </h2>
+        <h1 class="page-title">Inventario de Productos</h1>
+        <p class="page-subtitle">Gestiona y visualiza todos los productos de tu inventario</p>
     </div>
 
-    <!-- ========================= SECCIÓN DE FILTROS ========================= -->
-    <div class="section-card">
-        <h3 class="section-title">
-            <span>🔍</span>
-            Filtros de Búsqueda
+    <!-- Filters Section -->
+    <div class="filters-section">
+        <h3 class="filters-title">
+            🔍 Filtros de Búsqueda
         </h3>
-        
-        <!-- Filters -->
-        <div class="filter-section">
+        <div class="filters-grid">
             <div class="filter-group">
-                <mat-form-field appearance="fill" class="custom-mat-form-field">
-                    <mat-label>Prendas</mat-label>
-                    <mat-select [(ngModel)]="prenda">
-                        <mat-option value="">Todas las prendas</mat-option>
-                        <mat-option *ngFor="let prenda of prendas" [value]="prenda.value">
-                            {{prenda.viewValue}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
+                <label class="filter-label">Prendas</label>
+                <select class="filter-select" [(ngModel)]="prenda">
+                    <option value="">Todas las prendas</option>
+                    <option *ngFor="let prenda of prendas" [value]="prenda.value">
+                        {{prenda.viewValue}}
+                    </option>
+                </select>
             </div>
             <div class="filter-group">
-                <mat-form-field appearance="fill" class="custom-mat-form-field">
-                    <mat-label>Instituciones</mat-label>
-                    <mat-select [(ngModel)]="institucion">
-                        <mat-option value="">Todas las instituciones</mat-option>
-                        <mat-option *ngFor="let institucion of instituciones" [value]="institucion.value">
-                            {{institucion.viewValue}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
+                <label class="filter-label">Instituciones</label>
+                <select class="filter-select" [(ngModel)]="institucion">
+                    <option value="">Todas las instituciones</option>
+                    <option *ngFor="let institucion of instituciones" [value]="institucion.value">
+                        {{institucion.viewValue}}
+                    </option>
+                </select>
             </div>
             <div class="filter-group">
-                <mat-form-field appearance="fill" class="custom-mat-form-field">
-                    <mat-label>Tallas</mat-label>
-                    <mat-select [(ngModel)]="talla">
-                        <mat-option value="">Todas las tallas</mat-option>
-                        <mat-option *ngFor="let talla of tallas" [value]="talla.value">
-                            {{talla.viewValue}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
+                <label class="filter-label">Tallas</label>
+                <select class="filter-select" [(ngModel)]="talla">
+                    <option value="">Todas las tallas</option>
+                    <option *ngFor="let talla of tallas" [value]="talla.value">
+                        {{talla.viewValue}}
+                    </option>
+                </select>
             </div>
             <div class="filter-group">
-                <mat-form-field appearance="fill" class="custom-mat-form-field">
-                    <mat-label>Horarios</mat-label>
-                    <mat-select [(ngModel)]="horario">
-                        <mat-option value="">Todos los horarios</mat-option>
-                        <mat-option *ngFor="let horario of horarios" [value]="horario.value">
-                            {{horario.viewValue}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
+                <label class="filter-label">Horarios</label>
+                <select class="filter-select" [(ngModel)]="horario">
+                    <option value="">Todos los horarios</option>
+                    <option *ngFor="let horario of horarios" [value]="horario.value">
+                        {{horario.viewValue}}
+                    </option>
+                </select>
             </div>
             <div class="filter-group">
-                <mat-form-field appearance="fill" class="custom-mat-form-field">
-                    <mat-label>Géneros</mat-label>
-                    <mat-select [(ngModel)]="genero">
-                        <mat-option value="">Todos los géneros</mat-option>
-                        <mat-option *ngFor="let genero of generos" [value]="genero.value">
-                            {{genero.viewValue}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
+                <label class="filter-label">Géneros</label>
+                <select class="filter-select" [(ngModel)]="genero">
+                    <option value="">Todos los géneros</option>
+                    <option *ngFor="let genero of generos" [value]="genero.value">
+                        {{genero.viewValue}}
+                    </option>
+                </select>
             </div>
         </div>
-
-        <!-- Action Buttons -->
-        <div class="action-buttons">
-            <button class="btn-secondary" type="button" (click)="limpiarBusqueda()">
-                🗑️ LIMPIAR BÚSQUEDA
-            </button>
-            <button class="btn-primary" type="button" (click)="buscarProductos()">
-                🔍 BUSCAR
-            </button>
+        <div class="filter-actions">
+            <button class="btn btn-secondary" (click)="limpiarBusqueda()">🗑️ Limpiar búsqueda</button>
+            <button class="btn btn-primary" (click)="buscarProductos()">🔍 Buscar</button>
         </div>
     </div>
 
-    <!-- ========================= SECCIÓN DE TABLA DE PRODUCTOS ========================= -->
-    <div class="section-card">
-        <h3 class="section-title">
-            <span>📋</span>
-            Lista de Productos
-        </h3>
-        
-        <!-- Table -->
-        <div class="table-container">
-            <table class="data-table">
+    <!-- Products Section -->
+    <div class="products-section">
+        <div class="products-header">
+            <h3 class="products-title">Lista de Productos</h3>
+            <div class="view-toggle">
+                <button class="view-btn" [class.active]="currentView === 'grid'" (click)="toggleView('grid')">⚏</button>
+                <button class="view-btn" [class.active]="currentView === 'table'" (click)="toggleView('table')">☰</button>
+            </div>
+        </div>
+
+        <!-- Grid View -->
+        <div class="products-grid" [class.hidden]="currentView !== 'grid'">
+            <div class="product-card" *ngFor="let element of dataSource.data">
+                <div class="product-image">
+                    <div class="stock-badge" [ngClass]="getStockClass(element.cantidad)">
+                        {{element.cantidad}} en stock
+                    </div>
+                    <div class="product-placeholder">👕</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-header">
+                        <div>
+                            <div class="product-name">{{element.prenda}}</div>
+                            <div class="product-institution">{{element.institucion}}</div>
+                        </div>
+                        <div class="product-price">${{element.precio | number:'1.0-0'}}</div>
+                    </div>
+                    <div class="product-details">
+                        <div class="product-detail"><strong>Talla:</strong> {{element.talla}}</div>
+                        <div class="product-detail"><strong>Horario:</strong> {{element.horario}}</div>
+                        <div class="product-detail"><strong>Género:</strong> {{element.genero}}</div>
+                        <div class="product-detail"><strong>Stock:</strong> {{element.cantidad}}</div>
+                    </div>
+                    <div class="product-actions">
+                        <button class="action-btn btn-edit" (click)="actualizarProducto(element)">✏️</button>
+                        <button class="action-btn btn-delete" (click)="eliminarProductoConfirmar(element.id)">🗑️</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table View -->
+        <div [class.hidden]="currentView !== 'table'">
+            <table class="products-table">
                 <thead>
                     <tr>
                         <th>No.</th>
@@ -104,11 +117,11 @@
                         <th>Género</th>
                         <th>Precio</th>
                         <th>Cantidad</th>
-                        <th>Opción</th>
+                        <th>Opciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let element of dataSource.data" class="data-row">
+                    <tr *ngFor="let element of dataSource.data">
                         <td>{{element.id}}</td>
                         <td>{{element.prenda}}</td>
                         <td>{{element.institucion}}</td>
@@ -116,15 +129,11 @@
                         <td>{{element.horario}}</td>
                         <td>{{element.genero}}</td>
                         <td>${{element.precio | number:'1.0-0'}}</td>
-                        <td>{{element.cantidad}}</td>
+                        <td><span class="stock-badge" [ngClass]="getStockClass(element.cantidad)">{{element.cantidad}}</span></td>
                         <td>
-                            <div class="action-icons">
-                                <div class="action-icon delete-icon" (click)="eliminarProductoConfirmar(element.id)">
-                                    🗑️
-                                </div>
-                                <div class="action-icon edit-icon" (click)="actualizarProducto(element)">
-                                    ✏️
-                                </div>
+                            <div class="product-actions">
+                                <button class="action-btn btn-edit" (click)="actualizarProducto(element)">✏️</button>
+                                <button class="action-btn btn-delete" (click)="eliminarProductoConfirmar(element.id)">🗑️</button>
                             </div>
                         </td>
                     </tr>
@@ -132,7 +141,7 @@
             </table>
         </div>
     </div>
-</main>
+</div>
 
 <!-- Floating Action Button -->
 <button class="fab" (click)="agregarProducto()" title="Agregar Producto">+</button>

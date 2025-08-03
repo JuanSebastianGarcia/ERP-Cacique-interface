@@ -4,6 +4,7 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  background: #f8fafc;
 }
 
 /* Asegurar que no haya scroll en el body cuando no sea necesario */
@@ -11,6 +12,7 @@
   display: block;
   height: 100vh;
   overflow: hidden;
+  background: #f8fafc;
 }
 
 /* Smooth scrolling para toda la aplicación */

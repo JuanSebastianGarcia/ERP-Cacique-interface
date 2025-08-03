@@ -85,6 +85,9 @@ export class VisualizarProductosComponent implements OnInit {
   public isModalOpen: boolean = false;
   public showSuccessMessage: boolean = false;
 
+  // View variables
+  public currentView: string = 'grid';
+
   constructor(private productoService: ProductoService,
     private router: Router,
     private configureTypesService: ConfigurationTypesService,
@@ -336,6 +339,26 @@ export class VisualizarProductosComponent implements OnInit {
         }
       }
     )
+  }
+
+  /*
+  * Toggle between grid and table view
+  */
+  public toggleView(view: string) {
+    this.currentView = view;
+  }
+
+  /*
+  * Get stock class based on quantity
+  */
+  public getStockClass(cantidad: number): string {
+    if (cantidad <= 5) {
+      return 'stock-low';
+    } else if (cantidad <= 15) {
+      return 'stock-medium';
+    } else {
+      return 'stock-good';
+    }
   }
 }
 

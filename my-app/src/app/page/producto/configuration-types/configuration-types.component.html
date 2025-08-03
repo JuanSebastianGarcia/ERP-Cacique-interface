@@ -1,56 +1,46 @@
-<main>
-    <!-- ========================= ENCABEZADO DE LA PÁGINA ========================= -->
+<!-- Main Content -->
+<div class="main-content">
     <div class="page-header">
-        <h2 class="page-title">
-            <span class="page-title-icon">⚙️</span>
-            Configuración de Datos
-        </h2>
-        
+        <h1 class="page-title">Configuración de Datos</h1>
+        <p class="page-subtitle">Gestiona y configura los tipos de datos del sistema</p>
     </div>
 
-    <!-- ========================= SECCIÓN DE CATEGORÍAS ========================= -->
-    <div class="section-card">
+    <!-- Categories Section -->
+    <div class="categories-section">
         <h3 class="section-title">
-            <span>📂</span>
-            Categorías de Datos
+            📂 Categorías de Datos
         </h3>
-        
-        <!-- Category Tabs -->
         <div class="category-tabs">
-                <button class="category-tab" [class.active]="tipoActual === 'institucion'" (click)="buscar('institucion')">
-                    🏫 Instituciones
-                </button>
-                <button class="category-tab" [class.active]="tipoActual === 'horario'" (click)="buscar('horario')">
-                    🕐 Horarios
-                </button>
-                <button class="category-tab" [class.active]="tipoActual === 'talla'" (click)="buscar('talla')">
-                    📏 Tallas
-                </button>
-                <button class="category-tab" [class.active]="tipoActual === 'prenda'" (click)="buscar('prenda')">
-                    👕 Prendas
-                </button>
-                <button class="category-tab" [class.active]="tipoActual === 'genero'" (click)="buscar('genero')">
-                    👥 Géneros
-                </button>
+            <button class="category-tab" [class.active]="tipoActual === 'institucion'" (click)="buscar('institucion')">
+                🏫 Instituciones
+            </button>
+            <button class="category-tab" [class.active]="tipoActual === 'horario'" (click)="buscar('horario')">
+                🕐 Horarios
+            </button>
+            <button class="category-tab" [class.active]="tipoActual === 'talla'" (click)="buscar('talla')">
+                📏 Tallas
+            </button>
+            <button class="category-tab" [class.active]="tipoActual === 'prenda'" (click)="buscar('prenda')">
+                👕 Prendas
+            </button>
+            <button class="category-tab" [class.active]="tipoActual === 'genero'" (click)="buscar('genero')">
+                👥 Géneros
+            </button>
         </div>
     </div>
 
-    <!-- ========================= SECCIÓN DE GESTIÓN ========================= -->
-    <div class="section-card">
-        <h3 class="section-title">
-            <span>🛠️</span>
-            Gestión de Datos
-        </h3>
-        
-        <!-- Add Button -->
-        <button class="add-btn" (click)="agregarDato()">
-            <span>➕</span>
-            <span>Agregar</span>
-        </button>
+    <!-- Data Management Section -->
+    <div class="data-section">
+        <div class="data-header">
+            <h3 class="section-title">Gestión de Datos</h3>
+            <button class="btn btn-primary" (click)="agregarDato()">
+                ➕ Agregar Nuevo
+            </button>
+        </div>
 
-        <!-- Data Container -->
-        <div class="data-container">
-            <table class="data-table">
+        <!-- Data Table -->
+        <div class="data-table-container">
+            <table class="data-table" *ngIf="dataSource.data.length > 0">
                 <thead>
                     <tr>
                         <th>No.</th>
@@ -59,12 +49,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let element of dataSource.data; let i = index" class="table-row">
+                    <tr *ngFor="let element of dataSource.data; let i = index">
                         <td>{{ element.idTipo }}</td>
                         <td>{{ element.nombreTipo }}</td>
                         <td>
                             <div class="action-buttons">
-                                <button class="action-btn delete-btn" (click)="eliminarDatoConfirmacion(element.nombreTipo)">
+                                <button class="action-btn btn-delete" (click)="eliminarDatoConfirmacion(element.nombreTipo)">
                                     🗑️
                                 </button>
                             </div>
@@ -77,11 +67,11 @@
             <div class="empty-state" *ngIf="dataSource.data.length === 0">
                 <div class="empty-icon">📋</div>
                 <h3 class="empty-title">No hay datos registrados</h3>
-                <p>Haz clic en "Agregar" para crear el primer registro</p>
+                <p class="empty-subtitle">Haz clic en "Agregar Nuevo" para crear el primer registro</p>
             </div>
         </div>
     </div>
-</main>
+</div>
 
 <!-- Toast Notification Component -->
 <app-toast-notification></app-toast-notification>
