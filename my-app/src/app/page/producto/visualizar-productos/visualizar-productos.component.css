@@ -15,49 +15,49 @@
 
 /* Main Content */
 .main-content {
-    padding: 32px;
+    padding: 40px;
     min-height: calc(100vh - 64px);
 }
 
 .page-header {
-    margin-bottom: 32px;
+    margin-bottom: 40px;
 }
 
 .page-title {
-    font-size: 34px;
+    font-size: 42px;
     font-weight: 700;
     color: #1e293b;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
 }
 
 .page-subtitle {
     color: #64748b;
-    font-size: 20px;
+    font-size: 24px;
 }
 
 /* Filters Section */
 .filters-section {
     background: white;
     border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 24px;
-    margin-bottom: 24px;
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 32px;
 }
 
 .filters-title {
-    font-size: 20px;
+    font-size: 24px;
     font-weight: 600;
     color: #1e293b;
-    margin-bottom: 24px;
+    margin-bottom: 28px;
     display: flex;
     align-items: center;
 }
 
 .filters-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 16px;
-    margin-bottom: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+    margin-bottom: 28px;
 }
 
 .filter-group {
@@ -66,31 +66,31 @@
 }
 
 .filter-label {
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 500;
     color: #64748b;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     text-transform: uppercase;
 }
 
 .filter-select {
-    padding: 12px 15px;
+    padding: 16px 18px;
     border: 1px solid #d1d5db;
-    border-radius: 8px;
+    border-radius: 10px;
     background: white;
     color: #1e293b;
-    font-size: 16px;
+    font-size: 18px;
 }
 
 .filter-actions {
     display: flex;
-    gap: 12px;
+    gap: 16px;
 }
 
 .btn {
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-size: 16px;
+    padding: 16px 28px;
+    border-radius: 10px;
+    font-size: 18px;
     font-weight: 500;
     text-decoration: none;
     border: none;
@@ -98,7 +98,7 @@
     transition: all 0.2s;
     display: inline-flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
 }
 
 .btn-primary {
@@ -124,12 +124,12 @@
 .products-section {
     background: white;
     border: 1px solid #e2e8f0;
-    border-radius: 12px;
+    border-radius: 16px;
     overflow: hidden;
 }
 
 .products-header {
-    padding: 24px 28px;
+    padding: 32px 36px;
     border-bottom: 1px solid #e2e8f0;
     display: flex;
     justify-content: space-between;
@@ -137,7 +137,7 @@
 }
 
 .products-title {
-    font-size: 22px;
+    font-size: 26px;
     font-weight: 600;
     color: #1e293b;
 }
@@ -145,15 +145,15 @@
 /* Floating Action Button */
 .fab {
     position: fixed;
-    bottom: 24px;
-    right: 24px;
-    width: 64px;
-    height: 64px;
+    bottom: 32px;
+    right: 32px;
+    width: 72px;
+    height: 72px;
     background: #10b981;
     color: white;
     border: none;
     border-radius: 50%;
-    font-size: 28px;
+    font-size: 32px;
     cursor: pointer;
     box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
     transition: all 0.2s;
@@ -171,18 +171,18 @@
 /* Product Grid */
 .products-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 18px;
-    padding: 22px;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 24px;
+    padding: 28px;
 }
 
 .product-card {
     border: 1px solid #e2e8f0;
-    border-radius: 8px;
+    border-radius: 12px;
     overflow: hidden;
     transition: all 0.2s;
     background: white;
-    min-width: 300px;
+    min-width: 350px;
 }
 
 .product-card:hover {
@@ -192,7 +192,7 @@
 
 .product-image {
     width: 100%;
-    height: 120px;
+    height: 140px;
     background: #f1f5f9;
     display: flex;
     align-items: center;
@@ -209,34 +209,34 @@
 
 .product-placeholder {
     color: #94a3b8;
-    font-size: 32px;
+    font-size: 38px;
 }
 
 .product-info {
-    padding: 16px;
+    padding: 20px;
 }
 
 .product-header {
     display: flex;
     justify-content: space-between;
     align-items: start;
-    margin-bottom: 12px;
+    margin-bottom: 16px;
 }
 
 .product-name {
-    font-size: 20px;
+    font-size: 24px;
     font-weight: 600;
     color: #1e293b;
-    margin-bottom: 5px;
+    margin-bottom: 6px;
 }
 
 .product-institution {
-    font-size: 17px;
+    font-size: 20px;
     color: #64748b;
 }
 
 .product-price {
-    font-size: 20px;
+    font-size: 24px;
     font-weight: 700;
     color: #10b981;
 }
@@ -244,12 +244,12 @@
 .product-details {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    margin-bottom: 14px;
+    gap: 12px;
+    margin-bottom: 18px;
 }
 
 .product-detail {
-    font-size: 16px;
+    font-size: 18px;
     color: #64748b;
 }
 
@@ -259,19 +259,19 @@
 
 .product-actions {
     display: flex;
-    gap: 4px;
+    gap: 8px;
 }
 
 .action-btn {
-    width: 32px;
-    height: 32px;
-    border-radius: 6px;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
     border: none;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 14px;
+    font-size: 18px;
     transition: all 0.2s;
 }
 
@@ -295,11 +295,11 @@
 
 .stock-badge {
     position: absolute;
-    top: 12px;
-    right: 12px;
-    padding: 7px 14px;
-    border-radius: 16px;
-    font-size: 17px;
+    top: 14px;
+    right: 14px;
+    padding: 9px 16px;
+    border-radius: 18px;
+    font-size: 18px;
     font-weight: 600;
 }
 
@@ -321,22 +321,22 @@
 /* View Toggle */
 .view-toggle {
     display: flex;
-    gap: 8px;
+    gap: 12px;
     margin-left: auto;
 }
 
 .view-btn {
-    width: 44px;
-    height: 44px;
+    width: 50px;
+    height: 50px;
     border: 1px solid #e2e8f0;
     background: white;
-    border-radius: 8px;
+    border-radius: 10px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.2s;
-    font-size: 16px;
+    font-size: 18px;
 }
 
 .view-btn.active {
@@ -353,7 +353,7 @@
 
 .products-table th,
 .products-table td {
-    padding: 20px 25px;
+    padding: 24px 28px;
     text-align: left;
     border-bottom: 1px solid #e2e8f0;
 }
@@ -362,11 +362,11 @@
     background: #f8fafc;
     font-weight: 600;
     color: #374151;
-    font-size: 20px;
+    font-size: 22px;
 }
 
 .products-table td {
-    font-size: 21px;
+    font-size: 24px;
 }
 
 .products-table tr:hover {
@@ -374,9 +374,9 @@
 }
 
 .table-image {
-    width: 48px;
-    height: 48px;
-    border-radius: 8px;
+    width: 56px;
+    height: 56px;
+    border-radius: 10px;
     object-fit: cover;
     background: #f1f5f9;
 }

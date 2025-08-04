@@ -300,6 +300,29 @@ export class CrearFacturaComponent {
 
     this.listaProductos.data = this.listaProductos.data.filter(producto => producto.id !== id);
     this.carrito = this.carrito.filter(producto => producto.idRelacion !== id);
+  
+    this.actualizarLocalStorage();
+  }
+
+
+  /**
+   * Updates the local storage with the current carrito state
+   */
+  private actualizarLocalStorage(): void {
+    const productosDtoCarrito: ProductoFacturaDto[] = this.carrito.map(producto => ({
+      idRelacion: producto.idRelacion,
+      prenda: producto.prenda,
+      institucion: producto.institucion,
+      talla: producto.talla,
+      horario: producto.horario,
+      genero: producto.genero,
+      precio: producto.precio,
+      estado: 'ENTREGADO',
+      descripcion: ''
+    }));
+
+    localStorage.setItem('carrito', JSON.stringify(productosDtoCarrito));
+  
   }
 
     /**
@@ -415,19 +438,7 @@ export class CrearFacturaComponent {
     this.listaProductos._updateChangeSubscription();
     this.actualizarValorTotalFactura(producto.precio);
 
-    const productosDtoCarrito: ProductoFacturaDto[] = this.carrito.map(producto => ({
-      idRelacion: producto.idRelacion,
-      prenda: producto.prenda,
-      institucion: producto.institucion,
-      talla: producto.talla,
-      horario: producto.horario,
-      genero: producto.genero,
-      precio: producto.precio,
-      estado: 'ENTREGADO',
-      descripcion: ''
-    }));
-
-    localStorage.setItem('carrito', JSON.stringify(productosDtoCarrito));
+    this.actualizarLocalStorage();
   }
   
     /**

@@ -15,42 +15,42 @@
 
 /* Main Content */
 .main-content {
-    padding: 36px;
+    padding: 44px;
     min-height: calc(100vh - 64px);
 }
 
 .page-header {
-    margin-bottom: 36px;
+    margin-bottom: 44px;
 }
 
 .page-title {
-    font-size: 32px;
+    font-size: 40px;
     font-weight: 700;
     color: #1e293b;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 16px;
 }
 
 .page-subtitle {
     color: #64748b;
-    font-size: 18px;
+    font-size: 22px;
 }
 
 /* Statistics Cards */
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 18px;
-    margin-bottom: 28px;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 22px;
+    margin-bottom: 36px;
 }
 
 .stat-card {
     background: white;
     border: 1px solid #e2e8f0;
-    border-radius: 14px;
-    padding: 24px;
+    border-radius: 18px;
+    padding: 32px;
     text-align: center;
     transition: all 0.2s;
     cursor: pointer;
@@ -62,19 +62,19 @@
 }
 
 .stat-icon {
-    font-size: 36px;
-    margin-bottom: 14px;
+    font-size: 44px;
+    margin-bottom: 18px;
 }
 
 .stat-number {
-    font-size: 28px;
+    font-size: 34px;
     font-weight: 700;
     color: #1e293b;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
 }
 
 .stat-label {
-    font-size: 16px;
+    font-size: 19px;
     color: #64748b;
 }
 
@@ -82,39 +82,39 @@
 .categories-section {
     background: white;
     border: 1px solid #e2e8f0;
-    border-radius: 14px;
-    padding: 28px;
-    margin-bottom: 28px;
+    border-radius: 18px;
+    padding: 36px;
+    margin-bottom: 36px;
 }
 
 .section-title {
-    font-size: 20px;
+    font-size: 24px;
     font-weight: 600;
     color: #1e293b;
-    margin-bottom: 22px;
+    margin-bottom: 28px;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
 }
 
 .category-tabs {
     display: flex;
-    gap: 10px;
-    margin-bottom: 28px;
+    gap: 14px;
+    margin-bottom: 36px;
     flex-wrap: wrap;
 }
 
 .category-tab {
-    padding: 12px 18px;
-    border-radius: 22px;
-    font-size: 15px;
+    padding: 16px 24px;
+    border-radius: 26px;
+    font-size: 18px;
     font-weight: 500;
     border: none;
     cursor: pointer;
     transition: all 0.2s;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
 }
 
 .category-tab.active {
@@ -137,12 +137,12 @@
 .data-section {
     background: white;
     border: 1px solid #e2e8f0;
-    border-radius: 14px;
+    border-radius: 18px;
     overflow: hidden;
 }
 
 .data-header {
-    padding: 24px 28px;
+    padding: 32px 36px;
     border-bottom: 1px solid #e2e8f0;
     display: flex;
     justify-content: space-between;
@@ -151,26 +151,26 @@
 }
 
 .data-title {
-    font-size: 18px;
+    font-size: 22px;
     font-weight: 600;
     color: #1e293b;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
 }
 
 .add-btn {
     background: #10b981;
     color: white;
     border: none;
-    padding: 12px 18px;
-    border-radius: 10px;
-    font-size: 15px;
+    padding: 16px 24px;
+    border-radius: 12px;
+    font-size: 18px;
     font-weight: 500;
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     transition: all 0.2s;
 }
 
@@ -187,20 +187,20 @@
 
 .data-table th {
     background: #f8fafc;
-    padding: 18px 28px;
+    padding: 22px 36px;
     text-align: left;
     font-weight: 700;
     color: #374151;
-    font-size: 14px;
+    font-size: 16px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     border-bottom: 1px solid #e2e8f0;
 }
 
 .data-table td {
-    padding: 18px 28px;
+    padding: 22px 36px;
     border-bottom: 1px solid #f1f5f9;
-    font-size: 15px;
+    font-size: 18px;
 }
 
 .data-table tr:hover {
@@ -214,30 +214,31 @@
 .data-number {
     font-weight: 600;
     color: #64748b;
-    font-size: 14px;
+    font-size: 16px;
 }
 
 .data-name {
     font-weight: 500;
     color: #1e293b;
+    font-size: 18px;
 }
 
 .data-actions {
     display: flex;
-    gap: 10px;
+    gap: 14px;
     justify-content: flex-end;
 }
 
 .action-btn {
-    width: 36px;
-    height: 36px;
-    border-radius: 8px;
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
     border: none;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 15px;
+    font-size: 18px;
     transition: all 0.2s;
 }
 
@@ -264,23 +265,23 @@
 /* Empty State */
 .empty-state {
     text-align: center;
-    padding: 56px 28px;
+    padding: 68px 36px;
     color: #64748b;
 }
 
 .empty-icon {
-    font-size: 54px;
-    margin-bottom: 18px;
+    font-size: 64px;
+    margin-bottom: 22px;
     opacity: 0.5;
 }
 
 .empty-text {
-    font-size: 18px;
-    margin-bottom: 10px;
+    font-size: 22px;
+    margin-bottom: 12px;
 }
 
 .empty-subtext {
-    font-size: 16px;
+    font-size: 19px;
     opacity: 0.7;
 }
 
