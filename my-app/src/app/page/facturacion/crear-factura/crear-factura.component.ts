@@ -304,6 +304,61 @@ export class CrearFacturaComponent {
     this.actualizarLocalStorage();
   }
 
+  /**
+   * Duplicates an existing product in the invoice and cart
+   * @param id - identifier of the product to duplicate
+   */
+  public duplicarProducto(id: number): void {
+    // Find the existing product in the table
+    const productoExistente = this.listaProductos.data.find(producto => producto.id === id);
+    
+    if (!productoExistente) {
+      this.toastService.showError('Producto no encontrado');
+      return;
+    }
+
+    // Create new product with same data but new ID
+    const productoNuevo = {
+      id: this.idProducto++,
+      Descripcion: productoExistente.Descripcion,
+      Talla: productoExistente.Talla,
+      Horario: productoExistente.Horario,
+      Genero: productoExistente.Genero,
+      Institucion: productoExistente.Institucion,
+      Estado: productoExistente.Estado,
+      Precio: productoExistente.Precio,
+      descripcionExtra: productoExistente.descripcionExtra
+    };
+
+    // Add to table
+    this.listaProductos.data.push(productoNuevo);
+    this.listaProductos._updateChangeSubscription();
+
+    // Add to cart
+    const carritoProducto: ProductoFacturaDto = {
+      idRelacion: productoNuevo.id,
+      prenda: productoExistente.Descripcion,
+      institucion: productoExistente.Institucion,
+      talla: productoExistente.Talla,
+      horario: productoExistente.Horario,
+      genero: productoExistente.Genero,
+      precio: productoExistente.Precio,
+      estado: productoExistente.Estado,
+      descripcion: productoExistente.descripcionExtra || ''
+    };
+
+    this.carrito.push(carritoProducto);
+
+    // Update total
+    this.actualizarValorTotalFactura(productoExistente.Precio);
+
+    // Update localStorage
+    this.actualizarLocalStorage();
+
+    // Show success message
+    this.toastService.showSuccess('Producto duplicado exitosamente');
+  }
+
 
   /**
    * Updates the local storage with the current carrito state

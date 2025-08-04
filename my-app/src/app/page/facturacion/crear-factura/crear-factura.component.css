@@ -358,25 +358,54 @@
   max-width: none !important;
 }
 
+/* Action Buttons Container */
+.action-buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Duplicate Button */
+.duplicate-btn {
+    background: #dbeafe;
+    color: #1d4ed8;
+    border: 1px solid #bfdbfe;
+    padding: 14px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    font-size: 22px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.duplicate-btn:hover {
+    background: #93c5fd;
+    color: #1e40af;
+    transform: translateY(-1px);
+}
+
 /* Delete Button */
 .delete-btn {
-  background: #fef2f2;
-  color: #dc2626;
-  border: 1px solid #fecaca;
-  padding: 14px 16px;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: all 0.15s ease;
-  font-size: 22px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+    background: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+    padding: 14px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    font-size: 22px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .delete-btn:hover {
-  background: #fca5a5;
-  color: #991b1b;
-  transform: translateY(-1px);
+    background: #fca5a5;
+    color: #991b1b;
+    transform: translateY(-1px);
 }
 
 /* Description Modal */

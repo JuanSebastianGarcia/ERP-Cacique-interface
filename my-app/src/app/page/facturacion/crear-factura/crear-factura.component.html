@@ -119,9 +119,14 @@
                 </div>
               </td>
               <td class="td-accion">
-                <button class="delete-btn" (click)="eliminarProducto(element.id)">
-                  🗑️
-                </button>
+                <div class="action-buttons">
+                  <button class="duplicate-btn" (click)="duplicarProducto(element.id)" title="Duplicar producto">
+                    📋
+                  </button>
+                  <button class="delete-btn" (click)="eliminarProducto(element.id)" title="Eliminar producto">
+                    🗑️
+                  </button>
+                </div>
               </td>
             </tr>
           </tbody>
