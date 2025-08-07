@@ -9,6 +9,17 @@ import { ConfigurationTypesService } from '../../../core/service/configuration-t
 import { ProductoService } from '../../../core/service/producto.service';
 import { FiltroListaProductoDto } from '../../../core/models/filtro-lista-producto-dto';
 
+interface ProductoDisponible {
+  id: number;
+  prenda: string;
+  institucion: string;
+  talla: string;
+  horario: string;
+  genero: string;
+  precio: number;
+  cantidad: number;
+}
+
 @Component({
   selector: 'app-agregar-producto-factura',
   standalone: true,
@@ -34,6 +45,11 @@ export class AgregarProductoFacturaComponent implements OnInit {
   public generos: string[] = [];
   public horarios: string[] = [];
 
+  /** Nueva sección de productos */
+  public productosDisponibles: ProductoDisponible[] = [];
+  public productosSeleccionados = new Map<number, number>();
+  public currentView: 'grid' | 'table' = 'grid';
+
   constructor(
     private dialogRef: MatDialogRef<AgregarProductoFacturaComponent>,
     private configureTypesService: ConfigurationTypesService,
@@ -49,6 +65,7 @@ export class AgregarProductoFacturaComponent implements OnInit {
     this.cargarGeneros();
     this.cargarTallas();
     this.cargarPrendas();
+    this.cargarProductosDisponibles();
   }
 
   /**
@@ -75,8 +92,6 @@ export class AgregarProductoFacturaComponent implements OnInit {
    * @param filtroDto - filter parameters
    */
   private consultarProducto(filtroDto: FiltroListaProductoDto): void {
-
-
     this.productoService.buscarProductos(filtroDto).subscribe({
       next: data => {
         if (data.respuesta.length > 0) {
@@ -177,5 +192,81 @@ export class AgregarProductoFacturaComponent implements OnInit {
         alert('Error loading garments: ' + error.error.mensaje);
       }
     });
+  }
+
+  /** Carga productos quemados para visualización */
+  private cargarProductosDisponibles(): void {
+    this.productosDisponibles = [
+      { id: 1, prenda: "Camisa Polo", institucion: "Colegio San José", talla: "S", horario: "Mañana", genero: "Masculino", precio: 25000, cantidad: 15 },
+      { id: 2, prenda: "Camisa Polo", institucion: "Colegio San José", talla: "M", horario: "Mañana", genero: "Masculino", precio: 25000, cantidad: 12 },
+      { id: 3, prenda: "Camisa Polo", institucion: "Colegio San José", talla: "L", horario: "Mañana", genero: "Masculino", precio: 25000, cantidad: 8 },
+      { id: 4, prenda: "Camisa Polo", institucion: "Liceo Nacional", talla: "S", horario: "Tarde", genero: "Femenino", precio: 28000, cantidad: 20 },
+      { id: 5, prenda: "Pantalón Escolar", institucion: "Colegio San José", talla: "M", horario: "Mañana", genero: "Masculino", precio: 35000, cantidad: 6 },
+      { id: 6, prenda: "Pantalón Escolar", institucion: "Liceo Nacional", talla: "L", horario: "Tarde", genero: "Femenino", precio: 38000, cantidad: 4 },
+      { id: 7, prenda: "Zapatos Colegiales", institucion: "Universidad Central", talla: "38", horario: "Completo", genero: "Unisex", precio: 45000, cantidad: 3 },
+      { id: 8, prenda: "Zapatos Colegiales", institucion: "Universidad Central", talla: "40", horario: "Completo", genero: "Unisex", precio: 45000, cantidad: 7 },
+      { id: 9, prenda: "Chaqueta Deportiva", institucion: "Instituto Técnico", talla: "M", horario: "Mañana", genero: "Masculino", precio: 55000, cantidad: 2 },
+      { id: 10, prenda: "Falda Escolar", institucion: "Liceo Femenino", talla: "S", horario: "Tarde", genero: "Femenino", precio: 28000, cantidad: 14 }
+    ];
+  }
+
+  /** Cambia entre vista grid y tabla */
+  public toggleView(view: 'grid' | 'table'): void {
+    this.currentView = view;
+  }
+
+  /** Alterna la selección de un producto */
+  public toggleProducto(productId: number): void {
+    if (this.productosSeleccionados.has(productId)) {
+      this.productosSeleccionados.delete(productId);
+    } else {
+      this.productosSeleccionados.set(productId, 1);
+      this.agregarProductoAFactura(productId);
+    }
+  }
+
+  /** Cambia la cantidad de un producto seleccionado */
+  public cambiarCantidad(productId: number, delta: number): void {
+    const producto = this.productosDisponibles.find(p => p.id === productId);
+    if (!producto) return;
+
+    const cantidadActual = this.productosSeleccionados.get(productId) || 1;
+    const nuevaCantidad = Math.max(1, Math.min(producto.cantidad, cantidadActual + delta));
+    
+    this.productosSeleccionados.set(productId, nuevaCantidad);
+    this.agregarProductoAFactura(productId);
+  }
+
+  /** Actualiza la cantidad desde el input */
+  public actualizarCantidad(productId: number, event: any): void {
+    const producto = this.productosDisponibles.find(p => p.id === productId);
+    if (!producto) return;
+
+    const cantidad = Math.max(1, Math.min(producto.cantidad, parseInt(event.target.value) || 1));
+    this.productosSeleccionados.set(productId, cantidad);
+    this.agregarProductoAFactura(productId);
+  }
+
+  /** Obtiene la clase CSS para el indicador de stock */
+  public getStockClass(cantidad: number): string {
+    if (cantidad <= 5) return 'stock-low';
+    if (cantidad <= 10) return 'stock-medium';
+    return 'stock-good';
+  }
+
+  /** Calcula el total de unidades seleccionadas */
+  public getTotalUnidades(): number {
+    return Array.from(this.productosSeleccionados.values()).reduce((sum, qty) => sum + qty, 0);
+  }
+
+  /** Función placeholder para agregar producto a factura */
+  private agregarProductoAFactura(productId: number): void {
+    const producto = this.productosDisponibles.find(p => p.id === productId);
+    const cantidad = this.productosSeleccionados.get(productId);
+    
+    if (producto && cantidad) {
+      console.log(`Producto agregado a factura: ${producto.prenda} - Cantidad: ${cantidad}`);
+      // Aquí iría la lógica real para agregar a la factura
+    }
   }
 }
