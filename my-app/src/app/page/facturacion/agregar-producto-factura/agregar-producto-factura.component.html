@@ -1,69 +1,94 @@
-<!-- Modal for Add Product -->
+<!-- ========================================
+     MODAL PARA AGREGAR PRODUCTOS A FACTURA
+     ======================================== -->
 <div class="modal-overlay active">
   <div class="modal-container modal-compact">
+    
+    <!-- ========================================
+         HEADER DEL MODAL - TÍTULO PRINCIPAL
+         ======================================== -->
     <div class="modal-header-bar">
       <h3 class="modal-title-bar">Agregar producto</h3>
     </div>
     
+    <!-- ========================================
+         CUERPO PRINCIPAL DEL MODAL
+         ======================================== -->
     <div class="modal-body">
+      
+      <!-- ========================================
+           SECCIÓN DE FILTROS - LISTAS DESPLEGABLES
+           ======================================== -->
       <div class="select-grid">
+        <!-- Filtro por tipo de prenda -->
         <div class="select-group">
           <label class="select-label">Prenda</label>
-          <select class="form-select compact-select" [(ngModel)]="producto.prenda" name="prenda" required>
+          <select class="form-select compact-select" [(ngModel)]="producto.prenda" name="prenda" required (change)="onFiltroChange()">
             <option value="">Selecciona una prenda</option>
             <option *ngFor="let item of prendas" [value]="item">{{ item }}</option>
           </select>
         </div>
 
+        <!-- Filtro por talla -->
         <div class="select-group">
           <label class="select-label">Talla</label>
-          <select class="form-select compact-select" [(ngModel)]="producto.talla" name="talla" required>
+          <select class="form-select compact-select" [(ngModel)]="producto.talla" name="talla" required (change)="onFiltroChange()">
             <option value="">Selecciona una talla</option>
             <option *ngFor="let item of tallas" [value]="item">{{ item }}</option>
           </select>
         </div>
 
+        <!-- Filtro por institución -->
         <div class="select-group">
           <label class="select-label">Institución</label>
-          <select class="form-select compact-select" [(ngModel)]="producto.institucion" name="institucion" required>
+          <select class="form-select compact-select" [(ngModel)]="producto.institucion" name="institucion" required (change)="onFiltroChange()">
             <option value="">Selecciona una institución</option>
             <option *ngFor="let item of instituciones" [value]="item">{{ item }}</option>
           </select>
         </div>
 
+        <!-- Filtro por género -->
         <div class="select-group">
           <label class="select-label">Género</label>
-          <select class="form-select compact-select" [(ngModel)]="producto.genero" name="genero" required>
+          <select class="form-select compact-select" [(ngModel)]="producto.genero" name="genero" required (change)="onFiltroChange()">
             <option value="">Selecciona un género</option>
             <option *ngFor="let item of generos" [value]="item">{{ item }}</option>
           </select>
         </div>
 
+        <!-- Filtro por horario -->
         <div class="select-group">
           <label class="select-label">Horario</label>
-          <select class="form-select compact-select" [(ngModel)]="producto.horario" name="horario" required>
+          <select class="form-select compact-select" [(ngModel)]="producto.horario" name="horario" required (change)="onFiltroChange()">
             <option value="">Selecciona un horario</option>
             <option *ngFor="let item of horarios" [value]="item">{{ item }}</option>
           </select>
         </div>
       </div>
 
-      <!-- Nueva sección de productos -->
+      <!-- ========================================
+           SECCIÓN DE PRODUCTOS DISPONIBLES
+           ======================================== -->
       <div class="products-section">
+        
+        <!-- Header de la sección de productos -->
         <div class="products-header">
           <h4 class="products-title">📦 Productos Disponibles</h4>
+          <!-- Botones para cambiar vista (Grid/Tabla) -->
           <div class="view-toggle">
             <button type="button" class="view-btn active" (click)="toggleView('grid')">⚏</button>
-            <button type="button" class="view-btn" (click)="toggleView('table')">☰</button>
           </div>
         </div>
 
-        <!-- Vista Grid -->
+        
+        <!-- ========================================
+             VISTA EN GRID - TARJETAS DE PRODUCTOS
+             ======================================== -->
         <div class="products-grid" *ngIf="currentView === 'grid'">
-          <div class="product-card" *ngFor="let product of productosDisponibles" 
-               [class.selected]="productosSeleccionados.has(product.id)"
-               (click)="toggleProducto(product.id)">
-            <div class="selected-badge" *ngIf="productosSeleccionados.has(product.id)">✓</div>
+          <!-- Iteración de productos en formato de tarjetas -->
+          <div class="product-card" *ngFor="let product of productosDisponibles">
+            
+            <!-- Header de la tarjeta - Nombre, institución y precio -->
             <div class="product-header">
               <div>
                 <div class="product-name">{{ product.prenda }}</div>
@@ -71,89 +96,44 @@
               </div>
               <div class="product-price">{{ product.precio | currency:'COP':'symbol':'1.0-0' }}</div>
             </div>
+            
+            <!-- Atributos del producto - Talla, horario, género -->
             <div class="product-attributes">
               <div class="product-attribute"><strong>Talla:</strong> {{ product.talla }}</div>
               <div class="product-attribute"><strong>Horario:</strong> {{ product.horario }}</div>
               <div class="product-attribute"><strong>Género:</strong> {{ product.genero }}</div>
             </div>
+            
+            <!-- Indicador de stock disponible -->
             <div class="stock-indicator">
               <span class="stock-badge" [ngClass]="getStockClass(product.cantidad)">
                 {{ product.cantidad }} en stock
               </span>
             </div>
+            
+            <!-- Acciones del producto - Botón simple para agregar -->
             <div class="product-actions">
-              <div class="quantity-selector" *ngIf="productosSeleccionados.has(product.id)">
-                <button type="button" class="quantity-btn" (click)="cambiarCantidad(product.id, -1)">-</button>
-                <input type="number" class="quantity-input" 
-                       [value]="productosSeleccionados.get(product.id) || 1" 
-                       min="1" [max]="product.cantidad"
-                       (change)="actualizarCantidad(product.id, $event)">
-                <button type="button" class="quantity-btn" (click)="cambiarCantidad(product.id, 1)">+</button>
-              </div>
-              <button type="button" class="add-to-cart-btn" 
-                      [class.remove-btn]="productosSeleccionados.has(product.id)"
-                      (click)="toggleProducto(product.id)">
-                {{ productosSeleccionados.has(product.id) ? '🗑️ Quitar' : '🛒 Agregar' }}
+              <!-- Botón simple para agregar producto -->
+              <button type="button" class="add-to-cart-btn" (click)="agregarProducto(product.id)">
+                🛒 Agregar
               </button>
             </div>
           </div>
         </div>
 
-        <!-- Vista Tabla -->
-        <div class="products-table-container" *ngIf="currentView === 'table'">
-          <table class="products-table">
-            <thead>
-              <tr>
-                <th>Prenda</th>
-                <th>Institución</th>
-                <th>Talla</th>
-                <th>Horario</th>
-                <th>Género</th>
-                <th>Precio</th>
-                <th>Stock</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let product of productosDisponibles" 
-                  [class.selected]="productosSeleccionados.has(product.id)">
-                <td>{{ product.prenda }}</td>
-                <td>{{ product.institucion }}</td>
-                <td>{{ product.talla }}</td>
-                <td>{{ product.horario }}</td>
-                <td>{{ product.genero }}</td>
-                <td>{{ product.precio | currency:'COP':'symbol':'1.0-0' }}</td>
-                <td><span class="stock-badge" [ngClass]="getStockClass(product.cantidad)">{{ product.cantidad }}</span></td>
-                <td>
-                  <div class="table-actions">
-                    <div class="quantity-selector" *ngIf="productosSeleccionados.has(product.id)">
-                      <button type="button" class="quantity-btn" (click)="cambiarCantidad(product.id, -1)">-</button>
-                      <input type="number" class="quantity-input" 
-                             [value]="productosSeleccionados.get(product.id) || 1" 
-                             min="1" [max]="product.cantidad"
-                             (change)="actualizarCantidad(product.id, $event)">
-                      <button type="button" class="quantity-btn" (click)="cambiarCantidad(product.id, 1)">+</button>
-                    </div>
-                    <button type="button" class="add-to-cart-btn" 
-                            [class.remove-btn]="productosSeleccionados.has(product.id)"
-                            (click)="toggleProducto(product.id)">
-                      {{ productosSeleccionados.has(product.id) ? '🗑️' : '🛒' }}
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <!-- Resumen de selección con botones -->
+        
+        <!-- ========================================
+             FOOTER - RESUMEN Y ACCIONES
+             ======================================== -->
         <div class="selection-summary">
+          <!-- Información de productos seleccionados -->
           <div class="selection-info">
             <div class="selection-count">{{ productosSeleccionados.size }} productos seleccionados</div>
             <div class="selection-details" *ngIf="productosSeleccionados.size > 0">
               {{ getTotalUnidades() }} unidades total
             </div>
           </div>
+          <!-- Botones de acción -->
           <div class="footer-actions">
             <button type="button" class="btn btn-secondary" (click)="cancelar()">
               Cancelar

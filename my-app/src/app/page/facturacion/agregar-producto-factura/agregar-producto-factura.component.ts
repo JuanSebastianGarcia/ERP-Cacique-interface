@@ -87,6 +87,29 @@ export class AgregarProductoFacturaComponent implements OnInit {
   }
 
   /**
+   * Simple method to add a product by ID.
+   * Called when the user clicks the "Agregar" button on a product card.
+   * @param productId - The ID of the product to add
+   */
+  public agregarProducto(productId: number): void {
+    // Simply send the product ID
+    this.dialogRef.close(productId);
+  }
+
+  /**
+   * Handles filter changes in dropdown lists.
+   * Executes product search whenever any filter is changed.
+   */
+  public onFiltroChange(): void {
+    // Check if at least one filter has a value
+    if (this.producto.prenda || this.producto.talla || this.producto.institucion || 
+        this.producto.genero || this.producto.horario) {
+      const filtroDto = this.construirFiltroDto();
+      this.consultarProducto(filtroDto);
+    }
+  }
+
+  /**
    * Calls service to search for product based on filters.
    * Closes the dialog and returns the product if one result is found.
    * @param filtroDto - filter parameters
