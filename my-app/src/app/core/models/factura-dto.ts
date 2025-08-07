@@ -5,6 +5,7 @@ export interface FacturaDto{
     estadoFactura:string,
     fechaFactura:string,
     cedulaCliente:string,
+    nombreCliente:string,
     listaProductos:ProductoFacturaDto[],
     metodoPago:string,
     pago:number,

@@ -194,8 +194,6 @@ export class CrearFacturaComponent {
       if (respuesta) {
         this.renderizarProducto(respuesta);
         this.toastService.showSuccess('Producto agregado');
-      }else{
-        this.toastService.showError('Producto no encontrado');
       }
     });
   }
@@ -398,11 +396,11 @@ export class CrearFacturaComponent {
               this.toastService.showSuccess('Factura creada');
               this.limpiarLocalStorage();
             } else {
-              this.toastService.showError('Error al crear factura');
+              this.toastService.showError(respuesta.respuesta as string);
             }
           },
           error: (error) => {
-            this.toastService.showError('Error al crear factura');
+            this.toastService.showError(error.error.respuesta as string);
           }
         });
       }
@@ -418,6 +416,7 @@ export class CrearFacturaComponent {
         estadoFactura: '',
         fechaFactura: '',
         cedulaCliente: this.cedulaCliente + '',
+        nombreCliente: this.cliente.nombre,
         listaProductos: this.carrito,
         metodoPago: this.metodoPago,
         pago: this.valorPago,

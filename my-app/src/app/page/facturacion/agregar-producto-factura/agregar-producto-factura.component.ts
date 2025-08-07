@@ -119,62 +119,72 @@ export class AgregarProductoFacturaComponent implements OnInit {
     return true;
   }
 
-  /** Loads list of institutions from service */
+  /**
+   * Carga la lista de instituciones
+   */
   private cargarInstituciones(): void {
     this.configureTypesService.buscarInstituciones().subscribe({
       next: data => {
         this.instituciones = data.respuesta.map((item: any) => item.nombreTipo);
       },
       error: error => {
-        alert('Error loading institutions: ' + error.error.mensaje);
+        console.error('Error loading institutions:', error);
       }
     });
   }
 
-  /** Loads list of schedules from service */
+  /**
+   * Carga la lista de horarios
+   */
   private cargarHorarios(): void {
     this.configureTypesService.buscarHorarios().subscribe({
       next: data => {
         this.horarios = data.respuesta.map((item: any) => item.nombreTipo);
       },
       error: error => {
-        alert('Error loading schedules: ' + error.error.mensaje);
+        console.error('Error loading schedules:', error);
       }
     });
   }
 
-  /** Loads list of genders from service */
+  /**
+   * Carga la lista de géneros
+   */
   private cargarGeneros(): void {
     this.configureTypesService.buscarGeneros().subscribe({
       next: data => {
         this.generos = data.respuesta.map((item: any) => item.nombreTipo);
       },
       error: error => {
-        alert('Error loading genders: ' + error.error.mensaje);
+        console.error('Error loading genders:', error);
       }
     });
   }
 
-  /** Loads list of sizes from service */
+  /**
+   * Carga la lista de tallas
+   */
   private cargarTallas(): void {
     this.configureTypesService.buscarTallas().subscribe({
       next: data => {
         this.tallas = data.respuesta.map((item: any) => item.nombreTipo);
       },
       error: error => {
-        alert('Error loading sizes: ' + error.error.mensaje);
+        console.error('Error loading sizes:', error);
       }
     });
   }
 
-  /** Loads list of garments from service */
+  /**
+   * Carga la lista de prendas
+   */
   private cargarPrendas(): void {
     this.configureTypesService.buscarPrendas().subscribe({
       next: data => {
         this.prendas = data.respuesta.map((item: any) => item.nombreTipo);
       },
       error: error => {
-        alert('Error loading garments: ' + error.error.mensaje);
+        console.error('Error loading garments:', error);
       }
     });
   }

@@ -1,64 +1,169 @@
-<!-- Modal for Add Product -->
+<!-- Modal de Selección de Productos -->
 <div class="modal-overlay active">
-  <div class="modal-container modal-compact">
-    <div class="modal-header-bar">
-      <h3 class="modal-title-bar">Agregar producto</h3>
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title">
+        🛍️ Seleccionar Productos para Factura
+      </h2>
+      <button class="close-btn" (click)="cerrarModal()">×</button>
     </div>
-    
-    <form (ngSubmit)="agregar()" #productForm="ngForm">
-      <div class="modal-body">
-        <div class="select-grid">
-          <div class="select-group">
-            <label class="select-label">Prenda</label>
-            <select class="form-select compact-select" [(ngModel)]="producto.prenda" name="prenda" required>
-              <option value="">Selecciona una prenda</option>
-              <option *ngFor="let item of prendas" [value]="item">{{ item }}</option>
+
+    <div class="modal-body">
+      <div class="filters-section">
+        <h3 class="filters-title">
+          🔍 Filtrar Productos
+        </h3>
+        <div class="filters-grid">
+          <div class="filter-group">
+            <label class="filter-label">Prenda</label>
+            <select class="filter-select" [(ngModel)]="filtros.prenda" (change)="aplicarFiltros()">
+              <option value="">Todas las prendas</option>
+              <option *ngFor="let prenda of prendas" [value]="prenda">{{ prenda }}</option>
             </select>
           </div>
-
-          <div class="select-group">
-            <label class="select-label">Talla</label>
-            <select class="form-select compact-select" [(ngModel)]="producto.talla" name="talla" required>
-              <option value="">Selecciona una talla</option>
-              <option *ngFor="let item of tallas" [value]="item">{{ item }}</option>
+          <div class="filter-group">
+            <label class="filter-label">Institución</label>
+            <select class="filter-select" [(ngModel)]="filtros.institucion" (change)="aplicarFiltros()">
+              <option value="">Todas las instituciones</option>
+              <option *ngFor="let institucion of instituciones" [value]="institucion">{{ institucion }}</option>
             </select>
           </div>
-
-          <div class="select-group">
-            <label class="select-label">Institución</label>
-            <select class="form-select compact-select" [(ngModel)]="producto.institucion" name="institucion" required>
-              <option value="">Selecciona una institución</option>
-              <option *ngFor="let item of instituciones" [value]="item">{{ item }}</option>
+          <div class="filter-group">
+            <label class="filter-label">Talla</label>
+            <select class="filter-select" [(ngModel)]="filtros.talla" (change)="aplicarFiltros()">
+              <option value="">Todas las tallas</option>
+              <option *ngFor="let talla of tallas" [value]="talla">{{ talla }}</option>
             </select>
           </div>
-
-          <div class="select-group">
-            <label class="select-label">Género</label>
-            <select class="form-select compact-select" [(ngModel)]="producto.genero" name="genero" required>
-              <option value="">Selecciona un género</option>
-              <option *ngFor="let item of generos" [value]="item">{{ item }}</option>
+          <div class="filter-group">
+            <label class="filter-label">Horario</label>
+            <select class="filter-select" [(ngModel)]="filtros.horario" (change)="aplicarFiltros()">
+              <option value="">Todos los horarios</option>
+              <option *ngFor="let horario of horarios" [value]="horario">{{ horario }}</option>
             </select>
           </div>
-
-          <div class="select-group">
-            <label class="select-label">Horario</label>
-            <select class="form-select compact-select" [(ngModel)]="producto.horario" name="horario" required>
-              <option value="">Selecciona un horario</option>
-              <option *ngFor="let item of horarios" [value]="item">{{ item }}</option>
+          <div class="filter-group">
+            <label class="filter-label">Género</label>
+            <select class="filter-select" [(ngModel)]="filtros.genero" (change)="aplicarFiltros()">
+              <option value="">Todos los géneros</option>
+              <option *ngFor="let genero of generos" [value]="genero">{{ genero }}</option>
             </select>
           </div>
         </div>
+        <div class="filter-actions">
+          <button class="btn btn-secondary" (click)="limpiarFiltros()">🗑️ Limpiar</button>
+          <button class="btn btn-search" (click)="aplicarFiltros()">🔍 Buscar</button>
+        </div>
       </div>
 
-      <div class="modal-footer">
-        <button type="button" class="modal-btn modal-btn-cancel" (click)="cancelar()">
-          Cancelar
-        </button>
-        <button type="submit" class="modal-btn modal-btn-success" [disabled]="!productForm.form.valid">
-          Agregar
+      <div class="results-section">
+        <div class="results-header">
+          <div class="results-count">
+            <span class="count">{{ productosFiltrados.length }}</span> productos encontrados
+          </div>
+          <div class="view-toggle">
+            <button class="view-btn" [class.active]="vistaActual === 'grid'" (click)="cambiarVista('grid')">⚏</button>
+            <button class="view-btn" [class.active]="vistaActual === 'table'" (click)="cambiarVista('table')">☰</button>
+          </div>
+        </div>
+
+        <!-- Vista Grid -->
+        <div class="products-grid" *ngIf="vistaActual === 'grid'">
+          <div *ngIf="productosFiltrados.length === 0" class="empty-state">
+            <div class="empty-icon">📦</div>
+            <h3>No se encontraron productos</h3>
+            <p>Ajusta los filtros para encontrar productos disponibles</p>
+          </div>
+          
+          <div *ngFor="let producto of productosFiltrados" 
+               class="product-card" 
+               [class.selected]="productosSeleccionados.has(producto.id)"
+               (click)="seleccionarProducto(producto.id)">
+            <div class="selected-badge">✓</div>
+            <div class="product-header">
+              <div>
+                <div class="product-name">{{ producto.prenda }}</div>
+                <div class="product-institution">{{ producto.institucion }}</div>
+              </div>
+              <div class="product-price">{{ producto.precio | number:'1.0-0' }}</div>
+            </div>
+            <div class="product-attributes">
+              <div class="product-attribute"><strong>Talla:</strong> {{ producto.talla }}</div>
+              <div class="product-attribute"><strong>Horario:</strong> {{ producto.horario }}</div>
+              <div class="product-attribute"><strong>Género:</strong> {{ producto.genero }}</div>
+            </div>
+            <div class="stock-indicator">
+              <span class="stock-badge" [ngClass]="obtenerClaseStock(producto.cantidad)">
+                {{ producto.cantidad }} en stock
+              </span>
+            </div>
+            <div class="product-actions">
+              <button class="add-to-cart-btn" 
+                      [class.remove-btn]="productosSeleccionados.has(producto.id)"
+                      (click)="alternarProducto(producto.id, $event)">
+                {{ productosSeleccionados.has(producto.id) ? '🗑️ Quitar' : '🛒 Agregar' }}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Vista Tabla -->
+        <div *ngIf="vistaActual === 'table'" class="table-view">
+          <table class="products-table">
+            <thead>
+              <tr>
+                <th>Prenda</th>
+                <th>Institución</th>
+                <th>Talla</th>
+                <th>Horario</th>
+                <th>Género</th>
+                <th>Precio</th>
+                <th>Stock</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let producto of productosFiltrados" 
+                  [class.selected]="productosSeleccionados.has(producto.id)">
+                <td>{{ producto.prenda }}</td>
+                <td>{{ producto.institucion }}</td>
+                <td>{{ producto.talla }}</td>
+                <td>{{ producto.horario }}</td>
+                <td>{{ producto.genero }}</td>
+                <td>{{ producto.precio | number:'1.0-0' }}</td>
+                <td><span class="stock-badge" [ngClass]="obtenerClaseStock(producto.cantidad)">{{ producto.cantidad }}</span></td>
+                <td>
+                  <div class="table-actions">
+                    <button class="add-to-cart-btn" 
+                            [class.remove-btn]="productosSeleccionados.has(producto.id)"
+                            (click)="alternarProducto(producto.id, $event)">
+                      {{ productosSeleccionados.has(producto.id) ? '🗑️' : '🛒' }}
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <div class="selection-summary">
+        <div class="selection-count">{{ productosSeleccionados.size }} productos seleccionados</div>
+        <div class="selection-details" *ngIf="productosSeleccionados.size > 0">
+          {{ obtenerTotalProductos() }} productos seleccionados
+        </div>
+      </div>
+      <div class="footer-actions">
+        <button class="btn btn-secondary" (click)="cerrarModal()">Cerrar</button>
+        <button class="btn btn-primary" 
+                [disabled]="productosSeleccionados.size === 0"
+                (click)="confirmarSeleccion()">
+          Confirmar Selección
         </button>
       </div>
-    </form>
+    </div>
   </div>
 </div>
   
