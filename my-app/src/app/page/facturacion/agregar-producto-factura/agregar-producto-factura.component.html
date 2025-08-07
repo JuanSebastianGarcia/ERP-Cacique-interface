@@ -23,47 +23,54 @@
         <!-- Filtro por tipo de prenda -->
         <div class="select-group">
           <label class="select-label">Prenda</label>
-          <select class="form-select compact-select" [(ngModel)]="producto.prenda" name="prenda" required (change)="onFiltroChange()">
+          <select class="form-select compact-select" [(ngModel)]="prenda" name="prenda" required (change)="onFiltroChange()">
             <option value="">Selecciona una prenda</option>
-            <option *ngFor="let item of prendas" [value]="item">{{ item }}</option>
+            <option *ngFor="let item of prendas" [value]="item.value">{{ item.viewValue }}</option>
           </select>
         </div>
 
         <!-- Filtro por talla -->
         <div class="select-group">
           <label class="select-label">Talla</label>
-          <select class="form-select compact-select" [(ngModel)]="producto.talla" name="talla" required (change)="onFiltroChange()">
+          <select class="form-select compact-select" [(ngModel)]="talla" name="talla" required (change)="onFiltroChange()">
             <option value="">Selecciona una talla</option>
-            <option *ngFor="let item of tallas" [value]="item">{{ item }}</option>
+            <option *ngFor="let item of tallas" [value]="item.value">{{ item.viewValue }}</option>
           </select>
         </div>
 
         <!-- Filtro por institución -->
         <div class="select-group">
           <label class="select-label">Institución</label>
-          <select class="form-select compact-select" [(ngModel)]="producto.institucion" name="institucion" required (change)="onFiltroChange()">
+          <select class="form-select compact-select" [(ngModel)]="institucion" name="institucion" required (change)="onFiltroChange()">
             <option value="">Selecciona una institución</option>
-            <option *ngFor="let item of instituciones" [value]="item">{{ item }}</option>
+            <option *ngFor="let item of instituciones" [value]="item.value">{{ item.viewValue }}</option>
           </select>
         </div>
 
         <!-- Filtro por género -->
         <div class="select-group">
           <label class="select-label">Género</label>
-          <select class="form-select compact-select" [(ngModel)]="producto.genero" name="genero" required (change)="onFiltroChange()">
+          <select class="form-select compact-select" [(ngModel)]="genero" name="genero" required (change)="onFiltroChange()">
             <option value="">Selecciona un género</option>
-            <option *ngFor="let item of generos" [value]="item">{{ item }}</option>
+            <option *ngFor="let item of generos" [value]="item.value">{{ item.viewValue }}</option>
           </select>
         </div>
 
         <!-- Filtro por horario -->
         <div class="select-group">
           <label class="select-label">Horario</label>
-          <select class="form-select compact-select" [(ngModel)]="producto.horario" name="horario" required (change)="onFiltroChange()">
+          <select class="form-select compact-select" [(ngModel)]="horario" name="horario" required (change)="onFiltroChange()">
             <option value="">Selecciona un horario</option>
-            <option *ngFor="let item of horarios" [value]="item">{{ item }}</option>
+            <option *ngFor="let item of horarios" [value]="item.value">{{ item.viewValue }}</option>
           </select>
         </div>
+      </div>
+
+      <!-- Botones de acción para los filtros -->
+      <div class="filter-actions">
+        <button type="button" class="btn btn-secondary" (click)="limpiarBusqueda()">
+          🗑️ Limpiar filtros
+        </button>
       </div>
 
       <!-- ========================================
@@ -75,16 +82,14 @@
         <div class="products-header">
           <h4 class="products-title">📦 Productos Disponibles</h4>
           <!-- Botones para cambiar vista (Grid/Tabla) -->
-          <div class="view-toggle">
-            <button type="button" class="view-btn active" (click)="toggleView('grid')">⚏</button>
-          </div>
+
         </div>
 
         
         <!-- ========================================
              VISTA EN GRID - TARJETAS DE PRODUCTOS
              ======================================== -->
-        <div class="products-grid" *ngIf="currentView === 'grid'">
+        <div class="products-grid" >
           <!-- Iteración de productos en formato de tarjetas -->
           <div class="product-card" *ngFor="let product of productosDisponibles">
             
@@ -128,8 +133,8 @@
         <div class="selection-summary">
           <!-- Información de productos seleccionados -->
           <div class="selection-info">
-            <div class="selection-count">{{ productosSeleccionados.size }} productos seleccionados</div>
-            <div class="selection-details" *ngIf="productosSeleccionados.size > 0">
+            <div class="selection-count">{{ productosSeleccionados.length }} productos seleccionados</div>
+            <div class="selection-details" *ngIf="productosSeleccionados.length > 0">
               {{ getTotalUnidades() }} unidades total
             </div>
           </div>
@@ -138,7 +143,7 @@
             <button type="button" class="btn btn-secondary" (click)="cancelar()">
               Cancelar
             </button>
-            <button type="button" class="btn btn-primary" (click)="agregar()" [disabled]="productosSeleccionados.size === 0">
+            <button type="button" class="btn btn-primary" (click)="agregar()" [disabled]="productosSeleccionados.length === 0">
               Agregar
             </button>
           </div>

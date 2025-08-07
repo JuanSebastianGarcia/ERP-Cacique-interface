@@ -8,6 +8,8 @@ import { CommonModule } from '@angular/common';
 import { ConfigurationTypesService } from '../../../core/service/configuration-types.service';
 import { ProductoService } from '../../../core/service/producto.service';
 import { FiltroListaProductoDto } from '../../../core/models/filtro-lista-producto-dto';
+import { ProductoDto } from '../../../core/models/producto-dto';
+import { MatTableDataSource } from '@angular/material/table';
 
 interface ProductoDisponible {
   id: number;
@@ -29,55 +31,65 @@ interface ProductoDisponible {
 })
 export class AgregarProductoFacturaComponent implements OnInit {
 
-  /** Object to store selected product options */
-  producto = {
-    prenda: '',
-    talla: '',
-    institucion: '',
-    genero: '',
-    horario: ''
-  };
+
+  /*
+  *Variables que almacenan la opcion de las listas
+  */
+  public prenda: string = '';
+  public institucion: string = '';
+  public talla: string = '';
+  public horario: string = '';
+  public genero: string = '';
+  
 
   /** Dropdown option arrays */
-  public prendas: string[] = [];
-  public tallas: string[] = [];
-  public instituciones: string[] = [];
-  public generos: string[] = [];
-  public horarios: string[] = [];
+  public instituciones = [{ value: '', viewValue: '' }];
+  public prendas = [{ value: '', viewValue: '' }];
+  public tallas = [{ value: '', viewValue: '' }];
+  public horarios = [{ value: '', viewValue: '' }];
+  public generos = [{ value: '', viewValue: '' }];
+
+
+  private filtros: FiltroListaProductoDto = {
+    prenda: '',
+    talla: '',
+    horario: '',
+    genero: '',
+    institucion: ''
+  }
 
   /** Nueva sección de productos */
   public productosDisponibles: ProductoDisponible[] = [];
-  public productosSeleccionados = new Map<number, number>();
-  public currentView: 'grid' | 'table' = 'grid';
+  public productosSeleccionados: ProductoDto[] = [];
 
+
+  
   constructor(
     private dialogRef: MatDialogRef<AgregarProductoFacturaComponent>,
     private configureTypesService: ConfigurationTypesService,
     private productoService: ProductoService
-  ) {}
+  ) {
+    console.log('CONSTRUCTOR EJECUTADO');
+  }
 
   /**
    * Lifecycle hook: loads dropdown options on component initialization
    */
   ngOnInit(): void {
+    console.log('NGONINIT EJECUTADO');
     this.cargarInstituciones();
     this.cargarHorarios();
     this.cargarGeneros();
     this.cargarTallas();
     this.cargarPrendas();
-    this.cargarProductosDisponibles();
+    this.buscarProductos();
   }
 
-  /**
-   * Handles form submission.
-   * Validates input and sends product search request.
-   */
-  public agregar(): void {
-    if (this.validateForm()) {
-      const filtroDto = this.construirFiltroDto();
-      this.consultarProducto(filtroDto);
-    }
-  }
+
+
+
+
+
 
   /**
    * Closes the dialog without returning data.
@@ -92,8 +104,33 @@ export class AgregarProductoFacturaComponent implements OnInit {
    * @param productId - The ID of the product to add
    */
   public agregarProducto(productId: number): void {
-    // Simply send the product ID
-    this.dialogRef.close(productId);
+
+      this.productosDisponibles.forEach(producto => {
+        if (producto.id === productId) {
+          this.agregarProductoMapeado(producto);
+        }
+      });
+  }
+
+
+  /*
+  *agrega el producto mapeado a la lista de productos seleccionados
+  */
+  private agregarProductoMapeado(producto: ProductoDisponible): void {
+    
+    const productoDto: ProductoDto = {
+      id: producto.id,
+      prenda: producto.prenda,
+      institucion: producto.institucion,
+      talla: producto.talla,
+      horario: producto.horario,
+      genero: producto.genero,
+      precio: producto.precio,
+      cantidad: producto.cantidad,
+      descripcion:""
+    }
+    
+    this.productosSeleccionados.push(productoDto);
   }
 
   /**
@@ -101,175 +138,177 @@ export class AgregarProductoFacturaComponent implements OnInit {
    * Executes product search whenever any filter is changed.
    */
   public onFiltroChange(): void {
-    // Check if at least one filter has a value
-    if (this.producto.prenda || this.producto.talla || this.producto.institucion || 
-        this.producto.genero || this.producto.horario) {
-      const filtroDto = this.construirFiltroDto();
-      this.consultarProducto(filtroDto);
-    }
+
+    this.buscarProductos();
+    
   }
 
   /**
-   * Calls service to search for product based on filters.
-   * Closes the dialog and returns the product if one result is found.
-   * @param filtroDto - filter parameters
+   * Limpia todos los filtros y restablece la búsqueda
    */
-  private consultarProducto(filtroDto: FiltroListaProductoDto): void {
-    this.productoService.buscarProductos(filtroDto).subscribe({
+  public limpiarBusqueda(): void {
+    this.limpiarListas();
+    this.buscarProductos();
+  }
+
+  /**
+   * Restablece todas las variables de filtro a valores vacíos
+   */
+  private limpiarListas(): void {
+    this.prenda = '';
+    this.institucion = '';
+    this.horario = '';
+    this.talla = '';
+    this.genero = '';
+  }
+
+  /*
+  *buscar lista de productos conectandose al servicio
+  */
+  public buscarProductos() {
+    this.construirFiltro();//construccion del filtro
+    
+    this.productoService.buscarProductos(this.filtros).subscribe({
       next: data => {
-        if (data.respuesta.length > 0) {
-          this.dialogRef.close(data.respuesta[0]);
-        } else {
-          this.dialogRef.close(null);
-        }
+        this.mapearProductosDisponibles(data.respuesta);
       },
-      error: () => {
+      error: error => {
         alert('Error searching for product.');
       }
-    });
+    })
   }
+
+
+  /*
+  * procesar el friltro para añadir las opciones del usuario
+  */
+  private construirFiltro() {
+    this.filtros.genero = this.genero;
+    this.filtros.institucion = this.institucion;
+    this.filtros.horario = this.horario;
+    this.filtros.prenda = this.prenda;
+    this.filtros.talla = this.talla;
+  }
+
+
+
+
 
   /**
-   * Builds the product filter DTO from form inputs.
-   * @returns filter DTO for product query
+   * Mapea los productos disponibles a la interfaz ProductoDisponible.
+   * @param productos - Array de productos a mapear
    */
-  private construirFiltroDto(): FiltroListaProductoDto {
-    return {
-      prenda: this.producto.prenda,
-      talla: this.producto.talla,
-      institucion: this.producto.institucion,
-      genero: this.producto.genero,
-      horario: this.producto.horario
-    };
+  private mapearProductosDisponibles(productos: ProductoDto[]): void {
+    this.productosDisponibles = productos.map(producto => ({
+      id: producto.id,
+      prenda: producto.prenda,
+      institucion: producto.institucion,
+      talla: producto.talla,
+      horario: producto.horario,
+      genero: producto.genero,
+      precio: producto.precio,
+      cantidad: producto.cantidad
+    }));
   }
 
-  /**
-   * Validates that all form fields have values.
-   * @returns true if all fields are filled, false otherwise
-   */
-  private validateForm(): boolean {
-    const campos = Object.values(this.producto);
-    const hayCamposVacios = campos.some(valor => valor === '');
-    if (hayCamposVacios) {
-      alert('Please fill in all fields.');
-      return false;
-    }
-    return true;
-  }
-
-  /** Loads list of institutions from service */
-  private cargarInstituciones(): void {
-    this.configureTypesService.buscarInstituciones().subscribe({
-      next: data => {
-        this.instituciones = data.respuesta.map((item: any) => item.nombreTipo);
-      },
-      error: error => {
-        alert('Error loading institutions: ' + error.error.mensaje);
+  /*
+  *cargar las instituciones en la lista desplegable para la busqueda
+  */
+  private cargarInstituciones() {
+    this.configureTypesService.buscarInstituciones().subscribe(
+      {
+        next: data => {
+          this.instituciones = data.respuesta.map(configType => ({
+            value: configType.nombreTipo,
+            viewValue: configType.nombreTipo
+          }));
+        },
+        error: error => {
+          alert('Error loading institutions: ' + error.error.mensaje);
+        }
       }
-    });
+    )
   }
-
-  /** Loads list of schedules from service */
-  private cargarHorarios(): void {
-    this.configureTypesService.buscarHorarios().subscribe({
-      next: data => {
-        this.horarios = data.respuesta.map((item: any) => item.nombreTipo);
-      },
-      error: error => {
-        alert('Error loading schedules: ' + error.error.mensaje);
+  /*
+  *cargar las horarios en la lista desplegable para la busqueda
+  */
+  private cargarHorarios() {
+    this.configureTypesService.buscarHorarios().subscribe(
+      {
+        next: data => {
+          this.horarios = data.respuesta.map(configType => ({
+            value: configType.nombreTipo,
+            viewValue: configType.nombreTipo
+          }));
+        },
+        error: error => {
+          alert('Error loading tallas: ' + error.error.mensaje);
+        }
       }
-    });
+    )
   }
 
-  /** Loads list of genders from service */
-  private cargarGeneros(): void {
-    this.configureTypesService.buscarGeneros().subscribe({
-      next: data => {
-        this.generos = data.respuesta.map((item: any) => item.nombreTipo);
-      },
-      error: error => {
-        alert('Error loading genders: ' + error.error.mensaje);
+  /*
+  *cargar las prendas en la lista desplegable para la busqueda
+  */
+  private cargarPrendas() {
+    this.configureTypesService.buscarPrendas().subscribe(
+      {
+        next: data => {
+          this.prendas = data.respuesta.map(configType => ({
+            value: configType.nombreTipo,
+            viewValue: configType.nombreTipo
+          }));
+        },
+        error: error => {
+          alert('Error loading tallas: ' + error.error.mensaje);
+        }
       }
-    });
+    )
   }
 
-  /** Loads list of sizes from service */
-  private cargarTallas(): void {
-    this.configureTypesService.buscarTallas().subscribe({
-      next: data => {
-        this.tallas = data.respuesta.map((item: any) => item.nombreTipo);
-      },
-      error: error => {
-        alert('Error loading sizes: ' + error.error.mensaje);
+  /*
+  *cargar las generos en la lista desplegable para la busqueda
+  */
+  private cargarGeneros() {
+    this.configureTypesService.buscarGeneros().subscribe(
+      {
+        next: data => {
+          this.generos = data.respuesta.map(configType => ({
+            value: configType.nombreTipo,
+            viewValue: configType.nombreTipo
+          }));
+        },
+        error: error => {
+          alert('Error loading tallas: ' + error.error.mensaje);
+        }
       }
-    });
+    )
   }
 
-  /** Loads list of garments from service */
-  private cargarPrendas(): void {
-    this.configureTypesService.buscarPrendas().subscribe({
-      next: data => {
-        this.prendas = data.respuesta.map((item: any) => item.nombreTipo);
-      },
-      error: error => {
-        alert('Error loading garments: ' + error.error.mensaje);
+  /*
+  *cargar las tallas en la lista desplegable para la busqueda
+  */
+  private cargarTallas() {
+    this.configureTypesService.buscarTallas().subscribe(
+      {
+        next: data => {
+          this.tallas = data.respuesta.map(configType => ({
+            value: configType.nombreTipo,
+            viewValue: configType.nombreTipo
+          }));
+        },
+        error: error => {
+          alert('Error loading tallas: ' + error.error.mensaje);
+        }
       }
-    });
+    )
   }
 
-  /** Carga productos quemados para visualización */
-  private cargarProductosDisponibles(): void {
-    this.productosDisponibles = [
-      { id: 1, prenda: "Camisa Polo", institucion: "Colegio San José", talla: "S", horario: "Mañana", genero: "Masculino", precio: 25000, cantidad: 15 },
-      { id: 2, prenda: "Camisa Polo", institucion: "Colegio San José", talla: "M", horario: "Mañana", genero: "Masculino", precio: 25000, cantidad: 12 },
-      { id: 3, prenda: "Camisa Polo", institucion: "Colegio San José", talla: "L", horario: "Mañana", genero: "Masculino", precio: 25000, cantidad: 8 },
-      { id: 4, prenda: "Camisa Polo", institucion: "Liceo Nacional", talla: "S", horario: "Tarde", genero: "Femenino", precio: 28000, cantidad: 20 },
-      { id: 5, prenda: "Pantalón Escolar", institucion: "Colegio San José", talla: "M", horario: "Mañana", genero: "Masculino", precio: 35000, cantidad: 6 },
-      { id: 6, prenda: "Pantalón Escolar", institucion: "Liceo Nacional", talla: "L", horario: "Tarde", genero: "Femenino", precio: 38000, cantidad: 4 },
-      { id: 7, prenda: "Zapatos Colegiales", institucion: "Universidad Central", talla: "38", horario: "Completo", genero: "Unisex", precio: 45000, cantidad: 3 },
-      { id: 8, prenda: "Zapatos Colegiales", institucion: "Universidad Central", talla: "40", horario: "Completo", genero: "Unisex", precio: 45000, cantidad: 7 },
-      { id: 9, prenda: "Chaqueta Deportiva", institucion: "Instituto Técnico", talla: "M", horario: "Mañana", genero: "Masculino", precio: 55000, cantidad: 2 },
-      { id: 10, prenda: "Falda Escolar", institucion: "Liceo Femenino", talla: "S", horario: "Tarde", genero: "Femenino", precio: 28000, cantidad: 14 }
-    ];
-  }
 
-  /** Cambia entre vista grid y tabla */
-  public toggleView(view: 'grid' | 'table'): void {
-    this.currentView = view;
-  }
 
-  /** Alterna la selección de un producto */
-  public toggleProducto(productId: number): void {
-    if (this.productosSeleccionados.has(productId)) {
-      this.productosSeleccionados.delete(productId);
-    } else {
-      this.productosSeleccionados.set(productId, 1);
-      this.agregarProductoAFactura(productId);
-    }
-  }
 
-  /** Cambia la cantidad de un producto seleccionado */
-  public cambiarCantidad(productId: number, delta: number): void {
-    const producto = this.productosDisponibles.find(p => p.id === productId);
-    if (!producto) return;
-
-    const cantidadActual = this.productosSeleccionados.get(productId) || 1;
-    const nuevaCantidad = Math.max(1, Math.min(producto.cantidad, cantidadActual + delta));
-    
-    this.productosSeleccionados.set(productId, nuevaCantidad);
-    this.agregarProductoAFactura(productId);
-  }
-
-  /** Actualiza la cantidad desde el input */
-  public actualizarCantidad(productId: number, event: any): void {
-    const producto = this.productosDisponibles.find(p => p.id === productId);
-    if (!producto) return;
-
-    const cantidad = Math.max(1, Math.min(producto.cantidad, parseInt(event.target.value) || 1));
-    this.productosSeleccionados.set(productId, cantidad);
-    this.agregarProductoAFactura(productId);
-  }
-
+  
   /** Obtiene la clase CSS para el indicador de stock */
   public getStockClass(cantidad: number): string {
     if (cantidad <= 5) return 'stock-low';
@@ -277,19 +316,28 @@ export class AgregarProductoFacturaComponent implements OnInit {
     return 'stock-good';
   }
 
+
+
+
+
   /** Calcula el total de unidades seleccionadas */
   public getTotalUnidades(): number {
-    return Array.from(this.productosSeleccionados.values()).reduce((sum, qty) => sum + qty, 0);
+    return Array.from(this.productosSeleccionados.values()).reduce((sum, producto) => {
+      // Si producto es un objeto ProductoDto con una propiedad cantidadSeleccionada
+      // ajusta aquí según la estructura real de ProductoDto
+      return sum + (typeof producto === 'object' && producto !== null && 'cantidadSeleccionada' in producto
+        ? Number(producto.cantidadSeleccionada) || 0
+        : 0);
+    }, 0);
   }
 
-  /** Función placeholder para agregar producto a factura */
-  private agregarProductoAFactura(productId: number): void {
-    const producto = this.productosDisponibles.find(p => p.id === productId);
-    const cantidad = this.productosSeleccionados.get(productId);
-    
-    if (producto && cantidad) {
-      console.log(`Producto agregado a factura: ${producto.prenda} - Cantidad: ${cantidad}`);
-      // Aquí iría la lógica real para agregar a la factura
-    }
+
+  /*
+  *agrega los productos seleccionados a la factura
+  */
+  public agregar() {
+    this.dialogRef.close(this.productosSeleccionados);
   }
+
+
 }

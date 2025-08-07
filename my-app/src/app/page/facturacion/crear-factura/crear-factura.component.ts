@@ -184,7 +184,10 @@ export class CrearFacturaComponent {
     });
   }
 
+
+
   /**
+   * 
    * Opens modal to add a new product to the invoice
    */
   public agregarProducto(): void {
@@ -192,11 +195,13 @@ export class CrearFacturaComponent {
 
     dialogRef.afterClosed().subscribe(respuesta => {
       if (respuesta) {
-        this.renderizarProducto(respuesta);
-        this.toastService.showSuccess('Producto agregado');
+        this.renderizarProductos(respuesta);
+        this.toastService.showSuccess('Productos agregados');
       }
     });
   }
+
+
 
   /**
    * Retrieves client information by ID and assigns it
@@ -470,31 +475,67 @@ export class CrearFacturaComponent {
     }
   
       /**
-   * Adds product to UI table and cart
-   * @param producto - product DTO selected by the user
-   */
-  private renderizarProducto(producto: ProductoDto): void {
-    this.agregarProductoAlCarrito(producto);
+     * Adds product to UI table and cart
+     * @param producto - product DTO selected by the user
+     */
+    private renderizarProducto(producto: ProductoDto): void {
+      
+      this.agregarProductoAlCarrito(producto);
 
-    const nuevoProducto = {
-      id: this.idProducto++,
-      Descripcion: producto.prenda,
-      Talla: producto.talla,
-      Horario: producto.horario,
-      Genero: producto.genero,
-      Institucion: producto.institucion,
-      Estado: 'ENTREGADO',
-      Precio: producto.precio,
-      descripcionExtra: producto.descripcion
-    };
+      const nuevoProducto = {
+        id: this.idProducto++,
+        Descripcion: producto.prenda,
+        Talla: producto.talla,
+        Horario: producto.horario,
+        Genero: producto.genero,
+        Institucion: producto.institucion,
+        Estado: 'ENTREGADO',
+        Precio: producto.precio,
+        descripcionExtra: producto.descripcion
+      };
 
-    this.listaProductos.data.push(nuevoProducto);
-    this.listaProductos._updateChangeSubscription();
-    this.actualizarValorTotalFactura(producto.precio);
+      this.listaProductos.data.push(nuevoProducto);
+      this.listaProductos._updateChangeSubscription();
+      this.actualizarValorTotalFactura(producto.precio);
 
-    this.actualizarLocalStorage();
-  }
+      this.actualizarLocalStorage();
+    }
+
+
+
+    /**
+     * Adds products to UI table and cart
+     * @param productos - array of product DTOs selected by the user
+     */
+    private renderizarProductos(productos: ProductoDto[]): void {
+        for (const producto of productos) {
+            this.agregarProductoAlCarrito(producto);
+
+            const nuevoProducto = {
+                id: this.idProducto++,
+                Descripcion: producto.prenda,
+                Talla: producto.talla,
+                Horario: producto.horario,
+                Genero: producto.genero,
+                Institucion: producto.institucion,
+                Estado: 'ENTREGADO',
+                Precio: producto.precio,
+                descripcionExtra: producto.descripcion
+            };
+
+            this.listaProductos.data.push(nuevoProducto);
+        }
+        this.listaProductos._updateChangeSubscription();
+        // Suma el precio de todos los productos agregados
+        for (const producto of productos) {
+            this.actualizarValorTotalFactura(producto.precio);
+        }
+        this.actualizarLocalStorage();
+    }
+    
   
+
+
     /**
      * Adds product data to the internal cart list
      * @param producto - product DTO to be added

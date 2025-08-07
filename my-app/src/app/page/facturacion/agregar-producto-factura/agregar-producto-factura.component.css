@@ -109,6 +109,30 @@
   flex-shrink: 0;
 }
 
+/* ========================================
+   ESTILOS PARA LOS BOTONES DE ACCIÓN
+   ======================================== */
+.filter-actions {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+  justify-content: flex-end;
+}
+
+.filter-actions .btn {
+  padding: 16px 28px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+}
+
+.filter-actions .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
 .select-group {
   display: flex;
   flex-direction: column;
@@ -223,8 +247,8 @@
 
 .products-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 24px;
   margin-bottom: 20px;
   flex: 1;
   overflow-y: auto;
@@ -233,12 +257,13 @@
 
 .product-card {
   border: 2px solid #e2e8f0;
-  border-radius: 14px;
-  padding: 20px;
+  border-radius: 16px;
+  padding: 28px;
   cursor: pointer;
   transition: all 0.3s;
   position: relative;
   background: white;
+  min-height: 280px;
 }
 
 .product-card:hover {
@@ -286,19 +311,21 @@
 }
 
 .product-name {
-  font-size: 20px;
-  font-weight: 600;
+  font-size: 24px;
+  font-weight: 700;
   color: #1e293b;
-  margin-bottom: 5px;
+  margin-bottom: 8px;
+  line-height: 1.2;
 }
 
 .product-institution {
   color: #64748b;
-  font-size: 15px;
+  font-size: 16px;
+  font-weight: 500;
 }
 
 .product-price {
-  font-size: 22px;
+  font-size: 26px;
   font-weight: 700;
   color: #27ae60;
 }
@@ -306,31 +333,33 @@
 .product-attributes {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-bottom: 15px;
+  gap: 12px;
+  margin-bottom: 20px;
 }
 
 .product-attribute {
-  font-size: 13px;
+  font-size: 15px;
   color: #64748b;
+  padding: 8px 0;
 }
 
 .product-attribute strong {
   color: #1e293b;
   font-weight: 600;
+  font-size: 16px;
 }
 
 .stock-indicator {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
 .stock-badge {
-  padding: 6px 12px;
+  padding: 8px 16px;
   border-radius: 12px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
 }
 
@@ -382,10 +411,10 @@
 
 .add-to-cart-btn {
   width: 100%;
-  padding: 14px 18px;
+  padding: 16px 20px;
   border: 2px solid #6ee7b7;
   border-radius: 12px;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;

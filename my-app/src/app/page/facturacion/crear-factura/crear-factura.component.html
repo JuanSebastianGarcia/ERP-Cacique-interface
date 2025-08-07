@@ -104,7 +104,7 @@
                   </option>
                 </select>
               </td>
-              <td class="td-precio">${{element.Precio.toLocaleString()}}</td>
+              <td class="td-precio">${{element.Precio?.toLocaleString() || '0'}}</td>
               <td class="td-descripcion">
                 <button 
                   class="descripcion-btn" 
@@ -147,7 +147,7 @@
         </div>
         <div class="total-section">
           <div class="total-label">Valor total factura</div>
-          <div class="total-value">${{valorTotalFactura.toLocaleString()}}</div>
+          <div class="total-value">${{valorTotalFactura || '0'}}</div>
         </div>
       </div>
     </div>
@@ -178,8 +178,17 @@
       <!-- Campo de valor a pagar -->
       <div class="form-group">
         <label class="form-label">Valor a pagar</label>
-        <input type="number" class="form-input" id="paymentAmount" placeholder="0" min="0" [(ngModel)]="valorPago" name="valorPago" (input)="valorPago = valorPago < 0 ? 0 : valorPago">
+        <input
+          type="number"
+          class="form-input"
+          id="paymentAmount"
+          placeholder="0"
+          [(ngModel)]="valorPago"
+          name="valorPago"
+        />
       </div>
+
+      
     </div>
   </div>
 
