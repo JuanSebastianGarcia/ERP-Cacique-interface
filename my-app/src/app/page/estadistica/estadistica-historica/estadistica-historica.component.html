@@ -1,0 +1,242 @@
+<!-- ======================================== -->
+<!-- COMPONENTE: ESTADÍSTICAS HISTÓRICAS     -->
+<!-- Dashboard de KPIs y análisis financiero  -->
+<!-- ======================================== -->
+
+<div class="main-content">
+  
+  <!-- ======================================== -->
+  <!-- SECCIÓN 1: HEADER PRINCIPAL             -->
+  <!-- Título y descripción del dashboard       -->
+  <!-- ======================================== -->
+  <div class="page-header">
+    <h1 class="page-title">Estadísticas Históricas</h1>
+    <p class="page-subtitle">Dashboard de rendimiento financiero y análisis de productos</p>
+  </div>
+
+  <!-- ======================================== -->
+  <!-- SECCIÓN 2: INDICADORES PRINCIPALES (KPIs) -->
+  <!-- Tarjetas con métricas clave del negocio  -->
+  <!-- ======================================== -->
+  <div class="kpis-section">
+    <h3 class="section-title">Indicadores Principales</h3>
+    
+    <!-- Grid de 4 tarjetas KPI -->
+    <div class="kpis-grid">
+      
+      <!-- KPI 1: Ingresos Totales -->
+      <div class="kpi-card">
+        <h4 class="kpi-label">Ingresos Totales</h4>
+        <div class="kpi-value">{{ ingresosTotales }}</div>
+      </div>
+      
+      <!-- KPI 2: Gastos Totales -->
+      <div class="kpi-card">
+        <h4 class="kpi-label">Gastos Totales</h4>
+        <div class="kpi-value">{{ gastosTotales }}</div>
+      </div>
+      
+      <!-- KPI 3: Ingresos Netos -->
+      <div class="kpi-card">
+        <h4 class="kpi-label">Ingresos Netos</h4>
+        <div class="kpi-value">{{ ingresosNetos}}</div>
+      </div>
+      
+      <!-- KPI 4: Productos Vendidos -->
+      <div class="kpi-card">
+        <h4 class="kpi-label">Productos Vendidos</h4>
+        <div class="kpi-value">{{ productosVendidos }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================== -->
+  <!-- SECCIÓN 3: GRÁFICOS HISTÓRICOS          -->
+  <!-- Controles y visualizaciones de datos     -->
+  <!-- ======================================== -->
+  <div class="charts-section">
+    <h3 class="section-title">Gráficos Históricos</h3>
+    
+    <!-- Botones de control para cambiar tipo de datos -->
+    <div class="chart-controls">
+      <button class="chart-button" 
+              [class.active]="tipoDatosGrafico === 'ingresos'"
+              (click)="cambiarTipoGrafico('ingresos')">
+        Ingresos Brutos
+      </button>
+      <button class="chart-button" 
+              [class.active]="tipoDatosGrafico === 'gastos'"
+              (click)="cambiarTipoGrafico('gastos')">
+        Gastos
+      </button>
+      <button class="chart-button" 
+              [class.active]="tipoDatosGrafico === 'neto'"
+              (click)="cambiarTipoGrafico('neto')">
+        Ingresos Netos
+      </button>
+    </div>
+
+    <!-- Grid de 3 gráficos históricos -->
+    <div class="charts-grid">
+      
+      <!-- Gráfico 1: Últimos 30 días -->
+      <div class="chart-card">
+        <h4 class="chart-title">Últimos 30 días</h4>
+        <div class="chart-container">
+          <!-- Estado de carga -->
+          <div *ngIf="cargando" class="loading">
+            <div class="spinner"></div>
+            Cargando gráfico...
+          </div>
+          <!-- Canvas del gráfico -->
+          <canvas *ngIf="!cargando" id="chart30Days"></canvas>
+        </div>
+      </div>
+      
+      <!-- Gráfico 2: Últimos 12 meses -->
+      <div class="chart-card">
+        <h4 class="chart-title">Últimos 12 meses</h4>
+        <div class="chart-container">
+          <!-- Estado de carga -->
+          <div *ngIf="cargando" class="loading">
+            <div class="spinner"></div>
+            Cargando gráfico...
+          </div>
+          <!-- Canvas del gráfico -->
+          <canvas *ngIf="!cargando" id="chart12Months"></canvas>
+        </div>
+      </div>
+      
+      <!-- Gráfico 3: Histórico anual -->
+      <div class="chart-card">
+        <h4 class="chart-title">Histórico anual</h4>
+        <div class="chart-container">
+          <!-- Estado de carga -->
+          <div *ngIf="cargando" class="loading">
+            <div class="spinner"></div>
+            Cargando gráfico...
+          </div>
+          <!-- Canvas del gráfico -->
+          <canvas *ngIf="!cargando" id="chartYearly"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================== -->
+  <!-- SECCIÓN 4: ANÁLISIS DE PRODUCTOS        -->
+  <!-- Panel de controles + gráfico de análisis -->
+  <!-- ======================================== -->
+  <div class="analysis-section">
+    
+    <!-- Panel izquierdo: Controles de análisis -->
+    <div class="analysis-controls">
+      <h3 class="control-title">Análisis de productos</h3>
+      
+      <!-- Grupo de opciones de criterios -->
+      <div class="control-group">
+        <label class="control-label">Seleccionar criterio:</label>
+        
+        <!-- Opción 1: Prenda -->
+        <div class="control-option" 
+             [class.active]="criterioSeleccionado === 'prenda'"
+             (click)="cambiarCriterioAnalisis('prenda')">
+          <input type="radio" 
+                 name="criteria" 
+                 value="prenda" 
+                 [checked]="criterioSeleccionado === 'prenda'">
+          <span>Prenda</span>
+        </div>
+        
+        <!-- Opción 2: Institución -->
+        <div class="control-option" 
+             [class.active]="criterioSeleccionado === 'institucion'"
+             (click)="cambiarCriterioAnalisis('institucion')">
+          <input type="radio" 
+                 name="criteria" 
+                 value="institucion" 
+                 [checked]="criterioSeleccionado === 'institucion'">
+          <span>Institución</span>
+        </div>
+        
+        <!-- Opción 3: Talla -->
+        <div class="control-option" 
+             [class.active]="criterioSeleccionado === 'talla'"
+             (click)="cambiarCriterioAnalisis('talla')">
+          <input type="radio" 
+                 name="criteria" 
+                 value="talla" 
+                 [checked]="criterioSeleccionado === 'talla'">
+          <span>Talla</span>
+        </div>
+        
+        <!-- Opción 4: Género -->
+        <div class="control-option" 
+             [class.active]="criterioSeleccionado === 'genero'"
+             (click)="cambiarCriterioAnalisis('genero')">
+          <input type="radio" 
+                 name="criteria" 
+                 value="genero" 
+                 [checked]="criterioSeleccionado === 'genero'">
+          <span>Género</span>
+        </div>
+        
+        <!-- Opción 5: Horario -->
+        <div class="control-option" 
+             [class.active]="criterioSeleccionado === 'horario'"
+             (click)="cambiarCriterioAnalisis('horario')">
+          <input type="radio" 
+                 name="criteria" 
+                 value="horario" 
+                 [checked]="criterioSeleccionado === 'horario'">
+          <span>Horario</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Panel derecho: Gráfico y resumen de análisis -->
+    <div class="analysis-chart">
+      <!-- Título dinámico según criterio seleccionado -->
+      <h3 class="analysis-title">
+        Ingresos por {{ criterioSeleccionado === 'prenda' ? 'Prenda' : 
+                        criterioSeleccionado === 'institucion' ? 'Institución' :
+                        criterioSeleccionado === 'talla' ? 'Talla' :
+                        criterioSeleccionado === 'genero' ? 'Género' : 'Horario' }}
+      </h3>
+      
+      <!-- Contenedor del gráfico de análisis -->
+      <div class="chart-container">
+        <!-- Estado de carga -->
+        <div *ngIf="cargando" class="loading">
+          <div class="spinner"></div>
+          Cargando análisis...
+        </div>
+        <!-- Canvas del gráfico de pie -->
+        <canvas *ngIf="!cargando" id="pieChart"></canvas>
+      </div>
+      
+      <!-- Resumen de datos del análisis -->
+      <div class="analysis-summary">
+        <h4 class="summary-title">Resumen</h4>
+        <div class="summary-content">
+          <!-- Estado de carga del resumen -->
+          <div *ngIf="cargando">Cargando resumen...</div>
+          <!-- Datos del resumen -->
+          <div *ngIf="!cargando">
+            • Total de ventas: {{ productosVendidos | number }} unidades<br>
+            • Valor total: {{ ingresosTotales | currency:'USD':'symbol':'1.0-0' }}<br>
+            • Categoría principal: Cargando...
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================== -->
+  <!-- SECCIÓN 5: MENSAJE DE ERROR             -->
+  <!-- Se muestra solo cuando hay errores      -->
+  <!-- ======================================== -->
+  <div *ngIf="error" class="error-message">
+    {{ error }}
+  </div>
+</div>

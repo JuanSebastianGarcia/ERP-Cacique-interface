@@ -27,5 +27,10 @@ export const routes: Routes = [
         path: 'gastos',
         loadChildren: () => import('./page/gasto/gasto.route').then(m => m.GASTOS_ROUTES),
         canActivateChild: [authGuard, accessControlGuard]
+    },
+    {
+        path:'estadisticas',
+        loadChildren: () => import('./page/estadistica/estadistica.route').then(m => m.ESTADISTICA_ROUTES),
+        canActivateChild: [authGuard, accessControlGuard]
     }
 ];
