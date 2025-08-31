@@ -1,7 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { EstadisticaService } from '../../../core/service/estadistica.service';
+import { Chart, ChartConfiguration, ChartType } from 'chart.js';
+import { registerables } from 'chart.js';
+
+// Registrar todos los componentes de Chart.js
+Chart.register(...registerables);
 
 @Component({
   selector: 'app-estadistica-historica',
@@ -10,7 +15,13 @@ import { EstadisticaService } from '../../../core/service/estadistica.service';
   templateUrl: './estadistica-historica.component.html',
   styleUrl: './estadistica-historica.component.css'
 })
-export class EstadisticaHistoricaComponent implements OnInit {
+export class EstadisticaHistoricaComponent implements OnInit, AfterViewInit, OnDestroy {
+
+  // Referencias a los elementos canvas de los gráficos
+  @ViewChild('chart30Days', { static: false }) chart30DaysRef!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('chart12Months', { static: false }) chart12MonthsRef!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('chartYearly', { static: false }) chartYearlyRef!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('chartPie', { static: false }) chartPieRef!: ElementRef<HTMLCanvasElement>;
 
   // Variables para KPIs
   ingresosTotales: number = 0;
@@ -46,10 +57,36 @@ export class EstadisticaHistoricaComponent implements OnInit {
   cargando: boolean = false;
   error: string = '';
 
+  // Instancias de los gráficos
+  private chart30Days: Chart | null = null;
+  private chart12Months: Chart | null = null;
+  private chartYearly: Chart | null = null;
+  private chartPie: Chart | null = null;
+
   constructor(private estadisticaService: EstadisticaService) { }
 
   ngOnInit(): void {
     this.cargarDatos();
+  }
+
+  ngAfterViewInit(): void {
+    // Los gráficos se inicializarán después de que se carguen los datos
+  }
+
+  ngOnDestroy(): void {
+    // Limpiar los gráficos al destruir el componente
+    if (this.chart30Days) {
+      this.chart30Days.destroy();
+    }
+    if (this.chart12Months) {
+      this.chart12Months.destroy();
+    }
+    if (this.chartYearly) {
+      this.chartYearly.destroy();
+    }
+    if (this.chartPie) {
+      this.chartPie.destroy();
+    }
   }
 
   /**
@@ -58,8 +95,8 @@ export class EstadisticaHistoricaComponent implements OnInit {
   private cargarDatos(): void {
     this.cargando = true;
     this.cargarKPIs();
-    this.cargarDatosGraficos();
-    this.cargarDatosAnalisis();
+    this.cargarDatosGraficos("INGRESOS");
+    this.cargarDatosAgrupados();
     this.cargando = false;
   }
 
@@ -82,7 +119,7 @@ export class EstadisticaHistoricaComponent implements OnInit {
   /**
    * Mapea los datos de los KPIs
    * @param data - Datos de los KPIs
-   */
+   **/
   private mapearKPIs(data: any): void {
     this.ingresosTotales = data.respuesta.ingresosTotalesMesActual;
     this.gastosTotales = data.respuesta.gastosTotalesMesActual;
@@ -93,23 +130,385 @@ export class EstadisticaHistoricaComponent implements OnInit {
   /**
    * Carga los datos para los gráficos históricos
    */
-  private cargarDatosGraficos(): void {
-    // TODO: Implementar lógica para cargar datos de gráficos
+  private cargarDatosGraficos(tipo: string): void {
+    
+    this.estadisticaService.getDatosGraficos(tipo).subscribe({
+      next: data => {
+        this.mapearDatosGraficos(data);
+      },
+      error: error => {
+        console.error('Error al cargar los datos de gráficos:', error);
+      }
+    })
   }
+
+
+  /**
+   * Mapea los datos de los gráficos
+   * @param data - Datos de los gráficos
+   */
+  private mapearDatosGraficos(data: any): void {
+    if (data && data.respuesta) {
+      // Mapear datos de gráfico diario (últimos 30 días)
+      if (data.respuesta.graficaDiaria) {
+        this.datosGrafico30Dias = data.respuesta.graficaDiaria.map((item: any) => ({
+          fecha: item.fecha,
+          valor: item.valor
+        }));
+        this.etiquetas30Dias = this.datosGrafico30Dias.map(item => this.formatearFecha(item.fecha));
+      }
+
+      // Mapear datos de gráfico mensual (últimos 12 meses)
+      if (data.respuesta.graficaMensual) {
+        this.datosGrafico12Meses = data.respuesta.graficaMensual.map((item: any) => ({
+          mes: item.mes,
+          valor: item.valor
+        }));
+        this.etiquetas12Meses = this.datosGrafico12Meses.map(item => this.traducirMes(item.mes));
+      }
+
+      // Mapear datos de gráfico anual
+      if (data.respuesta.graficaAnual) {
+        this.datosGraficoAnual = data.respuesta.graficaAnual.map((item: any) => ({
+          anio: item.anio,
+          valor: item.valor
+        }));
+        this.etiquetasAnual = this.datosGraficoAnual.map(item => item.anio);
+      }
+
+      // Cargar los gráficos después de mapear los datos
+      setTimeout(() => {
+        this.cargarGrafico30Dias();
+        this.cargarGrafico12Meses();
+        this.cargarGraficoAnual();
+      }, 100);
+    }
+  }
+
+  
+  /**
+   * Formatea una fecha para mostrar en el gráfico
+   * @param fecha - Fecha en formato string
+   * @returns Fecha formateada
+   */
+  private formatearFecha(fecha: string): string {
+    const date = new Date(fecha);
+    return date.toLocaleDateString('es-ES', { 
+      day: '2-digit', 
+      month: '2-digit' 
+    });
+  }
+
+  /**
+   * Traduce el nombre del mes del inglés al español
+   * @param mes - Mes en inglés
+   * @returns Mes en español
+   */
+  private traducirMes(mes: string): string {
+    const meses: { [key: string]: string } = {
+      'JANUARY': 'Enero',
+      'FEBRUARY': 'Febrero',
+      'MARCH': 'Marzo',
+      'APRIL': 'Abril',
+      'MAY': 'Mayo',
+      'JUNE': 'Junio',
+      'JULY': 'Julio',
+      'AUGUST': 'Agosto',
+      'SEPTEMBER': 'Septiembre',
+      'OCTOBER': 'Octubre',
+      'NOVEMBER': 'Noviembre',
+      'DECEMBER': 'Diciembre'
+    };
+    return meses[mes] || mes;
+  }
+
+  /**
+   * Carga el gráfico de los últimos 30 días
+   */
+  private cargarGrafico30Dias(): void {
+    if (!this.chart30DaysRef || !this.chart30DaysRef.nativeElement) {
+      return;
+    }
+
+    // Destruir gráfico existente si existe
+    if (this.chart30Days) {
+      this.chart30Days.destroy();
+    }
+
+    const ctx = this.chart30DaysRef.nativeElement.getContext('2d');
+    if (!ctx) return;
+
+    const config: ChartConfiguration<'line'> = {
+      type: 'line',
+      data: {
+        labels: this.etiquetas30Dias,
+        datasets: [{
+          label: 'Ingresos',
+          data: this.datosGrafico30Dias.map(item => item.valor),
+          borderColor: 'rgb(75, 192, 192)',
+          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          tension: 0.1,
+          fill: true
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Ingresos Últimos 30 Días'
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              callback: function(value) {
+                return '$' + value.toLocaleString('es-CO');
+              }
+            }
+          }
+        }
+      }
+    };
+
+    this.chart30Days = new Chart(ctx, config);
+  }
+
+  /**
+   * Carga el gráfico de los últimos 12 meses
+   */
+  private cargarGrafico12Meses(): void {
+    if (!this.chart12MonthsRef || !this.chart12MonthsRef.nativeElement) {
+      return;
+    }
+
+    // Destruir gráfico existente si existe
+    if (this.chart12Months) {
+      this.chart12Months.destroy();
+    }
+
+    const ctx = this.chart12MonthsRef.nativeElement.getContext('2d');
+    if (!ctx) return;
+
+    const config: ChartConfiguration<'bar'> = {
+      type: 'bar',
+      data: {
+        labels: this.etiquetas12Meses,
+        datasets: [{
+          label: 'Ingresos Mensuales',
+          data: this.datosGrafico12Meses.map(item => item.valor),
+          backgroundColor: 'rgba(54, 162, 235, 0.8)',
+          borderColor: 'rgb(54, 162, 235)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Ingresos Últimos 12 Meses'
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              callback: function(value) {
+                return '$' + value.toLocaleString('es-CO');
+              }
+            }
+          }
+        }
+      }
+    };
+
+    this.chart12Months = new Chart(ctx, config);
+  }
+
+  /**
+   * Carga el gráfico anual
+   */
+  private cargarGraficoAnual(): void {
+    if (!this.chartYearlyRef || !this.chartYearlyRef.nativeElement) {
+      return;
+    }
+
+    // Destruir gráfico existente si existe
+    if (this.chartYearly) {
+      this.chartYearly.destroy();
+    }
+
+    const ctx = this.chartYearlyRef.nativeElement.getContext('2d');
+    if (!ctx) return;
+
+    const config: ChartConfiguration<'doughnut'> = {
+      type: 'doughnut',
+      data: {
+        labels: this.etiquetasAnual,
+        datasets: [{
+          label: 'Ingresos Anuales',
+          data: this.datosGraficoAnual.map(item => item.valor),
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.8)',
+            'rgba(54, 162, 235, 0.8)',
+            'rgba(255, 205, 86, 0.8)',
+            'rgba(75, 192, 192, 0.8)',
+            'rgba(153, 102, 255, 0.8)'
+          ],
+          borderColor: [
+            'rgb(255, 99, 132)',
+            'rgb(54, 162, 235)',
+            'rgb(255, 205, 86)',
+            'rgb(75, 192, 192)',
+            'rgb(153, 102, 255)'
+          ],
+          borderWidth: 2
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Ingresos por Año'
+          },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                const label = context.label || '';
+                const value = context.parsed;
+                return label + ': $' + value.toLocaleString('es-CO');
+              }
+            }
+          }
+        }
+      }
+    };
+
+    this.chartYearly = new Chart(ctx, config);
+  }
+
+  /**
+   * Carga el gráfico circular para el análisis de productos
+   */
+  private cargarGraficoCircular(): void {
+    if (!this.chartPieRef || !this.chartPieRef.nativeElement) {
+      return;
+    }
+
+    // Destruir gráfico existente si existe
+    if (this.chartPie) {
+      this.chartPie.destroy();
+    }
+
+    const ctx = this.chartPieRef.nativeElement.getContext('2d');
+    if (!ctx) return;
+
+    const config: ChartConfiguration<'pie'> = {
+      type: 'pie',
+      data: {
+        labels: this.etiquetasPie,
+        datasets: [{
+          label: 'Ingresos por ' + this.criterioSeleccionado,
+          data: this.datosGraficoPie.map(item => item.valor),
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.8)',
+            'rgba(54, 162, 235, 0.8)',
+            'rgba(255, 205, 86, 0.8)',
+            'rgba(75, 192, 192, 0.8)',
+            'rgba(153, 102, 255, 0.8)',
+            'rgba(255, 159, 64, 0.8)',
+            'rgba(199, 199, 199, 0.8)',
+            'rgba(83, 102, 255, 0.8)'
+          ],
+          borderColor: [
+            'rgb(255, 99, 132)',
+            'rgb(54, 162, 235)',
+            'rgb(255, 205, 86)',
+            'rgb(75, 192, 192)',
+            'rgb(153, 102, 255)',
+            'rgb(255, 159, 64)',
+            'rgb(199, 199, 199)',
+            'rgb(83, 102, 255)'
+          ],
+          borderWidth: 2
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Ingresos por ' + this.criterioSeleccionado.charAt(0).toUpperCase() + this.criterioSeleccionado.slice(1)
+          },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                const label = context.label || '';
+                const value = context.parsed;
+                const total = context.dataset.data.reduce((a: number, b: number) => a + b, 0);
+                const percentage = ((value / total) * 100).toFixed(1);
+                return label + ': $' + value.toLocaleString('es-CO') + ' (' + percentage + '%)';
+              }
+            }
+          }
+        }
+      }
+    };
+
+    this.chartPie = new Chart(ctx, config);
+  }
+
 
   /**
    * Carga los datos para el análisis de productos
    */
-  private cargarDatosAnalisis(): void {
-    // TODO: Implementar lógica para cargar datos de análisis
+  private cargarDatosAgrupados(): void {
+    this.estadisticaService.getIngresosAgrupados(this.criterioSeleccionado).subscribe({
+      next: data => {
+        console.log(data);
+        this.mapearDatosAgrupados(data);
+      },
+      error: error => {
+        console.error('Error al cargar los datos de agrupados:', error);
+      }
+    })
   }
+
+
+  /**
+   * Mapea los datos de los datos agrupados
+   * @param data - Datos de los datos agrupados
+   */
+  private mapearDatosAgrupados(data: any): void {
+    if (data && data.respuesta && data.respuesta.Detalles) {
+      this.datosGraficoPie = data.respuesta.Detalles.map((item: any) => ({
+        etiqueta: item.TipoDato,
+        valor: item.Valor
+      }));
+      this.etiquetasPie = this.datosGraficoPie.map(item => item.etiqueta);
+      
+      // Cargar el gráfico circular después de mapear los datos
+      setTimeout(() => {
+        this.cargarGraficoCircular();
+      }, 100);
+    }
+  }
+
+  
 
   /**
    * Actualiza el tipo de datos del gráfico
    */
   public cambiarTipoGrafico(tipo: string): void {
     this.tipoDatosGrafico = tipo;
-    // TODO: Implementar lógica para actualizar gráficos
+    this.cargarDatosGraficos(tipo);
   }
 
   /**
@@ -117,7 +516,7 @@ export class EstadisticaHistoricaComponent implements OnInit {
    */
   public cambiarCriterioAnalisis(criterio: string): void {
     this.criterioSeleccionado = criterio;
-    // TODO: Implementar lógica para actualizar análisis
+    this.cargarDatosAgrupados();
   }
 
   /**

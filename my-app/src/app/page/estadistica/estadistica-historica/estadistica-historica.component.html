@@ -24,23 +24,23 @@
     <!-- Grid de 4 tarjetas KPI -->
     <div class="kpis-grid">
       
-      <!-- KPI 1: Ingresos Totales -->
-      <div class="kpi-card">
-        <h4 class="kpi-label">Ingresos Totales</h4>
-        <div class="kpi-value">{{ ingresosTotales }}</div>
-      </div>
-      
-      <!-- KPI 2: Gastos Totales -->
-      <div class="kpi-card">
-        <h4 class="kpi-label">Gastos Totales</h4>
-        <div class="kpi-value">{{ gastosTotales }}</div>
-      </div>
-      
-      <!-- KPI 3: Ingresos Netos -->
-      <div class="kpi-card">
-        <h4 class="kpi-label">Ingresos Netos</h4>
-        <div class="kpi-value">{{ ingresosNetos}}</div>
-      </div>
+             <!-- KPI 1: Ingresos Totales -->
+       <div class="kpi-card">
+         <h4 class="kpi-label">Ingresos del mes</h4>
+         <div class="kpi-value">{{ ingresosTotales | currency:'COP':'$':'1.0-0' }}</div>
+       </div>
+       
+       <!-- KPI 2: Gastos Totales -->
+       <div class="kpi-card">
+         <h4 class="kpi-label">Gastos del mes</h4>
+         <div class="kpi-value">{{ gastosTotales | currency:'COP':'$':'1.0-0' }}</div>
+       </div>
+       
+       <!-- KPI 3: Ingresos Netos -->
+       <div class="kpi-card">
+         <h4 class="kpi-label">Ingresos del mes</h4>
+         <div class="kpi-value">{{ ingresosNetos | currency:'COP':'$':'1.0-0' }}</div>
+       </div>
       
       <!-- KPI 4: Productos Vendidos -->
       <div class="kpi-card">
@@ -61,17 +61,17 @@
     <div class="chart-controls">
       <button class="chart-button" 
               [class.active]="tipoDatosGrafico === 'ingresos'"
-              (click)="cambiarTipoGrafico('ingresos')">
+              (click)="cambiarTipoGrafico('INGRESOS')">
         Ingresos Brutos
       </button>
       <button class="chart-button" 
               [class.active]="tipoDatosGrafico === 'gastos'"
-              (click)="cambiarTipoGrafico('gastos')">
+              (click)="cambiarTipoGrafico('GASTOS')">
         Gastos
       </button>
       <button class="chart-button" 
               [class.active]="tipoDatosGrafico === 'neto'"
-              (click)="cambiarTipoGrafico('neto')">
+              (click)="cambiarTipoGrafico('UTILIDADES')">
         Ingresos Netos
       </button>
     </div>
@@ -89,7 +89,7 @@
             Cargando gráfico...
           </div>
           <!-- Canvas del gráfico -->
-          <canvas *ngIf="!cargando" id="chart30Days"></canvas>
+          <canvas *ngIf="!cargando" #chart30Days></canvas>
         </div>
       </div>
       
@@ -103,7 +103,7 @@
             Cargando gráfico...
           </div>
           <!-- Canvas del gráfico -->
-          <canvas *ngIf="!cargando" id="chart12Months"></canvas>
+          <canvas *ngIf="!cargando" #chart12Months></canvas>
         </div>
       </div>
       
@@ -117,7 +117,7 @@
             Cargando gráfico...
           </div>
           <!-- Canvas del gráfico -->
-          <canvas *ngIf="!cargando" id="chartYearly"></canvas>
+          <canvas *ngIf="!cargando" #chartYearly></canvas>
         </div>
       </div>
     </div>
@@ -211,24 +211,11 @@
           <div class="spinner"></div>
           Cargando análisis...
         </div>
-        <!-- Canvas del gráfico de pie -->
-        <canvas *ngIf="!cargando" id="pieChart"></canvas>
+                 <!-- Canvas del gráfico de pie -->
+         <canvas *ngIf="!cargando" #chartPie></canvas>
       </div>
       
-      <!-- Resumen de datos del análisis -->
-      <div class="analysis-summary">
-        <h4 class="summary-title">Resumen</h4>
-        <div class="summary-content">
-          <!-- Estado de carga del resumen -->
-          <div *ngIf="cargando">Cargando resumen...</div>
-          <!-- Datos del resumen -->
-          <div *ngIf="!cargando">
-            • Total de ventas: {{ productosVendidos | number }} unidades<br>
-            • Valor total: {{ ingresosTotales | currency:'USD':'symbol':'1.0-0' }}<br>
-            • Categoría principal: Cargando...
-          </div>
-        </div>
-      </div>
+  
     </div>
   </div>
 

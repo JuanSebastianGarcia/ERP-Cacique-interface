@@ -1,0 +1,160 @@
+<!-- ======================================== -->
+<!-- COMPONENTE: ESTADÍSTICAS DIARIAS          -->
+<!-- KPIs y Libro Contable Diario              -->
+<!-- ======================================== -->
+
+<div class="main-content">
+  
+  <!-- ======================================== -->
+  <!-- SECCIÓN 1: HEADER PRINCIPAL             -->
+  <!-- Título y descripción del dashboard       -->
+  <!-- ======================================== -->
+  <div class="page-header">
+    <h1 class="page-title">Estadísticas Diarias</h1>
+    <p class="page-subtitle">Dashboard de rendimiento financiero y análisis diario</p>
+  </div>
+
+  <!-- ======================================== -->
+  <!-- SECCIÓN 2: SELECTOR DE FECHA            -->
+  <!-- Controles para seleccionar fecha         -->
+  <!-- ======================================== -->
+  <div class="date-section">
+    <h3 class="section-title">Seleccionar Fecha</h3>
+    <div class="date-controls">
+      <div class="date-input-group">
+        <label for="selectedDate">Fecha</label>
+        <input type="text" 
+               id="selectedDate" 
+               class="date-input" 
+               [value]="formatearFecha(fechaSeleccionada)"
+               (click)="abrirCalendario()"
+               readonly
+               placeholder="Seleccionar fecha">
+        <button class="calendar-trigger" (click)="abrirCalendario()">
+          📅
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================== -->
+  <!-- SECCIÓN 3: INDICADORES PRINCIPALES (KPIs) -->
+  <!-- Tarjetas con métricas clave del día      -->
+  <!-- ======================================== -->
+  <div class="kpis-section">
+    <h3 class="section-title">Indicadores Principales</h3>
+    <div class="kpis-grid">
+      
+      <!-- KPI 1: Ingresos Totales -->
+      <div class="kpi-card">
+        <h4 class="kpi-label">Ingresos del día</h4>
+        <div class="kpi-value">${{ formatearMoneda(ingresosTotales) }}</div>
+        <div class="kpi-date">{{ formatearFecha(fechaSeleccionada) }}</div>
+      </div>
+      
+      <!-- KPI 2: Gastos Totales -->
+      <div class="kpi-card">
+        <h4 class="kpi-label">Gastos del día</h4>
+        <div class="kpi-value">${{ formatearMoneda(gastosTotales) }}</div>
+        <div class="kpi-date">{{ formatearFecha(fechaSeleccionada) }}</div>
+      </div>
+      
+      <!-- KPI 3: Ingresos Netos -->
+      <div class="kpi-card">
+        <h4 class="kpi-label">Ingresos netos</h4>
+        <div class="kpi-value">${{ formatearMoneda(ingresosNetos) }}</div>
+        <div class="kpi-date">{{ formatearFecha(fechaSeleccionada) }}</div>
+      </div>
+      
+      <!-- KPI 4: Facturas Emitidas -->
+      <div class="kpi-card">
+        <h4 class="kpi-label">Facturas emitidas</h4>
+        <div class="kpi-value">{{ facturasEmitidas }}</div>
+        <div class="kpi-date">{{ formatearFecha(fechaSeleccionada) }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================== -->
+  <!-- SECCIÓN 4: LIBRO CONTABLE               -->
+  <!-- Tabla de movimientos del día            -->
+  <!-- ======================================== -->
+  <div class="libro-section">
+    <div class="libro-header">
+      <h3 class="section-title">Libro contable del día</h3>
+      <button class="export-button" 
+              (click)="exportarDatos()"
+              [disabled]="cargando">
+        <span>📄</span>
+        Exportar
+      </button>
+    </div>
+    
+    <div class="libro-content">
+      
+      <!-- Estado de carga -->
+      <div *ngIf="cargando" class="loading">
+        <div class="spinner"></div>
+        Cargando movimientos...
+      </div>
+      
+      <!-- Sin datos -->
+      <div *ngIf="!cargando && movimientos.length === 0" class="no-data">
+        <div class="no-data-icon">📋</div>
+        <h3>No hay movimientos registrados</h3>
+        <p>No se encontraron transacciones para esta fecha</p>
+      </div>
+      
+      <!-- Tabla de movimientos -->
+      <table *ngIf="!cargando && movimientos.length > 0" class="movements-table">
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Tipo</th>
+            <th>Valor</th>
+            <th>Descripción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let movimiento of movimientos">
+            <td>{{ formatearFecha(movimiento.fecha) }}</td>
+            <td>
+              <span class="movement-type" [ngClass]="movimiento.tipo">
+                {{ getIconoMovimiento(movimiento.tipo) }} 
+                {{ movimiento.tipo === 'ingreso' ? 'Ingreso' : 'Gasto' }}
+              </span>
+            </td>
+            <td class="movement-value" [ngClass]="getClaseMovimiento(movimiento.tipo)">
+              {{ getSimboloMovimiento(movimiento.tipo) }}${{ formatearMoneda(getValorAbsoluto(movimiento.valor)) }}
+            </td>
+            <td>{{ movimiento.descripcion }}</td>
+          </tr>
+          
+          <!-- Fila de resumen -->
+          <tr class="summary-row">
+            <td colspan="2"><strong>Resumen del día</strong></td>
+            <td class="movement-value positive">
+              <strong>${{ formatearMoneda(ingresosNetos) }}</strong>
+            </td>
+            <td><strong>{{ facturasEmitidas }} facturas emitidas</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ======================================== -->
+  <!-- SECCIÓN 5: MENSAJE DE ERROR             -->
+  <!-- Se muestra solo cuando hay errores      -->
+  <!-- ======================================== -->
+  <div *ngIf="error" class="error-message">
+    {{ error }}
+  </div>
+</div>
+
+<!-- Componente de Calendario -->
+<app-calendario 
+  [isVisible]="calendarioVisible"
+  (dateSelected)="onFechaSeleccionada($event)"
+  (calendarClosed)="cerrarCalendario()">
+</app-calendario>
