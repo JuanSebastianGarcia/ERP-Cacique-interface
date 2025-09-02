@@ -195,7 +195,11 @@ export class EstadisticaDiariaComponent implements OnInit {
    * Formatea una fecha para mostrar en español
    */
   public formatearFecha(fecha: string): string {
-    const date = new Date(fecha);
+    if (!fecha) return '';
+  
+    const [year, month, day] = fecha.split('-').map(Number);
+    const date = new Date(year, month - 1, day); // se crea en local sin corrimiento
+  
     return date.toLocaleDateString('es-ES', {
       weekday: 'long',
       year: 'numeric',
@@ -203,6 +207,7 @@ export class EstadisticaDiariaComponent implements OnInit {
       day: 'numeric'
     });
   }
+  
 
   /**
    * Formatea un valor monetario

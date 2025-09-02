@@ -509,13 +509,16 @@ export class RegistroGastoComponent implements OnInit {
    */
   public obtenerFechaFormateada(fechaString: string): string {
     if (!fechaString) return 'Seleccionar fecha';
-    
-    const fecha = new Date(fechaString);
-    const day = String(fecha.getDate()).padStart(2, '0');
-    const month = String(fecha.getMonth() + 1).padStart(2, '0');
-    const year = fecha.getFullYear();
-    
-    return `${day}/${month}/${year}`;
+  
+    const [year, month, day] = fechaString.split('-').map(Number);
+    // mes -1 porque Date usa 0=enero, 11=diciembre
+    const fecha = new Date(year, month - 1, day);
+  
+    const dd = String(fecha.getDate()).padStart(2, '0');
+    const mm = String(fecha.getMonth() + 1).padStart(2, '0');
+    const yyyy = fecha.getFullYear();
+  
+    return `${dd}/${mm}/${yyyy}`;
   }
 
 }

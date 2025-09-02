@@ -151,19 +151,23 @@ export class EstadisticaHistoricaComponent implements OnInit, AfterViewInit, OnD
     if (data && data.respuesta) {
       // Mapear datos de gráfico diario (últimos 30 días)
       if (data.respuesta.graficaDiaria) {
-        this.datosGrafico30Dias = data.respuesta.graficaDiaria.map((item: any) => ({
-          fecha: item.fecha,
-          valor: item.valor
-        }));
+        this.datosGrafico30Dias = data.respuesta.graficaDiaria
+          .map((item: any) => ({
+            fecha: item.fecha,
+            valor: item.valor
+          }))
+          .sort((a: any, b: any) => new Date(a.fecha).getTime() - new Date(b.fecha).getTime());
         this.etiquetas30Dias = this.datosGrafico30Dias.map(item => this.formatearFecha(item.fecha));
       }
 
       // Mapear datos de gráfico mensual (últimos 12 meses)
       if (data.respuesta.graficaMensual) {
-        this.datosGrafico12Meses = data.respuesta.graficaMensual.map((item: any) => ({
-          mes: item.mes,
-          valor: item.valor
-        }));
+        this.datosGrafico12Meses = data.respuesta.graficaMensual
+          .map((item: any) => ({
+            mes: item.mes, // mantener como string
+            valor: item.valor
+          }))
+          .sort((a: any, b: any) => this.obtenerNumeroMes(a.mes) - this.obtenerNumeroMes(b.mes)); 
         this.etiquetas12Meses = this.datosGrafico12Meses.map(item => this.traducirMes(item.mes));
       }
 
@@ -195,31 +199,77 @@ export class EstadisticaHistoricaComponent implements OnInit, AfterViewInit, OnD
     const date = new Date(fecha);
     return date.toLocaleDateString('es-ES', { 
       day: '2-digit', 
-      month: '2-digit' 
+      month: 'short' // <-- cambia aquí
     });
+  }
+  
+  /**
+   * Convierte el nombre del mes a número para ordenamiento
+   * @param mes - Nombre del mes en inglés
+   * @returns Número del mes (1-12)
+   */
+  private obtenerNumeroMes(mes: string): number {
+    const meses: { [key: string]: number } = {
+      'JANUARY': 1,
+      'FEBRUARY': 2,
+      'MARCH': 3,
+      'APRIL': 4,
+      'MAY': 5,
+      'JUNE': 6,
+      'JULY': 7,
+      'AUGUST': 8,
+      'SEPTEMBER': 9,
+      'OCTOBER': 10,
+      'NOVEMBER': 11,
+      'DECEMBER': 12
+    };
+    return meses[mes] || 0;
   }
 
   /**
-   * Traduce el nombre del mes del inglés al español
-   * @param mes - Mes en inglés
+   * Traduce el número del mes al nombre en español
+   * @param mes - Mes como número (1-12) o string
    * @returns Mes en español
    */
-  private traducirMes(mes: string): string {
-    const meses: { [key: string]: string } = {
-      'JANUARY': 'Enero',
-      'FEBRUARY': 'Febrero',
-      'MARCH': 'Marzo',
-      'APRIL': 'Abril',
-      'MAY': 'Mayo',
-      'JUNE': 'Junio',
-      'JULY': 'Julio',
-      'AUGUST': 'Agosto',
-      'SEPTEMBER': 'Septiembre',
-      'OCTOBER': 'Octubre',
-      'NOVEMBER': 'Noviembre',
-      'DECEMBER': 'Diciembre'
+  private traducirMes(mes: number | string): string {
+    // Si es string, intentar convertir a número
+    const mesNumero = typeof mes === 'string' ? parseInt(mes) : mes;
+    
+    const meses: { [key: number]: string } = {
+      1: 'Enero',
+      2: 'Febrero',
+      3: 'Marzo',
+      4: 'Abril',
+      5: 'Mayo',
+      6: 'Junio',
+      7: 'Julio',
+      8: 'Agosto',
+      9: 'Septiembre',
+      10: 'Octubre',
+      11: 'Noviembre',
+      12: 'Diciembre'
     };
-    return meses[mes] || mes;
+    
+    // Si es un string que no se pudo convertir, mantener el mapeo original
+    if (isNaN(mesNumero)) {
+      const mesesString: { [key: string]: string } = {
+        'JANUARY': 'Enero',
+        'FEBRUARY': 'Febrero',
+        'MARCH': 'Marzo',
+        'APRIL': 'Abril',
+        'MAY': 'Mayo',
+        'JUNE': 'Junio',
+        'JULY': 'Julio',
+        'AUGUST': 'Agosto',
+        'SEPTEMBER': 'Septiembre',
+        'OCTOBER': 'Octubre',
+        'NOVEMBER': 'Noviembre',
+        'DECEMBER': 'Diciembre'
+      };
+      return mesesString[mes as string] || mes as string;
+    }
+    
+    return meses[mesNumero] || mes.toString();
   }
 
   /**
@@ -257,13 +307,42 @@ export class EstadisticaHistoricaComponent implements OnInit, AfterViewInit, OnD
         plugins: {
           title: {
             display: true,
-            text: 'Ingresos Últimos 30 Días'
+            text: 'Ingresos Últimos 30 Días',
+            font: {
+              size: 18,
+              weight: 'bold'
+            }
+          },
+          legend: {
+            labels: {
+              font: {
+                size: 14
+              }
+            }
+          },
+          tooltip: {
+            titleFont: {
+              size: 20
+            },
+            bodyFont: {
+              size: 18
+            }
           }
         },
         scales: {
+          x: {
+            ticks: {
+              font: {
+                size: 12
+              }
+            }
+          },
           y: {
             beginAtZero: true,
             ticks: {
+              font: {
+                size: 12
+              },
               callback: function(value) {
                 return '$' + value.toLocaleString('es-CO');
               }
@@ -310,13 +389,42 @@ export class EstadisticaHistoricaComponent implements OnInit, AfterViewInit, OnD
         plugins: {
           title: {
             display: true,
-            text: 'Ingresos Últimos 12 Meses'
+            text: 'Ingresos Últimos 12 Meses',
+            font: {
+              size: 18,
+              weight: 'bold'
+            }
+          },
+          legend: {
+            labels: {
+              font: {
+                size: 14
+              }
+            }
+          },
+          tooltip: {
+            titleFont: {
+              size: 20
+            },
+            bodyFont: {
+              size: 18
+            }
           }
         },
         scales: {
+          x: {
+            ticks: {
+              font: {
+                size: 12
+              }
+            }
+          },
           y: {
             beginAtZero: true,
             ticks: {
+              font: {
+                size: 12
+              },
               callback: function(value) {
                 return '$' + value.toLocaleString('es-CO');
               }
@@ -375,9 +483,26 @@ export class EstadisticaHistoricaComponent implements OnInit, AfterViewInit, OnD
         plugins: {
           title: {
             display: true,
-            text: 'Ingresos por Año'
+            text: 'Ingresos por Año',
+            font: {
+              size: 18,
+              weight: 'bold'
+            }
+          },
+          legend: {
+            labels: {
+              font: {
+                size: 14
+              }
+            }
           },
           tooltip: {
+            titleFont: {
+              size: 16
+            },
+            bodyFont: {
+              size: 14
+            },
             callbacks: {
               label: function(context) {
                 const label = context.label || '';
@@ -445,9 +570,26 @@ export class EstadisticaHistoricaComponent implements OnInit, AfterViewInit, OnD
         plugins: {
           title: {
             display: true,
-            text: 'Ingresos por ' + this.criterioSeleccionado.charAt(0).toUpperCase() + this.criterioSeleccionado.slice(1)
+            text: 'Ingresos por ' + this.criterioSeleccionado.charAt(0).toUpperCase() + this.criterioSeleccionado.slice(1),
+            font: {
+              size: 18,
+              weight: 'bold'
+            }
+          },
+          legend: {
+            labels: {
+              font: {
+                size: 14
+              }
+            }
           },
           tooltip: {
+            titleFont: {
+              size: 20
+            },
+            bodyFont: {
+              size: 18
+            },
             callbacks: {
               label: function(context) {
                 const label = context.label || '';
