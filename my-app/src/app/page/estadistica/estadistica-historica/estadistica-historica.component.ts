@@ -333,7 +333,7 @@ export class EstadisticaHistoricaComponent implements OnInit, AfterViewInit, OnD
           x: {
             ticks: {
               font: {
-                size: 12
+                size: 16
               }
             }
           },
@@ -341,7 +341,7 @@ export class EstadisticaHistoricaComponent implements OnInit, AfterViewInit, OnD
             beginAtZero: true,
             ticks: {
               font: {
-                size: 12
+                size: 16
               },
               callback: function(value) {
                 return '$' + value.toLocaleString('es-CO');
@@ -415,7 +415,7 @@ export class EstadisticaHistoricaComponent implements OnInit, AfterViewInit, OnD
           x: {
             ticks: {
               font: {
-                size: 12
+                size: 16
               }
             }
           },
@@ -423,7 +423,7 @@ export class EstadisticaHistoricaComponent implements OnInit, AfterViewInit, OnD
             beginAtZero: true,
             ticks: {
               font: {
-                size: 12
+                size: 16
               },
               callback: function(value) {
                 return '$' + value.toLocaleString('es-CO');
@@ -492,16 +492,16 @@ export class EstadisticaHistoricaComponent implements OnInit, AfterViewInit, OnD
           legend: {
             labels: {
               font: {
-                size: 14
+                size: 18
               }
             }
           },
           tooltip: {
             titleFont: {
-              size: 16
+              size: 20
             },
             bodyFont: {
-              size: 14
+              size: 18
             },
             callbacks: {
               label: function(context) {
@@ -579,7 +579,7 @@ export class EstadisticaHistoricaComponent implements OnInit, AfterViewInit, OnD
           legend: {
             labels: {
               font: {
-                size: 14
+                size: 18
               }
             }
           },
